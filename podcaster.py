@@ -118,9 +118,12 @@ class Podcast:
         if 'date' in f:
             albumYear = " ({})".format(f['date'][0].encode('UTF-8'))
         
+        c=""
+        #c=f['composer'][0].replace('&',"&amp;").encode('UTF-8')
+        
         template=template.format(
             NAME=f['title'][0].replace('&',"&amp;").encode('UTF-8'),
-            COMPOSER=f['composer'][0].replace('&',"&amp;").encode('UTF-8'),
+            COMPOSER=c,
             ARTIST=f['artist'][0].replace('&',"&amp;").encode('UTF-8'),
             ALBUM=f['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
             COVER_ART_PATH=theArtwork[1]
@@ -193,10 +196,10 @@ class Podcast:
         #pprint.pprint(audio)
     
         k = audio.keys()
-        if 'covr' in k:
-            info['artwork']=str(audio['covr'][0])
-        elif 'APIC:thumbnail' in k:
-            info['artwork']=audio['APIC:thumbnail'].data
+#         if 'covr' in k:
+#             info['artwork']=str(audio['covr'][0])
+#         elif 'APIC:thumbnail' in k:
+#             info['artwork']=audio['APIC:thumbnail'].data
     
         return info
 
@@ -280,6 +283,8 @@ class Podcast:
         self.length += f['theLength']
         
         self.files.append(f)
+        
+        print(f)
 
   
     def make(self,target):
@@ -306,4 +311,4 @@ p = Podcast()
 for f in vars(args)['files']:
     p.add(f)
 
-p.make('output.m4a')
+# p.make('output.m4a')
