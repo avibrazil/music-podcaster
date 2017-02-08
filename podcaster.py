@@ -120,6 +120,7 @@ class Podcast:
         
         template=template.format(
             NAME=f['title'][0].replace('&',"&amp;").encode('UTF-8'),
+            COMPOSER=f['composer'][0].replace('&',"&amp;").encode('UTF-8'),
             ARTIST=f['artist'][0].replace('&',"&amp;").encode('UTF-8'),
             ALBUM=f['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
             COVER_ART_PATH=theArtwork[1]
