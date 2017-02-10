@@ -57,16 +57,24 @@ class Podcast:
 
     def tag(self):
         description=""
+        tracks=""
+        composers=""
         title=""
         artist=""
         
         i=0
         for song in self.files:
             i+=1
-            description += "{i:02}. {name}\n".format(
+            tracks += "{i:02}. {name}\n".format(
                 i=i,
                 name=self.songCompleteName(song)
             )
+            
+            if 'composer' in song:
+                composers += "{i:02}. {name}\n".format(
+                i=i,
+                name=song['composer'].encode('UTF-8')
+            ) 
             
             if (title):
                 title += " | ".encode('UTF-8')
@@ -75,7 +83,12 @@ class Podcast:
             if (artist):
                 artist += " | ".encode('UTF-8')
             artist += song['artist'][0].encode('UTF-8')
-            
+        
+        description = "TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}".format(
+            tracks=tracks,
+            composers=composers
+        ) 
+        
         subprocess.call([
             "mp4tags",
             "-H", "1",
@@ -118,12 +131,13 @@ class Podcast:
         if 'date' in f:
             albumYear = " ({})".format(f['date'][0].encode('UTF-8'))
         
-        c=""
-        #c=f['composer'][0].replace('&',"&amp;").encode('UTF-8')
+        composer=""
+        if 'composer' in f:
+            composer=f['composer'][0].replace('&',"&amp;").encode('UTF-8')
         
         template=template.format(
             NAME=f['title'][0].replace('&',"&amp;").encode('UTF-8'),
-            COMPOSER=c,
+            COMPOSER=composer,
             ARTIST=f['artist'][0].replace('&',"&amp;").encode('UTF-8'),
             ALBUM=f['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
             COVER_ART_PATH=theArtwork[1]
@@ -183,23 +197,18 @@ class Podcast:
     def musicInfo(self,f):
         info = {}
         audio = mutagen.File(f, easy=True)
-
-        #pprint.pprint(audio.info.length)
-
     
         info['theLength']=audio.info.length
         info.update(audio)
     
         # Now get only cover art
         audio = mutagen.File(f, easy=False)
-    
-        #pprint.pprint(audio)
-    
+        
         k = audio.keys()
-#         if 'covr' in k:
-#             info['artwork']=str(audio['covr'][0])
-#         elif 'APIC:thumbnail' in k:
-#             info['artwork']=audio['APIC:thumbnail'].data
+        if 'covr' in k:
+            info['artwork']=str(audio['covr'][0])
+        elif u'APIC:' in k:
+            info['artwork']=audio['APIC:'].data
     
         return info
 
@@ -272,6 +281,9 @@ class Podcast:
         f = {'file': name}
         f.update(self.musicInfo(name))
         
+#         pprint.pprint(f)
+#         return
+        
         self.songImage(f)
         self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
             cursor=int(1000*self.length),
@@ -283,8 +295,6 @@ class Podcast:
         self.length += f['theLength']
         
         self.files.append(f)
-        
-        print(f)
 
   
     def make(self,target):
@@ -311,4 +321,4 @@ p = Podcast()
 for f in vars(args)['files']:
     p.add(f)
 
-# p.make('output.m4a')
+p.make('output.m4a')
