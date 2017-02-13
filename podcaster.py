@@ -13,24 +13,20 @@ import os
 import math
 import sys
 
-PRESENT_TEMPLATE="ChapterTemplate.svg"
-MISSING_ARTWORK="MissingArtworkMusic.png"
-PODCAST_ARTWORK="PodcastArtwork.jpg"
-
 
 class Podcast:
     def __init__ (self):
         self.audio = None
         self.chapterImagesInfo = """<?xml version="1.0" encoding="UTF-8" ?>
             <NHNTStream version="1.0" timeScale="1000"
-            mediaType="vide" mediaSubType="jpeg" width="1920" height="1080"
+            mediaType="vide" mediaSubType="jpeg" width="1280" height="720"
             codecVendor="....">"""
         self.chapterInfo = """<?xml version="1.0" encoding="UTF-8" ?>
             <TextStream version="1.1">
                 <TextStreamHeader><TextSampleDescription/>
                 </TextStreamHeader>"""
         self.length = 0
-        self.files=[]
+        self.files = []
 
     
     def chapterize(self):
@@ -46,7 +42,7 @@ class Podcast:
 
         
         subprocess.call([
-            "MP4Box", self.audio,
+            "MP4Box", self.output,
             "-add", "{file}:chap:name=Chapter Titles".format(file=chap[1]),
             "-add", "{file}:name=Chapter Images".format(file=nhml[1])
         ])
@@ -59,7 +55,7 @@ class Podcast:
         description=""
         tracks=""
         composers=""
-        title=""
+        albums=""
         artist=""
         
         i=0
@@ -72,99 +68,167 @@ class Podcast:
             
             if 'composer' in song:
                 composers += "{i:02}. {name}\n".format(
-                i=i,
-                name=song['composer'].encode('UTF-8')
-            ) 
+                    i=i,
+                    name=', '.join(song['composer']).encode('UTF-8')
+                )
             
-            if (title):
-                title += " | ".encode('UTF-8')
-            title += song['title'][0].encode('UTF-8')
+            if ('album') in song:
+                albumYear = " ({:.4})"
+                if 'date' in song:
+                    albumYear = albumYear.format(song['date'][0])
+                else:
+                    albumYear = ""
+                
+                albums += "{i:02}. {albumArtist} » {album}{year}\n".format(
+                    i=i,
+                    album=', '.join(song['album']).encode('UTF-8'),
+                    albumArtist=song['albumartist'][0].encode('UTF-8'),
+                    year=albumYear
+                )
+            
+            if (self.title == None or self.title.endswith(" | ")):
+                self.title += song['title'][0].encode('UTF-8')
+                self.title += " | "
         
             if (artist):
                 artist += " | ".encode('UTF-8')
             artist += song['artist'][0].encode('UTF-8')
         
-        description = "TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}".format(
+        description = "{prefix}TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}{suffix}".format(
             tracks=tracks,
-            composers=composers
+            composers=composers,
+            albums=albums,
+            prefix=self.descriptionPrefix,
+            suffix=self.descriptionSuffix
         ) 
         
+        if self.title.endswith(' | '):
+            self.title = self.title[:-3]
+
         subprocess.call([
             "mp4tags",
             "-H", "1",
             "-X", "clean",
             "-i", "podcast",
+            "-B", "1",
+            "-M", str(self.episode),
             "-E", "Podcast creator by Avi Alkalay",
             "-e", "Avi Alkalay",
             "-C", "Copyright by its holders",
             "-a", artist,
-            "-s", title,
+            "-s", self.title,
             "-l", description,
-            self.audio
+            self.output
         ])
 
         subprocess.call([
             "mp4art",
             "-z",
-            "--add", "{}/{}".format(os.path.dirname(sys.argv[0]),PODCAST_ARTWORK),
-            self.audio
+            "--add", "{}/{}".format(os.path.dirname(sys.argv[0]),self.podcastArtwork),
+            self.output
         ])
 
 
-    def songImage(self,f):
+    def imagify(self):
+        for i in range(len(self.files)):
+            theArtwork = []
     
-        theArtwork = []
+            if 'artwork' in self.files[i]:
+                # overwrite theArtwork tuple if file has artwork
+                theArtwork=tempfile.mkstemp()
+                os.write(theArtwork[0],self.files[i]['artwork'])
+                os.close(theArtwork[0])
+                self.files[i]['artworkFile'] = theArtwork[1]
+            else:
+                self.files[i]['artworkFile'] = "{}/{}".format(
+                    os.path.dirname(sys.argv[0]),
+                    self.missingArtwork
+                )
+
+
+        cursor=0
+        for i in range(len(self.files)):
+            with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
+                template=myfile.read()
     
-        if 'artwork' in f:
-            # overwrite theArtwork tuple if file has artwork
-            theArtwork=tempfile.mkstemp()
-            os.write(theArtwork[0],f['artwork'])
-            os.close(theArtwork[0])
-        else:
-            theArtwork.append(0)
-            theArtwork.append("{}/{}".format(os.path.dirname(sys.argv[0]),MISSING_ARTWORK))
-    
-        with open("{}/{}".format(os.path.dirname(sys.argv[0]),PRESENT_TEMPLATE), 'r') as myfile:
-            template=myfile.read()
-    
-        albumYear=""
-        if 'date' in f:
-            albumYear = " ({})".format(f['date'][0].encode('UTF-8'))
+            albumYear=""
+            if 'date' in self.files[i]:
+                albumYear = " ({:.4})".format(self.files[i]['date'][0].encode('UTF-8'))
         
-        composer=""
-        if 'composer' in f:
-            composer=f['composer'][0].replace('&',"&amp;").encode('UTF-8')
+            composer=""
+            if 'composer' in self.files[i]:
+                composer=", ".join(self.files[i]['composer']).replace('&',"&amp;").encode('UTF-8')
         
-        template=template.format(
-            NAME=f['title'][0].replace('&',"&amp;").encode('UTF-8'),
-            COMPOSER=composer,
-            ARTIST=f['artist'][0].replace('&',"&amp;").encode('UTF-8'),
-            ALBUM=f['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
-            COVER_ART_PATH=theArtwork[1]
-        )
+            if i > 0:
+                PREV_VISIBILITY="visible"
+                PREV_NAME=self.files[i-1]['title'][0].replace('&',"&amp;").encode('UTF-8')
+                PREV_ARTIST=self.files[i-1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
+                PREV_COVER_ART_PATH=self.files[i-1]['artworkFile']
+            else:
+                PREV_VISIBILITY="none"
+                PREV_NAME=PREV_ARTIST=PREV_COVER_ART_PATH="whatever"
+            
+            if i < len(self.files)-1:
+                NEXT_VISIBILITY="visible"
+                NEXT_NAME=self.files[i+1]['title'][0].replace('&',"&amp;").encode('UTF-8')
+                NEXT_ARTIST=self.files[i+1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
+                NEXT_COVER_ART_PATH=self.files[i+1]['artworkFile']
+            else:
+                NEXT_VISIBILITY="none"
+                NEXT_NAME=NEXT_ARTIST=NEXT_COVER_ART_PATH="whatever"
 
-        theTemplate=tempfile.mkstemp(suffix='.svg')
-        os.write(theTemplate[0],template)
-        os.close(theTemplate[0])
+            template=template.format(
+                COMPOSER=composer,
+                NAME=self.files[i]['title'][0].replace('&',"&amp;").encode('UTF-8'),
+                ARTIST=self.files[i]['artist'][0].replace('&',"&amp;").encode('UTF-8'),
+                ALBUM=self.files[i]['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
+                COVER_ART_PATH=self.files[i]['artworkFile'],
 
-        thePresentation=tempfile.mkstemp(suffix='.png')
-        os.close(thePresentation[0])
+                NEXT_VISIBILITY=NEXT_VISIBILITY,
+                NEXT_NAME=NEXT_NAME,
+                NEXT_ARTIST=NEXT_ARTIST,
+                NEXT_COVER_ART_PATH=NEXT_COVER_ART_PATH,
+
+                PREV_VISIBILITY=PREV_VISIBILITY,
+                PREV_NAME=PREV_NAME,
+                PREV_ARTIST=PREV_ARTIST,
+                PREV_COVER_ART_PATH=PREV_COVER_ART_PATH
+            )
+
+            # SVG data is ready in memory, now write SVG file
+            theTemplate=tempfile.mkstemp(suffix='.svg', dir='.')
+            os.write(theTemplate[0],template)
+            os.close(theTemplate[0])
+
+            # Convert to PNG
+            thePresentation=tempfile.mkstemp(suffix='.png')
+            os.close(thePresentation[0])
+
+            subprocess.call(["inkscape", "--without-gui", "--export-area-page",
+                "-w", "1280",
+                "-h", "720",
+                "-e", thePresentation[1], theTemplate[1]])
+
+            os.remove(theTemplate[1])
+
+            # Convert to JPG
+            thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
+            os.close(thePresentationJPG[0])
     
-        subprocess.call(["inkscape", "--without-gui", "--export-area-page", "-e",
-            thePresentation[1], theTemplate[1]])
-    
-        os.remove(theTemplate[1])
-        if (theArtwork[0] != 0):
-            os.remove(theArtwork[1])
+            im = Image.open(thePresentation[1])
+            im.save(thePresentationJPG[1])
+            os.remove(thePresentation[1])
 
-        thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
-        os.close(thePresentationJPG[0])
-        
-        im = Image.open(thePresentation[1])
-        im.save(thePresentationJPG[1])
-        os.remove(thePresentation[1])
+            self.files[i]['image']=thePresentationJPG[1]
 
-        f['image']=thePresentationJPG[1]    
+            self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
+                cursor=int(1000*cursor),
+                file=self.files[i]['image']
+            )
+
+            cursor+=self.files[i]['theLength']
+            
+            i += 1
 
 
     def concatAudioFiles(self):
@@ -190,7 +254,7 @@ class Podcast:
             ["ffmpeg"] +
             params +
             coder +
-            [self.audio]
+            [self.output]
         )
 
 
@@ -201,10 +265,13 @@ class Podcast:
         info['theLength']=audio.info.length
         info.update(audio)
     
-        # Now get only cover art
+        # Now get only cover art and composer
         audio = mutagen.File(f, easy=False)
         
         k = audio.keys()
+        if '\xA9wrt' in k:
+            info['composer']=audio['\xA9wrt']
+
         if 'covr' in k:
             info['artwork']=str(audio['covr'][0])
         elif u'APIC:' in k:
@@ -216,11 +283,13 @@ class Podcast:
     def clean(self):
         for f in self.files:
             os.remove(f['image'])
+            if (f['artworkFile'].endswith(self.missingArtwork)==False):
+                os.remove(f['artworkFile'])
 
 
     def songCompleteName(self, song, html=False):
-        albumYear=" ({})"
-        template="{artist} » {album} » {title} ({l})"
+        albumYear=" 【{:.4}】"
+        template="{artist} » {title} ({l})"
         
         if (html):
             template="""
@@ -242,8 +311,8 @@ class Podcast:
         
         name=template.format(
             artist = song['artist'][0].encode('UTF-8'),
-            album = song['album'][0].encode('UTF-8') + albumYear,
-            title = song['title'][0].encode('UTF-8'),
+            album = song['album'][0].encode('UTF-8'),
+            title = song['title'][0].encode('UTF-8') + albumYear,
             l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
         )
         
@@ -277,19 +346,13 @@ class Podcast:
         )
 
 
-    def add(self,name):
+    def add(self, name):
         f = {'file': name}
         f.update(self.musicInfo(name))
         
 #         pprint.pprint(f)
 #         return
         
-        self.songImage(f)
-        self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-            cursor=int(1000*self.length),
-            file=f['image']
-        )
-
         self.chapterInfo += self.timedTextChapter(f)
                 
         self.length += f['theLength']
@@ -297,11 +360,18 @@ class Podcast:
         self.files.append(f)
 
   
-    def make(self,target):
-        self.audio=target
-        if (self.audio.endswith('.m4a') == False):
-            self.audio+='.m4a'
+    def make(self):
+        if (self.output == None):
+            if self.podcast:                 self.output = self.podcast
+            if self.output and self.episode: self.output += " - "                                
+            if self.episode:                 self.output += '{:03d}'.format(self.episode)        
+            if self.output and self.title:   self.output += " - "                                
+            if self.title:                   self.output += self.title                           
+            
+        if self.output == None:                     self.output = "output"
+        if self.output.endswith('.m4a') == False:   self.output += '.m4a'
         
+        self.imagify()
         self.concatAudioFiles()
         self.chapterize()
         self.tag()
@@ -309,16 +379,52 @@ class Podcast:
         
 
 
-parser = argparse.ArgumentParser(description='Create podcast from songs')
+def main():
+    p = Podcast()
 
-parser.add_argument('files', type=str, nargs='+',
-                    help='music files to be added to podcast')
+    parser = argparse.ArgumentParser(
+        description='Create extended podcast from well tagged audio files'
+    )
 
-args = parser.parse_args()
+    parser.add_argument('-p', dest='podcast',
+        help='podcast global name')
 
-p = Podcast()
+    parser.add_argument('-t', dest='title',
+        help='title for podcast')
 
-for f in vars(args)['files']:
-    p.add(f)
+    parser.add_argument('-i', dest='episode', type=int,
+        help='episode number')
 
-p.make('output.m4a')
+    parser.add_argument('-o', dest='output',
+        help='output file name (defaults to "{podcast name} - {episode} - {title}.m4a)"')
+
+    parser.add_argument('-c', dest='chapterTemplate', default="ChapterTemplate.svg",
+        help='SVG file to be used as template for each chapter image')
+
+    parser.add_argument('-m', dest='missingArtwork', default="MissingArtworkMusic.png",
+        help="image to use in case audio file doesn't have embeded arwork")
+    
+    parser.add_argument('-a', dest='podcastArtwork', default="PodcastArtwork.jpg",
+        help="image to embed as artwork in final M4A podcast file")
+    
+    parser.add_argument('--dp', dest='descriptionPrefix', default="",
+        help="text for description, before track list")
+    
+    parser.add_argument('--ds', dest='descriptionSuffix', default="",
+        help="text for description, after track list")
+
+    parser.add_argument('f', type=str, nargs='+',
+                        help='music files to be added to podcast')
+
+    args = parser.parse_args(namespace=p)
+    
+#     pprint.pprint(vars(p))
+
+    for f in p.f:
+        p.add(f)
+
+    p.make()
+
+
+__name__ == '__main__' and main()
+
