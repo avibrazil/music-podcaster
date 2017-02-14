@@ -70,20 +70,29 @@ class Podcast:
         os.remove(chap[1])
 
 
-    def tag(self):
-        description=""
+    def makeDescriptions(self):
+        self.description=""
+        self.artist=""
         tracks=""
+        youtubeTracks=""
         composers=""
         albums=""
-        artist=""
         
         i=0
+        pos=self.introDuration
         for song in self.files:
             i+=1
+            name=self.songCompleteName(song)
             tracks += "{i:02}. {name}\n".format(
                 i=i,
-                name=self.songCompleteName(song)
+                name=name
             )
+
+            youtubeTracks += "{i:02}. [{pos}] {name}\n".format(
+                name=name,
+                pos=str((datetime.fromordinal(1) + timedelta(seconds=pos)).time())
+            )
+            pos += song['theLength']
             
             if 'composer' in song:
                 composers += "{i:02}. {name}\n".format(
@@ -99,8 +108,8 @@ class Podcast:
                     albumYear = ""
                 
                 albumArtist=""
-                if 'albumartist' in song: albumArtist=song['albumartist'][0]
-                if 'performer'   in song: albumArtist=song['performer'][0]
+                if 'performer'   in song: albumArtist=song['performer'][0]   # MP3
+                if 'albumartist' in song: albumArtist=song['albumartist'][0] # MPEG-4
                 
                 albums += "{i:02}. {albumArtist} » {album}{year}\n".format(
                     i=i,
@@ -113,12 +122,21 @@ class Podcast:
                 self.title += song['title'][0].encode('UTF-8')
                 self.title += " | "
         
-            if (artist):
-                artist += " | ".encode('UTF-8')
-            artist += song['artist'][0].encode('UTF-8')
+            if self.artist: self.artist += " | ".encode('UTF-8')
+            self.artist += song['artist'][0].encode('UTF-8')
         
-        description = "{prefix}TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}{suffix}".format(
+        template="{prefix}TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}{suffix}"
+        
+        self.description = template.format(
             tracks=tracks,
+            composers=composers,
+            albums=albums,
+            prefix=self.descriptionPrefix,
+            suffix=self.descriptionSuffix
+        ) 
+        
+        self.youtubeDescription = template.format(
+            tracks=youtubeTracks,
             composers=composers,
             albums=albums,
             prefix=self.descriptionPrefix,
@@ -128,6 +146,8 @@ class Podcast:
         if self.title.endswith(' | '):
             self.title = self.title[:-3]
 
+
+    def tag(self):
         subprocess.call([
             "mp4tags",
             "-H", "1",
@@ -138,9 +158,9 @@ class Podcast:
             "-E", "Podcast creator by Avi Alkalay",
             "-e", "Avi Alkalay",
             "-C", "Copyright by its holders",
-            "-a", artist,
+            "-a", self.artist,
             "-s", self.title,
-            "-l", description,
+            "-l", self.description,
             self.output
         ])
 
@@ -172,12 +192,20 @@ class Podcast:
 
         # build GPAC's NHML sequence of images for video
         cursor=0
-        
+        self.images = {}
         if self.introDuration > 0:
             data = {
-                'TITLE': 
+                'TITLE': self.title
             }
-            self.intro=self.templateSVGtoJPG("intro", 1280, 720, data)
+            
+            self.images['intro']=self.templateSVGtoJPG("intro", 1280, 720, data)
+
+            self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
+                cursor=int(1000*cursor),
+                file=self.images['intro']
+            )
+            
+            cursor += self.introDuration/1000
         
         
         for i in range(len(self.files)):
@@ -222,44 +250,59 @@ class Podcast:
                 file=self.files[i]['image']
             )
 
-            cursor+=self.files[i]['theLength']
+            cursor += self.files[i]['theLength']
             
-            i += 1
+            i += 1  
+            
+        self.images['credits'] = self.templateSVGtoJPG("credits", 1280, 720)
+            
+        self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
+            cursor=int(1000*cursor),
+            file=self.images['credits']
+        )
+        
+        cursor += self.introDuration/1000
 
+        self.images['end']     = self.templateSVGtoJPG("end", 1280, 720)
+
+        self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
+            cursor=int(1000*cursor),
+            file=self.images['end']
+        )
+        
 
     def templateSVGtoJPG(self, svgid, w, h, *vars):
-            with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
-                template=myfile.read()    
+        with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
+            template=myfile.read()    
 
-            template=template.format(**vars)
+        template=template.format(**vars)
 
-            # SVG data is ready in memory, now write SVG file
-            theTemplate=tempfile.mkstemp(suffix='.svg', dir='.')
-            os.write(theTemplate[0],template)
-            os.close(theTemplate[0])
+        # SVG data is ready in memory, now write SVG file
+        theTemplate=tempfile.mkstemp(suffix='.svg', dir='.')
+        os.write(theTemplate[0],template)
+        os.close(theTemplate[0])
 
-            # Convert to PNG
-            thePresentation=tempfile.mkstemp(suffix='.png')
-            os.close(thePresentation[0])
+        # Convert to PNG
+        thePresentation=tempfile.mkstemp(suffix='.png')
+        os.close(thePresentation[0])
 
-            subprocess.call(["inkscape", "--without-gui",
-                "--export-id={}".format(svgid),
-                "-w", "1280",
-                "-h", "720",
-                "-e", thePresentation[1], theTemplate[1]])
+        subprocess.call(["inkscape", "--without-gui",
+            "--export-id={}".format(svgid),
+            "-w", "1280",
+            "-h", "720",
+            "-e", thePresentation[1], theTemplate[1]])
 
-            # Convert to JPG
-            thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
-            os.close(thePresentationJPG[0])
+        # Convert to JPG
+        thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
+        os.close(thePresentationJPG[0])
+
+        im = Image.open(thePresentation[1])
+        im.save(thePresentationJPG[1])
+
+        os.remove(theTemplate[1])       # remove temporary SVG
+        os.remove(thePresentation[1])   # remove temporary PNG
     
-            im = Image.open(thePresentation[1])
-            im.save(thePresentationJPG[1])
-
-            os.remove(theTemplate[1])       # remove temporary SVG
-            os.remove(thePresentation[1])   # remove temporary PNG
-        
-            return thePresentationJPG[1]
-
+        return thePresentationJPG[1]
 
 
     def concatAudioFiles(self):
@@ -393,6 +436,7 @@ class Podcast:
 
   
     def make(self):
+        # Compute output file name
         if (self.output == None):
             if self.podcast:                 self.output = self.podcast
             if self.output and self.episode: self.output += " - "                                
@@ -403,10 +447,22 @@ class Podcast:
         if self.output == None:                     self.output = "output"
         if self.output.endswith('.m4a') == False:   self.output += '.m4a'
         
+        
+        self.makeDescriptions()
+        
+        # Generate images for each audio file
         self.imagify()
+        
+        # Make the audio track
         self.concatAudioFiles()
+        
+        # Merge audio and chapters into one final M4A file
         self.chapterize()
+        
+        # Add rich podcast-like tags to the M4A
         self.tag()
+        
+        # Remove temporary files
         self.clean()
         
 
