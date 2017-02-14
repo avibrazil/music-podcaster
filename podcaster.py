@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+########################################################################################
+#
+# Get a list of audio files (M4A, MP3, FLAC) and concatenate them all in a new AAC M4A
+# extended podcast file.
+#
+# Tags and cover art will be used to generate chapters info and nice chapter images.
+#
+# See the main() function for some defaults
+#
+# Licensed as GPL 3
+#
+# Avi Alkalay <avi at unix dot sh>
+# 2017-02-13
+# Made in Brazil
+#
+
+
 import argparse
 import mutagen
 import pprint
@@ -44,7 +61,9 @@ class Podcast:
         subprocess.call([
             "MP4Box", self.output,
             "-add", "{file}:chap:name=Chapter Titles".format(file=chap[1]),
-            "-add", "{file}:name=Chapter Images".format(file=nhml[1])
+            "-add", "{file}:name=Chapter Images".format(file=nhml[1]),
+            "-delay", "1={}".format(self.introDuration),
+            "-delay", "2={}".format(self.introDuration)
         ])
         
         os.remove(nhml[1])
@@ -79,10 +98,14 @@ class Podcast:
                 else:
                     albumYear = ""
                 
+                albumArtist=""
+                if 'albumartist' in song: albumArtist=song['albumartist'][0]
+                if 'performer'   in song: albumArtist=song['performer'][0]
+                
                 albums += "{i:02}. {albumArtist} » {album}{year}\n".format(
                     i=i,
                     album=', '.join(song['album']).encode('UTF-8'),
-                    albumArtist=song['albumartist'][0].encode('UTF-8'),
+                    albumArtist=albumArtist.encode('UTF-8'),
                     year=albumYear
                 )
             
@@ -130,6 +153,7 @@ class Podcast:
 
 
     def imagify(self):
+        # Extract artwork from every audio file
         for i in range(len(self.files)):
             theArtwork = []
     
@@ -146,54 +170,68 @@ class Podcast:
                 )
 
 
+        # build GPAC's NHML sequence of images for video
         cursor=0
+        
+        if self.introDuration > 0:
+            data = {
+                'TITLE': 
+            }
+            self.intro=self.templateSVGtoJPG("intro", 1280, 720, data)
+        
+        
         for i in range(len(self.files)):
-            with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
-                template=myfile.read()
-    
+            data = {}
+            
             albumYear=""
             if 'date' in self.files[i]:
                 albumYear = " ({:.4})".format(self.files[i]['date'][0].encode('UTF-8'))
         
-            composer=""
-            if 'composer' in self.files[i]:
-                composer=", ".join(self.files[i]['composer']).replace('&',"&amp;").encode('UTF-8')
-        
             if i > 0:
-                PREV_VISIBILITY="visible"
-                PREV_NAME=self.files[i-1]['title'][0].replace('&',"&amp;").encode('UTF-8')
-                PREV_ARTIST=self.files[i-1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
-                PREV_COVER_ART_PATH=self.files[i-1]['artworkFile']
+                data['PREV_VISIBILITY']="visible"
+                data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&amp;").encode('UTF-8')
+                data['PREV_ARTIST']=self.files[i-1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
+                data['PREV_COVER_ART_PATH']=self.files[i-1]['artworkFile']
             else:
-                PREV_VISIBILITY="none"
-                PREV_NAME=PREV_ARTIST=PREV_COVER_ART_PATH="whatever"
+                data['PREV_VISIBILITY']="none"
+                data['PREV_NAME']=data['PREV_ARTIST']=data['PREV_COVER_ART_PATH']="whatever"
             
             if i < len(self.files)-1:
-                NEXT_VISIBILITY="visible"
-                NEXT_NAME=self.files[i+1]['title'][0].replace('&',"&amp;").encode('UTF-8')
-                NEXT_ARTIST=self.files[i+1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
-                NEXT_COVER_ART_PATH=self.files[i+1]['artworkFile']
+                data['NEXT_VISIBILITY']="visible"
+                data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&amp;").encode('UTF-8')
+                data['NEXT_ARTIST']=self.files[i+1]['artist'][0].replace('&',"&amp;").encode('UTF-8')
+                data['NEXT_COVER_ART_PATH']=self.files[i+1]['artworkFile']
             else:
-                NEXT_VISIBILITY="none"
-                NEXT_NAME=NEXT_ARTIST=NEXT_COVER_ART_PATH="whatever"
+                data['NEXT_VISIBILITY']="none"
+                data['NEXT_NAME']=data['NEXT_ARTIST']=data['NEXT_COVER_ART_PATH']="whatever"
 
-            template=template.format(
-                COMPOSER=composer,
-                NAME=self.files[i]['title'][0].replace('&',"&amp;").encode('UTF-8'),
-                ARTIST=self.files[i]['artist'][0].replace('&',"&amp;").encode('UTF-8'),
-                ALBUM=self.files[i]['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear,
-                COVER_ART_PATH=self.files[i]['artworkFile'],
+            data['NAME']=self.files[i]['title'][0].replace('&',"&amp;").encode('UTF-8')
+            data['ARTIST']=self.files[i]['artist'][0].replace('&',"&amp;").encode('UTF-8')
+            data['ALBUM']=self.files[i]['album'][0].replace('&',"&amp;").encode('UTF-8') + albumYear
+            data['COVER_ART_PATH']=self.files[i]['artworkFile']
 
-                NEXT_VISIBILITY=NEXT_VISIBILITY,
-                NEXT_NAME=NEXT_NAME,
-                NEXT_ARTIST=NEXT_ARTIST,
-                NEXT_COVER_ART_PATH=NEXT_COVER_ART_PATH,
+            data['COMPOSER']=""
+            if 'composer' in self.files[i]:
+                data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&amp;").encode('UTF-8')
+        
 
-                PREV_VISIBILITY=PREV_VISIBILITY,
-                PREV_NAME=PREV_NAME,
-                PREV_ARTIST=PREV_ARTIST,
-                PREV_COVER_ART_PATH=PREV_COVER_ART_PATH
+            self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
+
+            self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
+                cursor=int(1000*cursor),
+                file=self.files[i]['image']
             )
+
+            cursor+=self.files[i]['theLength']
+            
+            i += 1
+
+
+    def templateSVGtoJPG(self, svgid, w, h, *vars):
+            with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
+                template=myfile.read()    
+
+            template=template.format(**vars)
 
             # SVG data is ready in memory, now write SVG file
             theTemplate=tempfile.mkstemp(suffix='.svg', dir='.')
@@ -204,12 +242,11 @@ class Podcast:
             thePresentation=tempfile.mkstemp(suffix='.png')
             os.close(thePresentation[0])
 
-            subprocess.call(["inkscape", "--without-gui", "--export-area-page",
+            subprocess.call(["inkscape", "--without-gui",
+                "--export-id={}".format(svgid),
                 "-w", "1280",
                 "-h", "720",
                 "-e", thePresentation[1], theTemplate[1]])
-
-            os.remove(theTemplate[1])
 
             # Convert to JPG
             thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
@@ -217,18 +254,12 @@ class Podcast:
     
             im = Image.open(thePresentation[1])
             im.save(thePresentationJPG[1])
-            os.remove(thePresentation[1])
 
-            self.files[i]['image']=thePresentationJPG[1]
+            os.remove(theTemplate[1])       # remove temporary SVG
+            os.remove(thePresentation[1])   # remove temporary PNG
+        
+            return thePresentationJPG[1]
 
-            self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-                cursor=int(1000*cursor),
-                file=self.files[i]['image']
-            )
-
-            cursor+=self.files[i]['theLength']
-            
-            i += 1
 
 
     def concatAudioFiles(self):
@@ -258,7 +289,7 @@ class Podcast:
         )
 
 
-    def musicInfo(self,f):
+    def musicInfo(self, f):
         info = {}
         audio = mutagen.File(f, easy=True)
     
@@ -277,6 +308,7 @@ class Podcast:
         elif u'APIC:' in k:
             info['artwork']=audio['APIC:'].data
     
+#         pprint.pprint(info)
         return info
 
 
@@ -398,7 +430,7 @@ def main():
     parser.add_argument('-o', dest='output',
         help='output file name (defaults to "{podcast name} - {episode} - {title}.m4a)"')
 
-    parser.add_argument('-c', dest='chapterTemplate', default="ChapterTemplate.svg",
+    parser.add_argument('-c', dest='chapterTemplate', default="artwork.svg",
         help='SVG file to be used as template for each chapter image')
 
     parser.add_argument('-m', dest='missingArtwork', default="MissingArtworkMusic.png",
@@ -412,6 +444,9 @@ def main():
     
     parser.add_argument('--ds', dest='descriptionSuffix', default="",
         help="text for description, after track list")
+
+    parser.add_argument('-i', dest='introDuration', default="3000",
+        help="Duration in miliseconds for introduction image")
 
     parser.add_argument('f', type=str, nargs='+',
                         help='music files to be added to podcast')
