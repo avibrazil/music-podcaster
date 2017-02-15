@@ -25,6 +25,7 @@ import tempfile
 import subprocess
 import unicodedata
 import datetime
+import logging
 from PIL import Image
 import os
 import math
@@ -62,12 +63,11 @@ class Podcast:
             "MP4Box", self.output,
             "-add", "{file}:chap:name=Chapter Titles".format(file=chap[1]),
             "-add", "{file}:name=Chapter Images".format(file=nhml[1]),
-            "-delay", "1={}".format(self.introDuration),
-            "-delay", "2={}".format(self.introDuration)
+            "-delay", "1={}".format(self.introDuration)
         ])
         
-        os.remove(nhml[1])
-        os.remove(chap[1])
+#         os.remove(nhml[1])
+#         os.remove(chap[1])
 
 
     def makeDescriptions(self):
@@ -89,8 +89,10 @@ class Podcast:
             )
 
             youtubeTracks += "{i:02}. [{pos}] {name}\n".format(
+                i=i,
                 name=name,
-                pos=str((datetime.fromordinal(1) + timedelta(seconds=pos)).time())
+                # http://stackoverflow.com/a/37368085/367824
+                pos=str((datetime.datetime(1970,1,1) + datetime.timedelta(seconds=pos)).time())
             )
             pos += song['theLength']
             
@@ -160,14 +162,18 @@ class Podcast:
             "-C", "Copyright by its holders",
             "-a", self.artist,
             "-s", self.title,
+            "-A", self.podcast,
             "-l", self.description,
+            "-m", self.description,
             self.output
         ])
+
+        self.images['cover']=self.templateSVGtoJPG('podcast-artwork',1400,1400)
 
         subprocess.call([
             "mp4art",
             "-z",
-            "--add", "{}/{}".format(os.path.dirname(sys.argv[0]),self.podcastArtwork),
+            "--add", self.images['cover'],
             self.output
         ])
 
@@ -194,11 +200,15 @@ class Podcast:
         cursor=0
         self.images = {}
         if self.introDuration > 0:
+            logging.debug('About to make Intro image')
+
             data = {
                 'TITLE': self.title
             }
             
             self.images['intro']=self.templateSVGtoJPG("intro", 1280, 720, data)
+
+            self.chapterInfo += self.timedTextChapter(cursor, "Introduction")
 
             self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
                 cursor=int(1000*cursor),
@@ -209,6 +219,8 @@ class Podcast:
         
         
         for i in range(len(self.files)):
+            logging.debug('About to make image for %s', self.files[i]['title'][0])
+
             data = {}
             
             albumYear=""
@@ -245,6 +257,8 @@ class Podcast:
 
             self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
 
+            self.chapterInfo += self.timedTextChapter(cursor, self.songCompleteName(self.files[i]))
+
             self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
                 cursor=int(1000*cursor),
                 file=self.files[i]['image']
@@ -255,7 +269,9 @@ class Podcast:
             i += 1  
             
         self.images['credits'] = self.templateSVGtoJPG("credits", 1280, 720)
-            
+        
+        self.chapterInfo += self.timedTextChapter(cursor, "Credits")
+
         self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
             cursor=int(1000*cursor),
             file=self.images['credits']
@@ -271,35 +287,63 @@ class Podcast:
         )
         
 
-    def templateSVGtoJPG(self, svgid, w, h, *vars):
+    def templateSVGtoJPG(self, svgid, w, h, data={}):
+        empty = ""
+        theData = {
+            'TITLE': empty,
+            'ALBUM': empty,
+            'ARTIST': empty,
+            'COMPOSER': empty,
+            'COVER_ART_PATH': empty,
+            'NAME': empty,
+            'NEXT_ARTIST': empty,
+            'NEXT_COVER_ART_PATH': empty,
+            'NEXT_NAME': empty,
+            'NEXT_VISIBILITY': empty,
+            'PREV_VISIBILITY': empty,
+            'PREV_ARTIST': empty,
+            'PREV_COVER_ART_PATH': empty,
+            'PREV_NAME': empty
+        }
+
+        theData.update(data)
+
+        logging.debug('templateSVGtoJPG: %s', str(theData))
+
+#         pprint.pprint(theData)
+#         return
+
         with open("{}/{}".format(os.path.dirname(sys.argv[0]),self.chapterTemplate), 'r') as myfile:
             template=myfile.read()    
 
-        template=template.format(**vars)
+        template = template.format(**theData)
 
         # SVG data is ready in memory, now write SVG file
-        theTemplate=tempfile.mkstemp(suffix='.svg', dir='.')
+        theTemplate = tempfile.mkstemp(suffix='.svg', dir='.')
         os.write(theTemplate[0],template)
         os.close(theTemplate[0])
 
-        # Convert to PNG
-        thePresentation=tempfile.mkstemp(suffix='.png')
+        # Generate PNG from SVG
+        thePresentation = tempfile.mkstemp(suffix='.png')
         os.close(thePresentation[0])
 
-        subprocess.call(["inkscape", "--without-gui",
+        subprocess.call([
+            "inkscape", "--without-gui",
             "--export-id={}".format(svgid),
-            "-w", "1280",
-            "-h", "720",
-            "-e", thePresentation[1], theTemplate[1]])
+            "-w", str(w),
+            "-h", str(h),
+            "-e", thePresentation[1], theTemplate[1]]
+        )
 
-        # Convert to JPG
+        os.remove(theTemplate[1])       # remove temporary SVG
+
+        # Convert PNG to JPG
         thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
         os.close(thePresentationJPG[0])
 
         im = Image.open(thePresentation[1])
         im.save(thePresentationJPG[1])
 
-        os.remove(theTemplate[1])       # remove temporary SVG
         os.remove(thePresentation[1])   # remove temporary PNG
     
         return thePresentationJPG[1]
@@ -360,6 +404,8 @@ class Podcast:
             os.remove(f['image'])
             if (f['artworkFile'].endswith(self.missingArtwork)==False):
                 os.remove(f['artworkFile'])
+        for f in self.images:
+            os.remove(self.images[f])
 
 
     def songCompleteName(self, song, html=False):
@@ -410,14 +456,18 @@ class Podcast:
         )
 
 
-    def timedTextChapter(self,song):
+    def timedTextChapter(self, seconds, title):
         timeScale=1000
         template="""<TextSample sampleTime="{time}" xml:space="preserve">{title}</TextSample>\n"""
 
+        m, s = divmod(seconds, 60)
+        h, m = divmod(m, 60)
+        h = int(h)
+        m = int(m)
+
         return template.format(
-            time="0{:.11}".format(datetime.timedelta(seconds=self.length)),
-            title=self.songCompleteName(song),
-            i=len(self.files)
+            time="{:02d}:{:02d}:{:06.3f}".format(h, m, s),
+            title=title
         )
 
 
@@ -427,9 +477,7 @@ class Podcast:
         
 #         pprint.pprint(f)
 #         return
-        
-        self.chapterInfo += self.timedTextChapter(f)
-                
+                        
         self.length += f['theLength']
         
         self.files.append(f)
@@ -468,6 +516,8 @@ class Podcast:
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
+
     p = Podcast()
 
     parser = argparse.ArgumentParser(
@@ -501,7 +551,7 @@ def main():
     parser.add_argument('--ds', dest='descriptionSuffix', default="",
         help="text for description, after track list")
 
-    parser.add_argument('-i', dest='introDuration', default="3000",
+    parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
         help="Duration in miliseconds for introduction image")
 
     parser.add_argument('f', type=str, nargs='+',
@@ -509,8 +559,6 @@ def main():
 
     args = parser.parse_args(namespace=p)
     
-#     pprint.pprint(vars(p))
-
     for f in p.f:
         p.add(f)
 
