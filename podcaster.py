@@ -66,8 +66,8 @@ class Podcast:
             "-delay", "1={}".format(self.introDuration)
         ])
         
-#         os.remove(nhml[1])
-#         os.remove(chap[1])
+        os.remove(nhml[1])
+        os.remove(chap[1])
 
 
     def makeDescriptions(self):
@@ -79,7 +79,7 @@ class Podcast:
         albums=""
         
         i=0
-        pos=self.introDuration
+        pos=self.introDuration/1000
         for song in self.files:
             i+=1
             name=self.songCompleteName(song)
@@ -91,8 +91,8 @@ class Podcast:
             youtubeTracks += "{i:02}. [{pos}] {name}\n".format(
                 i=i,
                 name=name,
-                # http://stackoverflow.com/a/37368085/367824
-                pos=str((datetime.datetime(1970,1,1) + datetime.timedelta(seconds=pos)).time())
+                # http://stackoverflow.com/a/31946730/367824
+                pos = "{:0>8}".format(datetime.timedelta(seconds=math.floor(pos)))
             )
             pos += song['theLength']
             
@@ -430,11 +430,18 @@ class Podcast:
         else:
             albumYear = ""
         
+        l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
+        if song['theLength'] < 60*60:
+            if song['theLength'] < 10*60:
+                l=l[-4:]
+            else:
+                l=l[-5:]
+        
         name=template.format(
             artist = song['artist'][0].encode('UTF-8'),
             album = song['album'][0].encode('UTF-8'),
             title = song['title'][0].encode('UTF-8') + albumYear,
-            l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
+            l = l
         )
         
         if (html):
@@ -482,6 +489,12 @@ class Podcast:
         
         self.files.append(f)
 
+
+    def toYouTube(self):
+        yt = os.open(os.path.splitext(self.output)[0] + ".youtube.txt", os.O_CREAT | os.O_WRONLY)
+        os.write(yt, self.youtubeDescription)
+        os.close(yt)
+        
   
     def make(self):
         # Compute output file name
@@ -510,13 +523,18 @@ class Podcast:
         # Add rich podcast-like tags to the M4A
         self.tag()
         
+        # Write HTML file
+#         self.toHTML()
+        
+        self.toYouTube()
+        
         # Remove temporary files
         self.clean()
         
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
+    #logging.basicConfig(level=logging.DEBUG)
 
     p = Podcast()
 
