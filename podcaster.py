@@ -655,11 +655,11 @@ class Podcast:
         # Compute output file name
         if (self.output == None):
             if self.podcast:                 self.output = self.podcast
-            if self.output and self.episode: self.output += " - "                                
-            if self.episode:                 self.output += '{:03d}'.format(self.episode)        
-            if self.output and self.title:   self.output += " - "                                
-            if self.title:                   self.output += self.title                           
-            
+            if self.output and self.episode: self.output += " - "
+            if self.episode:                 self.output += '{:03d}'.format(int(self.episode))
+            if self.output and self.title:   self.output += " - "
+            if self.title:                   self.output += self.title
+        
         if self.output == None:                     self.output = "output"
         if self.output.endswith('.m4a') == False:   self.output += '.m4a'
         
