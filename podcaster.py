@@ -35,6 +35,8 @@ import sys
 class Podcast:
     def __init__ (self, logger=logging.ERROR):
         self.audio = None
+        self.length = 0
+        self.files = []
         self.chapterImagesInfo = """<?xml version="1.0" encoding="UTF-8" ?>
             <NHNTStream version="1.0" timeScale="1000"
             mediaType="vide" mediaSubType="jpeg" width="1280" height="720"
@@ -43,8 +45,6 @@ class Podcast:
             <TextStream version="1.1">
                 <TextStreamHeader><TextSampleDescription/>
                 </TextStreamHeader>"""
-        self.length = 0
-        self.files = []
         
         self.targetEncoding = 'UTF-8'
         
@@ -95,7 +95,7 @@ class Podcast:
                 name=name
             )
 
-            htmlTracks += """<li class="track">{}</li>""".format(
+            htmlTracks += """\n<li class="track">{}</li>\n""".format(
                 self.songCompleteNameHTML(song)
             )
             
@@ -131,7 +131,7 @@ class Podcast:
                     year=albumYear
                 )
             
-            if (self.title == None or self.title.endswith(" | ")):
+            if (not self.title or self.title.endswith(" | ")):
                 self.title += song['title'][0].encode(self.targetEncoding)
                 self.title += " | "
         
@@ -449,12 +449,20 @@ class Podcast:
 
 
     def clean(self):
-        for f in self.files:
-            os.remove(f['image'])
-            if (f['artworkFile'].endswith(self.missingArtwork)==False):
-                os.remove(f['artworkFile'])
-        for f in self.images:
-            os.remove(self.images[f])
+        try:
+            for f in self.files:
+                if 'image' in f:
+                    os.remove(f['image'])
+                if 'artworkFile' in f and not f['artworkFile'].endswith(self.missingArtwork):
+                    os.remove(f['artworkFile'])
+        except AttributeError:
+            pass
+
+        try:
+            for f in self.images:
+                os.remove(self.images[f])
+        except AttributeError:
+            pass
 
 
     def songCompleteNameHTML(self, song):
@@ -473,20 +481,27 @@ class Podcast:
         """
         albumYear=""" <span class="yearwrap">(<span class="year">{:.4}</span>)</span>"""
 
-        if 'date' in song:
+
+        # Compute date
+        try:
             albumYear = albumYear.format(song['date'][0])
-        else:
+        except KeyError:
             albumYear = ""
         
-        title = song['title'][0].encode(self.targetEncoding)
-        if 'musicbrainz_trackid' in song:
+        
+        # Compute song title
+        try:
             title = """<a href="https://musicbrainz.org/recording/{id}">{title}</a>""".format(
                 id = song['musicbrainz_trackid'][0],
-                title = title
+                title = song['title'][0].encode(self.targetEncoding)
             )
+        except KeyError:
+            title = song['title'][0].encode(self.targetEncoding)
 
-        artist = song['artist'][0]
-        if 'musicbrainz_artistid' in song:
+        
+        # Compute artist name
+        try:
+            artist = song['artist'][0].encode(self.targetEncoding)
             if len(song['musicbrainz_artistid']) == 1:
                 # Only 1 artist
                 artist = """<a href="https://musicbrainz.org/artist/{id}">{artist}</a>""".format(
@@ -505,9 +520,12 @@ class Podcast:
                             id = song['musicbrainz_artistid'][i]
                         )
                     )
+        except KeyError:
+            artist = song['artist'][0].encode(self.targetEncoding)
 
-        composer = ""
-        if 'composer' in song:
+
+        # Compute composer
+        try:
             composer = ', '.join(song['composer']).encode(self.targetEncoding)
             if 'musicbrainz_workid' in song:
                 co=[]
@@ -517,6 +535,8 @@ class Podcast:
                         comp = song['composer'][i].encode(self.targetEncoding)
                     ))
                 composer = ' • '.join(co)
+        except KeyError:
+            composer = ""
                     
         l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
         if song['theLength'] < 60*60:
@@ -525,7 +545,7 @@ class Podcast:
             else:
                 l=l[-5:]
 
-        name=template.format(
+        return template.format(
             artist = artist,
             album = song['album'][0].encode(self.targetEncoding) + albumYear,
             composer = composer,
@@ -595,14 +615,34 @@ class Podcast:
         self.length += f['theLength']
         
         self.files.append(f)
-        
-#         self.logger.debug('file: %s', json.dumps(f, sort_keys=True))
 
 
     def toHTML(self):
-        html = os.open(os.path.splitext(self.output)[0] + ".html", os.O_CREAT | os.O_WRONLY)
-        os.write(html, self.youtubeDescription)
-        os.close(yt)
+        html = os.open(os.path.splitext(self.output)[0] + ".html",
+            os.O_CREAT|os.O_WRONLY|os.O_TRUNC)
+        os.write(html, self.htmlDescription)
+        os.close(html)
+        
+        cat=[]
+        for song in self.files:
+            if 'artists' in song:
+                cat += song['artists']
+            else:
+                cat += song['artist']
+
+        # remove duplicates
+        cat=list(set(cat))
+        cat.sort()
+
+        categories = os.open(os.path.splitext(self.output)[0] + ".tags.txt",
+            os.O_CREAT|os.O_WRONLY|os.O_TRUNC)
+        # os.write("\n".join(t))
+
+        self.logger.debug('Tags: %s', json.dumps(cat))
+
+        for a in cat:
+            os.write(categories, "{}\n".format(a))
+        os.close(categories)
         
 
     def toYouTube(self):
@@ -626,7 +666,7 @@ class Podcast:
         
         self.makeDescriptions()
         
-        if self.logger.isEnabledFor(logging.DEBUG) == False:
+        if not self.logger.isEnabledFor(logging.DEBUG):
             # Generate images for each audio file
             self.imagify()
         
@@ -651,8 +691,8 @@ class Podcast:
 
 
 def main():
-    p = Podcast(logger=logging.DEBUG)
-#    p = Podcast()
+#     p = Podcast(logger=logging.DEBUG)
+    p = Podcast()
 
     parser = argparse.ArgumentParser(
         description='Create extended podcast from well tagged audio files'
@@ -661,10 +701,10 @@ def main():
     parser.add_argument('-p', dest='podcast',
         help='podcast global name')
 
-    parser.add_argument('-t', dest='title',
+    parser.add_argument('-t', dest='title', default="",
         help='title for podcast')
 
-    parser.add_argument('-i', dest='episode', type=int,
+    parser.add_argument('-i', dest='episode', default="",
         help='episode number')
 
     parser.add_argument('-o', dest='output',
