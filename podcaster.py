@@ -76,8 +76,8 @@ class Podcast:
         audio = mutagen.File(f, easy=False)
         
         k = audio.keys()
-        if '\xa9wrt' in k:
-            info['composer']=audio['\xa9wrt']
+        if u'\xa9wrt' in k:
+            info['composer']=audio[u'\xa9wrt']
 
         if '----:com.apple.iTunes:MusicBrainz Work Id' in k:
             info['musicbrainz_workid']=[]
@@ -99,6 +99,12 @@ class Podcast:
                 info['artists'].append(str(bytes(
                     audio['----:com.apple.iTunes:ARTISTS'][i]
                 )))
+
+        if u'TXXX:Artists' in k:
+            # Handle multiple artists on MP3
+            info['artists']=audio[u'TXXX:Artists'].text[0].split("/")
+            if 'musicbrainz_artistid' in info:
+                info['musicbrainz_artistid'] = info['musicbrainz_artistid'][0].split("/")
 
         if self.logger.isEnabledFor(logging.DEBUG):
             # delete artwork for better debugging
@@ -126,7 +132,7 @@ class Podcast:
         
         self.files.append(f)
     
-    #### End of methods for gathering data
+       #### End of methods for gathering data
 
 
 
@@ -699,13 +705,19 @@ class Podcast:
             if t.slug == slug:
                 term = t
                 break
-                
-        if term == None:
+        
+        self.logger.debug('Operating on %s (%s)', name, slug)
+        
+        if term:
+            self.logger.debug('Using existing term %s', term.name)
+        else:
             term = WordPressTerm()
             term.taxonomy = 'post_tag'
             term.name = name
             term.slug = slug
             term.id = self.wp.call(taxonomies.NewTerm(term))
+            
+            self.wpCategories.append(term)
 
             self.logger.debug('Creating term %s', term.name)
                     
@@ -724,6 +736,11 @@ class Podcast:
         for song in self.files:
             if 'artists' in song:
                 for a in range(len(song['artists'])):
+                    self.logger.debug('Going to add new artist %s from %s',
+                        a,
+                        song['musicbrainz_artistid']
+                    )
+
                     post.terms.append(self.wpAddTerm(
                         song['musicbrainz_artistid'][a],
                         song['artists'][a]
@@ -828,11 +845,11 @@ class Podcast:
             # Add rich podcast-like tags to the M4A media file
             self.tag()
         
-        # Write HTML file with full description
-        self.toHTML()
+            # Write HTML file with full description
+            self.toHTML()
         
-        # Write textual description optimized for YouTube
-        self.toYouTube()
+            # Write textual description optimized for YouTube
+            self.toYouTube()
         
         self.toWordPress()
         
@@ -859,8 +876,8 @@ class Podcast:
 
 
 def main():
-#    p = Podcast(logger=logging.DEBUG)
-    p = Podcast()
+    p = Podcast(logger=logging.DEBUG)
+#    p = Podcast()
 
     parser = argparse.ArgumentParser(
         description='Create extended podcast from well tagged audio files',

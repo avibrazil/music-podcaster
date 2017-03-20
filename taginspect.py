@@ -13,5 +13,9 @@ parser.add_argument('files', type=str, nargs='+',
 args = parser.parse_args()
 
 for f in vars(args)['files']:
-    audio = mutagen.File(f, easy=False)
+    audio = mutagen.File(f, easy=True)
+    if 'covr' in audio:
+        del audio['covr']
+    elif u'APIC:' in audio:
+        del audio['APIC:']
     pprint.pprint(audio)
