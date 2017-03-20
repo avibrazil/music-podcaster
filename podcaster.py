@@ -24,6 +24,8 @@ import tempfile
 import subprocess
 import json
 import unicodedata
+from unidecode import unidecode
+import re
 import datetime
 import logging
 from PIL import Image
@@ -32,8 +34,16 @@ import math
 import sys
 
 
+from wordpress_xmlrpc import Client
+from wordpress_xmlrpc import WordPressPost
+from wordpress_xmlrpc import WordPressTerm
+from wordpress_xmlrpc.methods import posts
+from wordpress_xmlrpc.methods import taxonomies
+
+
 class Podcast:
     def __init__ (self, logger=logging.ERROR):
+        self.ytupload = "/home/aviram/src/youtube-upload/bin/youtube-upload"
         self.audio = None
         self.length = 0
         self.files = []
@@ -56,7 +66,7 @@ class Podcast:
     def chapterize(self):
         nhml=tempfile.mkstemp(suffix='.nhml', dir='.')
         os.write(nhml[0],self.chapterImagesInfo)
-        os.write(nhml[0],"""</NHNTStream>""")
+        os.write(nhml[0],"""</NHNTStream>\n""")
         os.close(nhml[0])
         
         chap=tempfile.mkstemp(suffix='.ttxt', dir='.')
@@ -137,30 +147,48 @@ class Podcast:
         
             if self.artist: self.artist += " | ".encode(self.targetEncoding)
             self.artist += song['artist'][0].encode(self.targetEncoding)
+
+        if self.descriptionPrefix:
+            self.descriptionPrefixText = self.descriptionPrefix.read().decode('UTF-8')
+        else:
+            self.descriptionPrefixText=""
         
-        template="{prefix}TRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}{suffix}"
-        htmlTemplate="""<div class="podcast-parts">
+        if self.descriptionSuffix:
+            self.descriptionSuffixText = self.descriptionSuffix.read().decode('UTF-8')
+        else:        
+            self.descriptionSuffixText=""
+        
+        template="{prefix}\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
+        htmlTemplate="""{prefix}
+        
+            <div class="podcast-parts">
                 <ol>
                     {tracks}
                 </ol>
-            </div>"""
+            </div>
+            
+            {suffix}"""
         
         self.description = template.format(
             tracks=tracks,
             composers=composers,
             albums=albums,
-            prefix=self.descriptionPrefix,
-            suffix=self.descriptionSuffix
+            prefix=self.removeHTML(self.descriptionPrefixText).encode(self.targetEncoding),
+            suffix=self.removeHTML(self.descriptionSuffixText).encode(self.targetEncoding)
         ) 
         
-        self.htmlDescription = htmlTemplate.format(tracks=htmlTracks)
+        self.htmlDescription = htmlTemplate.format(
+            tracks=htmlTracks,
+            prefix=self.descriptionPrefixText.encode(self.targetEncoding),
+            suffix=self.descriptionSuffixText.encode(self.targetEncoding)
+        )
         
         self.youtubeDescription = template.format(
             tracks=youtubeTracks,
             composers=composers,
             albums=albums,
-            prefix=self.descriptionPrefix,
-            suffix=self.descriptionSuffix
+            prefix=self.removeHTML(self.descriptionPrefixText).encode(self.targetEncoding),
+            suffix=self.removeHTML(self.descriptionSuffixText).encode(self.targetEncoding)
         ) 
         
         if self.title.endswith(' | '):
@@ -215,7 +243,7 @@ class Podcast:
 
 
         # build GPAC's NHML sequence of images for video
-        cursor=0
+        cursor=0 # milliseconds
         self.images = {}
         if self.introDuration > 0:
             self.logger.debug('About to make Intro image')
@@ -226,14 +254,14 @@ class Podcast:
             
             self.images['intro']=self.templateSVGtoJPG("intro", 1280, 720, data)
 
-            self.chapterInfo += self.timedTextChapter(cursor, "Introduction")
+            self.chapterInfo += self.timedTextChapter(cursor/1000, "Introduction")
 
             self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-                cursor=int(1000*cursor),
+                cursor=int(cursor),
                 file=self.images['intro']
             )
             
-            cursor += self.introDuration/1000
+            cursor += self.introDuration
         
         
         for i in range(len(self.files)):
@@ -275,36 +303,40 @@ class Podcast:
 
             self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
 
-            self.chapterInfo += self.timedTextChapter(cursor, self.songCompleteName(self.files[i]))
+            self.chapterInfo += self.timedTextChapter(cursor/1000, self.songCompleteName(self.files[i]))
 
             self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-                cursor=int(1000*cursor),
+                cursor=cursor,
                 file=self.files[i]['image']
             )
 
-            cursor += self.files[i]['theLength']
-            
-            i += 1  
-            
+            cursor += 1000 * self.files[i]['theLength']
+            i += 1
+        
+        # Add image for credits...
         self.images['credits'] = self.templateSVGtoJPG("credits", 1280, 720)
         
-        self.chapterInfo += self.timedTextChapter(cursor, "Credits")
+        self.chapterInfo += self.timedTextChapter(cursor/1000, "Credits")
 
         self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-            cursor=int(1000*cursor),
+            cursor=cursor,
             file=self.images['credits']
         )
         
-        cursor += self.introDuration/1000
+        cursor += self.introDuration
+        
 
         self.images['end']     = self.templateSVGtoJPG("end", 1280, 720)
 
-        self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
-            cursor=int(1000*cursor),
-            file=self.images['end']
-        )
-        
+        self.chapterInfo += self.timedTextChapter(cursor/1000, None)
 
+        self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" duration="{dur}" mediaFile="{file}" isRAP="yes" />\n""".format(
+            cursor=cursor,
+            file=self.images['end'],
+            dur=1000
+        )
+          
+            
     def templateSVGtoJPG(self, svgid, w, h, data={}):
         empty = ""
         theData = {
@@ -360,11 +392,42 @@ class Podcast:
         os.close(thePresentationJPG[0])
 
         im = Image.open(thePresentation[1])
-        im.save(thePresentationJPG[1])
+        im.save(thePresentationJPG[1], quality=85, optimize=True)
 
         os.remove(thePresentation[1])   # remove temporary PNG
     
         return thePresentationJPG[1]
+
+
+    def concatSampleAudioFiles(self):
+        coder=[
+            "-y",
+            "-filter_complex",
+            "concat=n={number_of_songs}:v=0:a=1 [out]".format(
+                number_of_songs=len(self.files)
+            ),
+            "-map", "[out]",
+            "-vn",
+            "-c:a", "libfdk_aac", "-vbr", "3",
+            "-map_metadata", "-1",
+        ]
+
+        params = []
+    
+        for f in self.files:
+            params.append("-ss")
+            params.append(f['theLength']/2000-3)
+            params.append("-t")
+            params.append("00:00:05")
+            params.append("-i")
+            params.append(f['file'])
+
+        subprocess.call(
+            ["ffmpeg"] +
+            params +
+            coder +
+            [self.output]
+        )
 
 
     def concatAudioFiles(self):
@@ -372,7 +435,7 @@ class Podcast:
             "-y",
             "-filter_complex",
             "concat=n={number_of_songs}:v=0:a=1 [out]".format(
-                number_of_songs=len(self.files)
+                number_of_songs = len(self.files) # additional track for silence
             ),
             "-map", "[out]",
             "-vn",
@@ -385,6 +448,15 @@ class Podcast:
         for f in self.files:
             params.append("-i")
             params.append(f['file'])
+
+#         # Add hardcoded silence (introDuration + 1000 ms) to the end of audio so audio
+#         # remains until the end of credit images.
+#         params.append("-f")
+#         params.append("lavfi")
+#         params.append("-t")
+#         params.append(str(datetime.timedelta(seconds=self.introDuration/1000 + 1)))
+#         params.append("-i")
+#         params.append("anullsrc=channel_layout=2:sample_rate=44100")
 
         subprocess.call(
             ["ffmpeg"] +
@@ -442,8 +514,8 @@ class Podcast:
             elif u'APIC:' in k:
                 info['artwork']=audio['APIC:'].data
 
-#         if self.logger.isEnabledFor(logging.DEBUG):
-#             self.logger.debug('file: %s', json.dumps(info))
+        if self.logger.isEnabledFor(logging.DEBUG):
+            self.logger.debug('file: %s', json.dumps(info))
     
         return info
 
@@ -466,28 +538,20 @@ class Podcast:
 
 
     def songCompleteNameHTML(self, song):
-        self.logger.debug('songCompleteNameHTML: %s', json.dumps(song))
+#         self.logger.debug('songCompleteNameHTML: %s', json.dumps(song))
 
+        composerTemplate="""<br/><span class="composer">Comp.: {composer}</span>"""
+        albumTemplate="""<br/><span class="album">Album: {album}</span>"""
         template="""
             <span class="song">
                 <span class="artists">{artist}</span>
                 <span class="separator"> ♫ </span>
                 <span class="title">{title}</span> <span class="duration">[{l}]</span>
-                <blockquote>
-                    <span class="composer">Comp.: {composer}</span>
-                    <span class="album">Album: {album}</span>
-                </blockquote>
+                {composer}{album}
             </span>
         """
         albumYear=""" <span class="yearwrap">(<span class="year">{:.4}</span>)</span>"""
 
-
-        # Compute date
-        try:
-            albumYear = albumYear.format(song['date'][0])
-        except KeyError:
-            albumYear = ""
-        
         
         # Compute song title
         try:
@@ -527,16 +591,39 @@ class Podcast:
         # Compute composer
         try:
             composer = ', '.join(song['composer']).encode(self.targetEncoding)
-            if 'musicbrainz_workid' in song:
-                co=[]
-                for i in range(len(song['composer'])):
-                    co.append("""<a href="https://musicbrainz.org/work/{id}">{comp}</a>""".format(
-                        id = str(song['musicbrainz_workid'][i]),
-                        comp = song['composer'][i].encode(self.targetEncoding)
-                    ))
-                composer = ' • '.join(co)
+#             if 'musicbrainz_workid' in song:
+#                 co=[]
+#                 for i in range(len(song['composer'])):
+#                     co.append("""<a href="https://musicbrainz.org/work/{id}">{comp}</a>""".format(
+#                         id = str(song['musicbrainz_workid'][i]),
+#                         comp = song['composer'][i].encode(self.targetEncoding)
+#                     ))
+#                 composer = ' • '.join(co)
+            composer = composerTemplate.format(composer = composer)
         except KeyError:
             composer = ""
+
+
+        # Compute album year
+        try:
+            albumYear = albumYear.format(song['date'][0])
+        except KeyError:
+            albumYear = ""
+        
+
+        # Compute album
+        album = ""
+        if 'album' in song:
+            if 'musicbrainz_albumid' in song:
+                album = """<a href="https://musicbrainz.org/release/{id}">{album}</a>""".format(
+                    id = song['musicbrainz_albumid'][0],
+                    album = song['album'][0].encode(self.targetEncoding) + albumYear
+                )
+            else:
+                album = song['album'][0].encode(self.targetEncoding) + albumYear
+
+            album = albumTemplate.format(album = album)
+
                     
         l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
         if song['theLength'] < 60*60:
@@ -547,11 +634,11 @@ class Podcast:
 
         return template.format(
             artist = artist,
-            album = song['album'][0].encode(self.targetEncoding) + albumYear,
+            album = album,
             composer = composer,
             title = title,
             l = l
-        )
+        ).replace('\n', ' ')
 
 
     def songCompleteName(self, song):
@@ -581,7 +668,7 @@ class Podcast:
 
 
     def ffmetadataChapter(self,song):
-        # unused
+        # unused, obsolete
         timeScale=1000000
         template="[CHAPTER]\nTIMEBASE=1/{scale}\nSTART={start}\nEND={end}\ntitle={title}\n"
 
@@ -594,14 +681,13 @@ class Podcast:
 
 
     def timedTextChapter(self, seconds, title):
-        timeScale=1000
-        template="""<TextSample sampleTime="{time}" xml:space="preserve">{title}</TextSample>\n"""
-
         m, s = divmod(seconds, 60)
         h, m = divmod(m, 60)
         h = int(h)
         m = int(m)
 
+        template="""<TextSample sampleTime="{time}" xml:space="preserve">{title}</TextSample>\n"""
+        
         return template.format(
             time="{:02d}:{:02d}:{:06.3f}".format(h, m, s),
             title=title
@@ -616,6 +702,51 @@ class Podcast:
         
         self.files.append(f)
 
+
+    def wpAddTerm(self, slug, name):
+        term = None
+        for t in self.wpCategories:
+            if t.slug == slug:
+                term = t
+                break
+                
+        if term == None:
+            term = WordPressTerm()
+            term.taxonomy = 'post_tag'
+            term.name = name
+            term.slug = slug
+            term.id = self.wp.call(taxonomies.NewTerm(term))
+
+            self.logger.debug('Creating term %s', term.name)
+                    
+        return term
+
+
+    def toWordPress(self):
+        self.wp = Client(self.wordpress, self.wordpressUser, self.wordpressPass)
+        
+        self.wpCategories = self.wp.call(taxonomies.GetTerms('post_tag'))
+        
+        post = WordPressPost()
+        post.title = self.title
+        post.slug = 'e{:04d}'.format(int(self.episode))
+        post.content = 	self.htmlDescription
+        
+        for song in self.files:
+            if 'artists' in song:
+                for a in range(len(song['artists'])):
+                    post.terms.append(self.wpAddTerm(
+                        song['musicbrainz_artistid'][a],
+                        song['artists'][a]
+                    ))
+            else:
+                post.terms.append(self.wpAddTerm(
+                    song['musicbrainz_artistid'][0],
+                    song['artist'][0]
+                ))
+        
+        post.id = self.wp.call(posts.NewPost(post))
+        
 
     def toHTML(self):
         html = os.open(os.path.splitext(self.output)[0] + ".html",
@@ -632,7 +763,7 @@ class Podcast:
 
         # remove duplicates
         cat=list(set(cat))
-        cat.sort()
+#         cat.sort()   # Unicode error
 
         categories = os.open(os.path.splitext(self.output)[0] + ".tags.txt",
             os.O_CREAT|os.O_WRONLY|os.O_TRUNC)
@@ -641,28 +772,58 @@ class Podcast:
         self.logger.debug('Tags: %s', json.dumps(cat))
 
         for a in cat:
-            os.write(categories, "{}\n".format(a))
+            os.write(categories, "{}\n".format(a.encode(self.targetEncoding)))
         os.close(categories)
         
 
     def toYouTube(self):
+        fakevideo = self.output.replace(".m4a", ".mp4")
+        os.symlink(self.output, fakevideo)
+        
+        self.ytVideo=subprocess.check_output([
+            self.ytupload,
+            "-c", 'Music',
+            "-t", "{index:04} {title} « {podcast}".format(
+                index=int(self.episode),
+                title=self.title,
+                podcast=self.podcast
+            ),
+            "-d", self.youtubeDescription,
+#            "--tags={}".format("a"),
+            "--privacy=unlisted",
+            "--playlist={}".format(self.ytPL),
+            "--client-secrets=" + self.ytCred,
+            fakevideo
+        ])
+        
         yt = os.open(os.path.splitext(self.output)[0] + ".youtube.txt", os.O_CREAT | os.O_WRONLY)
         os.write(yt, self.youtubeDescription)
         os.close(yt)
         
-  
+
+    def removeHTML(self, s):
+        TAG_RE = re.compile(r'<[^>]+>')
+        return TAG_RE.sub('', s)
+
+
     def make(self):
         # Compute output file name
         if (self.output == None):
             if self.podcast:                 self.output = self.podcast
-            if self.output and self.episode: self.output += " - "
-            if self.episode:                 self.output += '{:03d}'.format(int(self.episode))
-            if self.output and self.title:   self.output += " - "
+            if self.output and self.episode: self.output += "-"
+            if self.episode:                 self.output += '{:04d}'.format(int(self.episode))
+            if self.output and self.title:   self.output += "-"
             if self.title:                   self.output += self.title
+            if self.output:
+                self.output = self.output.replace(" ","_")
         
-        if self.output == None:                     self.output = "output"
-        if self.output.endswith('.m4a') == False:   self.output += '.m4a'
+        if self.output == None:              self.output = "output"
+        if not self.output.endswith('.m4a'): self.output += '.m4a'
+
+        self.output = unicode(self.output, self.targetEncoding)
+        self.output = unidecode(self.output) # transliterate
         
+        self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')        
         
         self.makeDescriptions()
         
@@ -685,17 +846,20 @@ class Podcast:
         # Write textual description optimized for YouTube
         self.toYouTube()
         
+        self.toWordPress()
+        
         # Remove temporary files
         self.clean()
         
 
 
 def main():
-#     p = Podcast(logger=logging.DEBUG)
+#    p = Podcast(logger=logging.DEBUG)
     p = Podcast()
 
     parser = argparse.ArgumentParser(
-        description='Create extended podcast from well tagged audio files'
+        description='Create extended podcast from well tagged audio files',
+        fromfile_prefix_chars='@'
     )
 
     parser.add_argument('-p', dest='podcast',
@@ -719,14 +883,29 @@ def main():
     parser.add_argument('-a', dest='podcastArtwork', default="PodcastArtwork.jpg",
         help="image to embed as artwork in final M4A podcast file")
     
-    parser.add_argument('--dp', dest='descriptionPrefix', default="",
-        help="text for description, before track list")
+    parser.add_argument('--description-prefix', dest='descriptionPrefix', type=file,
+        default=None, help="HTML text for description, before track list")
     
-    parser.add_argument('--ds', dest='descriptionSuffix', default="",
-        help="text for description, after track list")
+    parser.add_argument('--description-suffix', dest='descriptionSuffix', type=file,
+        default=None, help="text for description, after track list")
 
     parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
         help="Duration in miliseconds for introduction image")
+
+    parser.add_argument('--wordpress-url', dest='wordpress',
+        help="""WordPress URL, preferably ending with ‘/xmlrpc.php’""")
+
+    parser.add_argument('--wordpress-user', dest='wordpressUser',
+        help="""WordPress username""")
+
+    parser.add_argument('--wordpress-pass', dest='wordpressPass',
+        help="""WordPress password""")
+
+    parser.add_argument('--youtube-credentials', dest='ytCred',
+        help="""YouTube credentials JSON file""")
+
+    parser.add_argument('--youtube-playlist', dest='ytPL',
+        help="""YouTube playlist name""")
 
     parser.add_argument('f', type=str, nargs='+',
                         help='music files to be added to podcast')
