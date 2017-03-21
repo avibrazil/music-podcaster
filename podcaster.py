@@ -140,8 +140,8 @@ class Podcast:
     #### Methods for content generation and manipulation
     
     def removeHTML(self, s):
-        TAG_RE = re.compile(r'<[^>]+>')
-        return TAG_RE.sub('', s)
+#         tagremover = re.compile(r'<[^>]+>')
+        return re.sub(r'<[^>]+>','', s)
 
     def templateSVGtoJPG(self, svgid, w, h, data={}):
         empty = ""
@@ -175,9 +175,9 @@ class Podcast:
         template = template.format(**theData)
 
         # SVG data is ready in memory, now write SVG file
-        theTemplate = tempfile.mkstemp(suffix='.svg', dir='.')
-        os.write(theTemplate[0],template)
-        os.close(theTemplate[0])
+        theTemplate = tempfile.NamedTemporaryFile(suffix='.svg', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
+        theTemplate.write(template)
+        theTemplate.close()
 
         # Generate PNG from SVG
         thePresentation = tempfile.mkstemp(suffix='.png')
@@ -188,10 +188,10 @@ class Podcast:
             "--export-id={}".format(svgid),
             "-w", str(w),
             "-h", str(h),
-            "-e", thePresentation[1], theTemplate[1]]
+            "-e", thePresentation[1], theTemplate.name]
         )
 
-        os.remove(theTemplate[1])       # remove temporary SVG
+        os.remove(theTemplate.name)       # remove temporary SVG
 
         # Convert PNG to JPG
         thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
@@ -224,20 +224,20 @@ class Podcast:
         try:
             title = """<a href="https://musicbrainz.org/recording/{id}">{title}</a>""".format(
                 id = song['musicbrainz_trackid'][0],
-                title = song['title'][0].encode(self.targetEncoding)
+                title = song['title'][0]
             )
         except KeyError:
-            title = song['title'][0].encode(self.targetEncoding)
+            title = song['title'][0]
 
         
         # Compute artist name
         try:
-            artist = song['artist'][0].encode(self.targetEncoding)
+            artist = song['artist'][0]
             if len(song['musicbrainz_artistid']) == 1:
                 # Only 1 artist
-                artist = """<a href="https://musicbrainz.org/artist/{id}">{artist}</a>""".format(
-                    id = song['musicbrainz_artistid'][0],
-                    artist = song['artist'][0].encode(self.targetEncoding)
+                artist = """<a href="https://musicbrainz.org/artist/{mbid}">{artist}</a>""".format(
+                    mbid = song['musicbrainz_artistid'][0],
+                    artist = song['artist'][0]
                 )
             else:
                 # Multiple artists
@@ -246,18 +246,18 @@ class Podcast:
                     self.logger.debug('songCompleteNameHTML:replacing artist: %s', song['artists'][i])
                     artist = artist.replace(
                         song['artists'][i],
-                        """<a href="https://musicbrainz.org/artist/{id}">{artist}</a>""".format(
+                        """<a href="https://musicbrainz.org/artist/{mbid}">{artist}</a>""".format(
                             artist = song['artists'][i],
-                            id = song['musicbrainz_artistid'][i]
+                            mbid = song['musicbrainz_artistid'][i]
                         )
                     )
         except KeyError:
-            artist = song['artist'][0].encode(self.targetEncoding)
+            artist = song['artist'][0]
 
 
         # Compute composer
         try:
-            composer = ', '.join(song['composer']).encode(self.targetEncoding)
+            composer = ', '.join(song['composer'])
 #             if 'musicbrainz_workid' in song:
 #                 co=[]
 #                 for i in range(len(song['composer'])):
@@ -284,10 +284,10 @@ class Podcast:
             if 'musicbrainz_albumid' in song:
                 album = """<a href="https://musicbrainz.org/release/{id}">{album}</a>""".format(
                     id = song['musicbrainz_albumid'][0],
-                    album = song['album'][0].encode(self.targetEncoding) + albumYear
+                    album = song['album'][0] + albumYear
                 )
             else:
-                album = song['album'][0].encode(self.targetEncoding) + albumYear
+                album = song['album'][0] + albumYear
 
             album = albumTemplate.format(album = album)
 
@@ -324,9 +324,9 @@ class Podcast:
                 l=l[-5:]
         
         name=template.format(
-            artist = song['artist'][0].encode(self.targetEncoding),
-            album = song['album'][0].encode(self.targetEncoding),
-            title = song['title'][0].encode(self.targetEncoding) + albumYear,
+            artist = song['artist'][0],
+            album = song['album'][0],
+            title = song['title'][0] + albumYear,
             l = l
         )
                 
@@ -379,12 +379,12 @@ class Podcast:
             
             albumYear=""
             if 'date' in self.files[i]:
-                albumYear = " ({:.4})".format(self.files[i]['date'][0].encode(self.targetEncoding))
+                albumYear = " ({:.4})".format(self.files[i]['date'][0])
         
             if i > 0:
                 data['PREV_VISIBILITY']="visible"
-                data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&amp;").encode(self.targetEncoding)
-                data['PREV_ARTIST']=self.files[i-1]['artist'][0].replace('&',"&amp;").encode(self.targetEncoding)
+                data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&amp;")
+                data['PREV_ARTIST']=self.files[i-1]['artist'][0].replace('&',"&amp;")
                 data['PREV_COVER_ART_PATH']=self.files[i-1]['artworkFile']
             else:
                 data['PREV_VISIBILITY']="none"
@@ -392,21 +392,21 @@ class Podcast:
             
             if i < len(self.files)-1:
                 data['NEXT_VISIBILITY']="visible"
-                data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&amp;").encode(self.targetEncoding)
-                data['NEXT_ARTIST']=self.files[i+1]['artist'][0].replace('&',"&amp;").encode(self.targetEncoding)
+                data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&amp;")
+                data['NEXT_ARTIST']=self.files[i+1]['artist'][0].replace('&',"&amp;")
                 data['NEXT_COVER_ART_PATH']=self.files[i+1]['artworkFile']
             else:
                 data['NEXT_VISIBILITY']="none"
                 data['NEXT_NAME']=data['NEXT_ARTIST']=data['NEXT_COVER_ART_PATH']="whatever"
 
-            data['NAME']=self.files[i]['title'][0].replace('&',"&amp;").encode(self.targetEncoding)
-            data['ARTIST']=self.files[i]['artist'][0].replace('&',"&amp;").encode(self.targetEncoding)
-            data['ALBUM']=self.files[i]['album'][0].replace('&',"&amp;").encode(self.targetEncoding) + albumYear
+            data['NAME']=self.files[i]['title'][0].replace('&',"&amp;")
+            data['ARTIST']=self.files[i]['artist'][0].replace('&',"&amp;")
+            data['ALBUM']=self.files[i]['album'][0].replace('&',"&amp;") + albumYear
             data['COVER_ART_PATH']=self.files[i]['artworkFile']
 
             data['COMPOSER']=""
             if 'composer' in self.files[i]:
-                data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&amp;").encode(self.targetEncoding)
+                data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&amp;")
         
 
             self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
@@ -471,14 +471,14 @@ class Podcast:
                 i=i,
                 name=name,
                 # http://stackoverflow.com/a/31946730/367824
-                pos = "{:0>8}".format(datetime.timedelta(seconds=math.floor(pos)))
+                pos = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(pos))))
             )
             pos += song['theLength']
             
             if 'composer' in song:
                 composers += "{i:02}. {name}\n".format(
                     i=i,
-                    name=', '.join(song['composer']).encode(self.targetEncoding)
+                    name=', '.join(song['composer'])
                 )
             
             if ('album') in song:
@@ -494,25 +494,25 @@ class Podcast:
                 
                 albums += "{i:02}. {albumArtist} » {album}{year}\n".format(
                     i=i,
-                    album=', '.join(song['album']).encode(self.targetEncoding),
-                    albumArtist=albumArtist.encode(self.targetEncoding),
+                    album=', '.join(song['album']),
+                    albumArtist=albumArtist,
                     year=albumYear
                 )
             
             if (not self.title or self.title.endswith(" | ")):
-                self.title += song['title'][0].encode(self.targetEncoding)
+                self.title += song['title'][0]
                 self.title += " | "
         
-            if self.artist: self.artist += " | ".encode(self.targetEncoding)
-            self.artist += song['artist'][0].encode(self.targetEncoding)
+            if self.artist: self.artist += " | "
+            self.artist += song['artist'][0]
 
         if self.descriptionPrefix:
-            self.descriptionPrefixText = self.descriptionPrefix.read().decode('UTF-8')
+            self.descriptionPrefixText = self.descriptionPrefix.read()
         else:
             self.descriptionPrefixText=""
         
         if self.descriptionSuffix:
-            self.descriptionSuffixText = self.descriptionSuffix.read().decode('UTF-8')
+            self.descriptionSuffixText = self.descriptionSuffix.read()
         else:        
             self.descriptionSuffixText=""
         
@@ -531,22 +531,22 @@ class Podcast:
             tracks=tracks,
             composers=composers,
             albums=albums,
-            prefix=self.removeHTML(self.descriptionPrefixText).encode(self.targetEncoding),
-            suffix=self.removeHTML(self.descriptionSuffixText).encode(self.targetEncoding)
+            prefix=self.removeHTML(self.descriptionPrefixText),
+            suffix=self.removeHTML(self.descriptionSuffixText)
         ) 
         
         self.htmlDescription = htmlTemplate.format(
             tracks=htmlTracks,
-            prefix=self.descriptionPrefixText.encode(self.targetEncoding),
-            suffix=self.descriptionSuffixText.encode(self.targetEncoding)
+            prefix=self.descriptionPrefixText,
+            suffix=self.descriptionSuffixText
         )
         
         self.youtubeDescription = template.format(
             tracks=youtubeTracks,
             composers=composers,
             albums=albums,
-            prefix=self.removeHTML(self.descriptionPrefixText).encode(self.targetEncoding),
-            suffix=self.removeHTML(self.descriptionSuffixText).encode(self.targetEncoding)
+            prefix=self.removeHTML(self.descriptionPrefixText),
+            suffix=self.removeHTML(self.descriptionSuffixText)
         ) 
         
         if self.title.endswith(' | '):
@@ -643,26 +643,26 @@ class Podcast:
         )
 
     def chapterize(self):
-        nhml=tempfile.mkstemp(suffix='.nhml', dir='.')
-        os.write(nhml[0],self.chapterImagesInfo)
-        os.write(nhml[0],"""</NHNTStream>\n""")
-        os.close(nhml[0])
+        nhml = tempfile.NamedTemporaryFile(suffix='.nhml', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
+        nhml.write(self.chapterImagesInfo)
+        nhml.write("""</NHNTStream>\n""")
+        nhml.close()
         
-        chap=tempfile.mkstemp(suffix='.ttxt', dir='.')
-        os.write(chap[0],self.chapterInfo)
-        os.write(chap[0],"""</TextStream>""")
-        os.close(chap[0])
+        chap=tempfile.NamedTemporaryFile(suffix='.ttxt', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
+        chap.write(self.chapterInfo)
+        chap.write("""</TextStream>""")
+        chap.close()
 
         
         subprocess.call([
             "MP4Box", self.output,
-            "-add", "{file}:chap:name=Chapter Titles".format(file=chap[1]),
-            "-add", "{file}:name=Chapter Images".format(file=nhml[1]),
+            "-add", "{file}:chap:name=Chapter Titles".format(file=chap.name),
+            "-add", "{file}:name=Chapter Images".format(file=nhml.name),
             "-delay", "1={}".format(self.introDuration)
         ])
         
-        os.remove(nhml[1])
-        os.remove(chap[1])
+        os.remove(nhml.name)
+        os.remove(chap.name)
 
     def tag(self):
         subprocess.call([
@@ -756,6 +756,10 @@ class Podcast:
     def toYouTube(self):
         fakevideo = self.output.replace(".m4a", ".mp4")
         os.symlink(self.output, fakevideo)
+
+        yt = open(os.path.splitext(self.output)[0] + ".youtube.txt", mode='wt')
+        yt.write(self.youtubeDescription)
+        yt.close()
         
         self.ytVideo=subprocess.check_output([
             self.ytupload,
@@ -771,17 +775,12 @@ class Podcast:
             "--playlist={}".format(self.ytPL),
             "--client-secrets=" + self.ytCred,
             fakevideo
-        ])
-        
-        yt = os.open(os.path.splitext(self.output)[0] + ".youtube.txt", os.O_CREAT | os.O_WRONLY)
-        os.write(yt, self.youtubeDescription)
-        os.close(yt)
+        ])        
 
     def toHTML(self):
-        html = os.open(os.path.splitext(self.output)[0] + ".html",
-            os.O_CREAT|os.O_WRONLY|os.O_TRUNC)
-        os.write(html, self.htmlDescription)
-        os.close(html)
+        html = open(os.path.splitext(self.output)[0] + ".html", mode='wt')
+        html.write(self.htmlDescription)
+        html.close()
         
         cat=[]
         for song in self.files:
@@ -794,15 +793,14 @@ class Podcast:
         cat=list(set(cat))
 #         cat.sort()   # Unicode error
 
-        categories = os.open(os.path.splitext(self.output)[0] + ".tags.txt",
-            os.O_CREAT|os.O_WRONLY|os.O_TRUNC)
+        categories = open(os.path.splitext(self.output)[0] + ".tags.txt", mode='wt')
         # os.write("\n".join(t))
 
         self.logger.debug('Tags: %s', json.dumps(cat))
 
         for a in cat:
-            os.write(categories, "{}\n".format(a.encode(self.targetEncoding)))
-        os.close(categories)
+            categories.write("{}\n".format(a))
+        categories.close()
 
     #### End of methods for publishing (text, YouTube, WordPress)
 
@@ -825,7 +823,7 @@ class Podcast:
         if self.output == None:              self.output = "output"
         if not self.output.endswith('.m4a'): self.output += '.m4a'
 
-        self.output = unicode(self.output, self.targetEncoding)
+        # self.output = unicode(self.output, self.targetEncoding)
         self.output = unidecode(self.output) # transliterate
         
         self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')        
@@ -876,8 +874,8 @@ class Podcast:
 
 
 def main():
-    p = Podcast(logger=logging.DEBUG)
-#    p = Podcast()
+#    p = Podcast(logger=logging.DEBUG)
+    p = Podcast()
 
     parser = argparse.ArgumentParser(
         description='Create extended podcast from well tagged audio files',
@@ -905,10 +903,10 @@ def main():
     parser.add_argument('-a', dest='podcastArtwork', default="PodcastArtwork.jpg",
         help="image to embed as artwork in final M4A podcast file")
     
-    parser.add_argument('--description-prefix', dest='descriptionPrefix', type=file,
+    parser.add_argument('--description-prefix', dest='descriptionPrefix', type=open,
         default=None, help="HTML text for description, before track list")
     
-    parser.add_argument('--description-suffix', dest='descriptionSuffix', type=file,
+    parser.add_argument('--description-suffix', dest='descriptionSuffix', type=open,
         default=None, help="text for description, after track list")
 
     parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
