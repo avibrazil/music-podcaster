@@ -32,16 +32,19 @@ from PIL import Image
 import os
 import math
 import sys
+from string import Template
 
 
-from wordpress_xmlrpc import Client
-from wordpress_xmlrpc import WordPressPost
-from wordpress_xmlrpc import WordPressTerm
-from wordpress_xmlrpc.methods import posts
-from wordpress_xmlrpc.methods import taxonomies
+from wordpress_xmlrpc import Client, WordPressPost, WordPressTerm
+from wordpress_xmlrpc.methods import media, posts, taxonomies
+from wordpress_xmlrpc.compat import xmlrpc_client
+
 
 
 class Podcast:
+
+    #### Methods for orchestration
+
     def __init__ (self, logger=logging.ERROR):
         self.ytupload = "/home/aviram/src/youtube-upload/bin/youtube-upload"
         self.audio = None
@@ -61,6 +64,69 @@ class Podcast:
         logging.basicConfig()
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logger)
+
+    def make(self):
+        # Compute output file name
+        if (self.output == None):
+            if self.podcast:                 self.output = self.podcast
+            if self.output and self.episode: self.output += "-"
+            if self.episode:                 self.output += '{:04d}'.format(int(self.episode))
+            if self.output and self.title:   self.output += "-"
+            if self.title:                   self.output += self.title
+            if self.output:
+                self.output = self.output.replace(" ","_")
+        
+        if self.output == None:              self.output = "output"
+        if not self.output.endswith('.m4a'): self.output += '.m4a'
+
+        # self.output = unicode(self.output, self.targetEncoding)
+        self.output = unidecode(self.output) # transliterate
+        
+        self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')
+        self.youtubeOutput = self.output.replace('.m4a', '.youtube.mp4')
+        
+        self.makeDescriptions()
+        
+        if not self.logger.isEnabledFor(logging.DEBUG):
+            # Generate images for each audio file
+            self.imagify()
+        
+            # Make the audio track
+            self.concatAudioFiles()
+        
+            # Merge audio and chapters into one final M4A media file
+            self.extendedPodcast()
+        
+            # Write HTML file with full description
+            #self.toHTML()
+        
+            # Write textual description optimized for YouTube
+            self.toYouTube()
+        
+        self.toWordPress()
+        
+        # Remove temporary files
+        self.clean()
+        
+    def clean(self):
+        try:
+            for f in self.files:
+                if 'image' in f:
+                    os.remove(f['image'])
+                if 'artworkFile' in f and not f['artworkFile'].endswith(self.missingArtwork):
+                    os.remove(f['artworkFile'])
+        except AttributeError:
+            pass
+
+        try:
+            for f in self.images:
+                os.remove(self.images[f])
+        except AttributeError:
+            pass
+
+    #### End of methods for orchestration
+
+
 
 
     #### Methods for gathering data
@@ -115,7 +181,7 @@ class Podcast:
         else:
             # if not debug mode, process cover art
             if 'covr' in k:
-                info['artwork']=str(audio['covr'][0])
+                info['artwork']=audio['covr'][0]
             elif u'APIC:' in k:
                 info['artwork']=audio['APIC:'].data
 
@@ -132,7 +198,7 @@ class Podcast:
         
         self.files.append(f)
     
-       #### End of methods for gathering data
+    #### End of methods for gathering data
 
 
 
@@ -140,7 +206,6 @@ class Podcast:
     #### Methods for content generation and manipulation
     
     def removeHTML(self, s):
-#         tagremover = re.compile(r'<[^>]+>')
         return re.sub(r'<[^>]+>','', s)
 
     def templateSVGtoJPG(self, svgid, w, h, data={}):
@@ -339,8 +404,8 @@ class Podcast:
     
             if 'artwork' in self.files[i]:
                 # overwrite theArtwork tuple if file has artwork
-                theArtwork=tempfile.mkstemp()
-                os.write(theArtwork[0],self.files[i]['artwork'])
+                theArtwork=tempfile.mkstemp(dir='.')
+                os.write(theArtwork[0], self.files[i]['artwork'])
                 os.close(theArtwork[0])
                 self.files[i]['artworkFile'] = theArtwork[1]
             else:
@@ -443,6 +508,9 @@ class Podcast:
             file=self.images['end'],
             dur=1000
         )
+        
+        self.chapterInfo += """</TextStream>\n"""
+        self.chapterImagesInfo += """</NHNTStream>\n"""
 
     def makeDescriptions(self):
         self.description=""
@@ -512,7 +580,9 @@ class Podcast:
             self.descriptionPrefixText=""
         
         if self.descriptionSuffix:
-            self.descriptionSuffixText = self.descriptionSuffix.read()
+            self.descriptionSuffixText = Template(
+                self.descriptionSuffix.read()
+            ).safe_substitute(episodeurl=self.getWordPressURL() + self.getSlug())
         else:        
             self.descriptionSuffixText=""
         
@@ -549,8 +619,7 @@ class Podcast:
             suffix=self.removeHTML(self.descriptionSuffixText)
         ) 
         
-        if self.title.endswith(' | '):
-            self.title = self.title[:-3]
+        if self.title.endswith(' | '): self.title = self.title[:-3]
 
     def concatSampleAudioFiles(self):
         coder=[
@@ -587,7 +656,7 @@ class Podcast:
             "-y",
             "-filter_complex",
             "concat=n={number_of_songs}:v=0:a=1 [out]".format(
-                number_of_songs = len(self.files) # additional track for silence
+                number_of_songs = len(self.files)
             ),
             "-map", "[out]",
             "-vn",
@@ -642,29 +711,32 @@ class Podcast:
             title=title
         )
 
-    def chapterize(self):
+    def extendedPodcast(self):
         nhml = tempfile.NamedTemporaryFile(suffix='.nhml', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
         nhml.write(self.chapterImagesInfo)
-        nhml.write("""</NHNTStream>\n""")
         nhml.close()
         
-        chap=tempfile.NamedTemporaryFile(suffix='.ttxt', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
+        chap = tempfile.NamedTemporaryFile(suffix='.ttxt', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
         chap.write(self.chapterInfo)
-        chap.write("""</TextStream>""")
         chap.close()
 
-        
+        # Mux everything together
         subprocess.call([
-            "MP4Box", self.output,
-            "-add", "{file}:chap:name=Chapter Titles".format(file=chap.name),
+            "MP4Box",
+            # audio file (generated on concatAudioFiles())
+            self.output,
+            # images and NHML index (generated on imagify())
             "-add", "{file}:name=Chapter Images".format(file=nhml.name),
+            # chapter points (generated on imagify())
+            "-add", "{file}:chap:name=Chapter Titles".format(file=chap.name),
+            # add a delay to track 1 (audio) to compensate the cover image
             "-delay", "1={}".format(self.introDuration)
         ])
         
         os.remove(nhml.name)
         os.remove(chap.name)
 
-    def tag(self):
+        # Properly tag it
         subprocess.call([
             "mp4tags",
             "-H", "1",
@@ -672,7 +744,7 @@ class Podcast:
             "-i", "podcast",
             "-B", "1",
             "-M", str(self.episode),
-            "-E", "Podcast creator by Avi Alkalay",
+            "-E", "https://github.com/avibrazil/music-podcaster",
             "-e", "Avi Alkalay",
             "-C", "Copyright by its holders",
             "-a", self.artist,
@@ -690,6 +762,18 @@ class Podcast:
             "-z",
             "--add", self.images['cover'],
             self.output
+        ])
+        
+        self.byteSize = os.path.getsize(self.output)
+
+    def youtubefy(self):
+        # YouTube has problems with extended podcasts. Re-encode video for submission.
+        subprocess.call([
+            "ffmpeg", "-y",
+            "-i", self.output,
+            "-c:v", "libx264", "-tune", "stillimage", "-vf", "fps=2", # video filters
+            "-c:a", "copy", # audio processing: just copy source
+            self.youtubeOutput
         ])
 
     #### End of methods for content generation and manipulation
@@ -723,16 +807,52 @@ class Podcast:
                     
         return term
 
+    def getSlug(self):
+        return 'e{:04d}'.format(int(self.episode))
+    
+    def getWordPressURL(self):
+        url = self.wordpress.replace('xmlrpc.php', '')
+        self.logger.debug('WordPress URL:  %s', url)
+
+        return url
+
     def toWordPress(self):
         self.wp = Client(self.wordpress, self.wordpressUser, self.wordpressPass)
         
         self.wpCategories = self.wp.call(taxonomies.GetTerms('post_tag'))
         
+        # Upload media
+        metamedia = {
+#             'name': "{index:04} {title} :: media".format(
+#                 index=int(self.episode),
+#                 title=self.title
+#             ),
+            'name': self.output,
+            'type': 'audio/x-m4a',  # mimetype
+        }
+
+        with open(self.output, 'rb') as themedia:
+                metamedia['bits'] = xmlrpc_client.Binary(themedia.read())
+
+        metamedia.update(self.wp.call(media.UploadFile(metamedia)))
+        
+        # Create post for WordPress
         post = WordPressPost()
         post.title = self.title
-        post.slug = 'e{:04d}'.format(int(self.episode))
-        post.content = 	self.htmlDescription
+        post.slug = self.getSlug()
+        post.content = 	Template(self.htmlDescription).safe_substitute(youtubeid=self.youtubeID)
+        post.custom_fields = []
+        post.custom_fields.append({
+            'key': 'enclosure',
+            'value': """{url}\n{bytesize}\naudio/x-m4a\na:1:{{s:8:"duration";s:8:"{duration}";}}""".format(
+                url = metamedia['url'],
+                bytesize = self.byteSize,
+                duration = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(self.length))))
+            )
+        })
+
         
+        # Tag the post with artists in media
         for song in self.files:
             if 'artists' in song:
                 for a in range(len(song['artists'])):
@@ -751,17 +871,17 @@ class Podcast:
                     song['artist'][0]
                 ))
         
+        # Post it
         post.id = self.wp.call(posts.NewPost(post))
         
     def toYouTube(self):
-        fakevideo = self.output.replace(".m4a", ".mp4")
-        os.symlink(self.output, fakevideo)
+        self.youtubefy()
 
         yt = open(os.path.splitext(self.output)[0] + ".youtube.txt", mode='wt')
         yt.write(self.youtubeDescription)
         yt.close()
         
-        self.ytVideo=subprocess.check_output([
+        self.youtubeID=subprocess.check_output([
             self.ytupload,
             "-c", 'Music',
             "-t", "{index:04} {title} « {podcast}".format(
@@ -774,8 +894,11 @@ class Podcast:
             "--privacy=unlisted",
             "--playlist={}".format(self.ytPL),
             "--client-secrets=" + self.ytCred,
-            fakevideo
-        ])        
+            "--thumbnail=" + self.images['intro'],
+            self.youtubeOutput
+        ])
+        
+        self.youtubeID=self.youtubeID.decode().rstrip() # bytes to string
 
     def toHTML(self):
         html = open(os.path.splitext(self.output)[0] + ".html", mode='wt')
@@ -807,74 +930,8 @@ class Podcast:
 
 
 
-    #### Methods for orchestration
-
-    def make(self):
-        # Compute output file name
-        if (self.output == None):
-            if self.podcast:                 self.output = self.podcast
-            if self.output and self.episode: self.output += "-"
-            if self.episode:                 self.output += '{:04d}'.format(int(self.episode))
-            if self.output and self.title:   self.output += "-"
-            if self.title:                   self.output += self.title
-            if self.output:
-                self.output = self.output.replace(" ","_")
-        
-        if self.output == None:              self.output = "output"
-        if not self.output.endswith('.m4a'): self.output += '.m4a'
-
-        # self.output = unicode(self.output, self.targetEncoding)
-        self.output = unidecode(self.output) # transliterate
-        
-        self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')        
-        
-        self.makeDescriptions()
-        
-        if not self.logger.isEnabledFor(logging.DEBUG):
-            # Generate images for each audio file
-            self.imagify()
-        
-            # Make the audio track
-            self.concatAudioFiles()
-        
-            # Merge audio and chapters into one final M4A media file
-            self.chapterize()
-        
-            # Add rich podcast-like tags to the M4A media file
-            self.tag()
-        
-            # Write HTML file with full description
-            self.toHTML()
-        
-            # Write textual description optimized for YouTube
-            self.toYouTube()
-        
-        self.toWordPress()
-        
-        # Remove temporary files
-        self.clean()
-        
-    def clean(self):
-        try:
-            for f in self.files:
-                if 'image' in f:
-                    os.remove(f['image'])
-                if 'artworkFile' in f and not f['artworkFile'].endswith(self.missingArtwork):
-                    os.remove(f['artworkFile'])
-        except AttributeError:
-            pass
-
-        try:
-            for f in self.images:
-                os.remove(self.images[f])
-        except AttributeError:
-            pass
-
-
-
-
 def main():
-#    p = Podcast(logger=logging.DEBUG)
+#     p = Podcast(logger=logging.DEBUG)
     p = Podcast()
 
     parser = argparse.ArgumentParser(
