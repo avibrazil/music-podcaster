@@ -64,6 +64,8 @@ class Podcast:
         logging.basicConfig()
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logger)
+        
+        self.logger.info("Get media info...")
 
     def make(self):
         # Compute output file name
@@ -148,23 +150,23 @@ class Podcast:
         if '----:com.apple.iTunes:MusicBrainz Work Id' in k:
             info['musicbrainz_workid']=[]
             for i in range(len(audio['----:com.apple.iTunes:MusicBrainz Work Id'])):
-                info['musicbrainz_workid'].append(str(bytes(
-                    audio['----:com.apple.iTunes:MusicBrainz Work Id'][i]
-                )))
+                info['musicbrainz_workid'].append(
+                    audio['----:com.apple.iTunes:MusicBrainz Work Id'][i].decode('UTF-8')
+                )
 
         if '----:com.apple.iTunes:WORK' in k:
             info['work']=[]
             for i in range(len(audio['----:com.apple.iTunes:WORK'])):
-                info['work'].append(str(bytes(
-                    audio['----:com.apple.iTunes:WORK'][i]
-                )))
+                info['work'].append(
+                    audio['----:com.apple.iTunes:WORK'][i].decode('UTF-8')
+                )
 
         if '----:com.apple.iTunes:ARTISTS' in k:
             info['artists']=[]
             for i in range(len(audio['----:com.apple.iTunes:ARTISTS'])):
-                info['artists'].append(str(bytes(
-                    audio['----:com.apple.iTunes:ARTISTS'][i]
-                )))
+                info['artists'].append(
+                    audio['----:com.apple.iTunes:ARTISTS'][i].decode('UTF-8')
+                )
 
         if u'TXXX:Artists' in k:
             # Handle multiple artists on MP3
@@ -248,12 +250,15 @@ class Podcast:
         thePresentation = tempfile.mkstemp(suffix='.png')
         os.close(thePresentation[0])
 
+        FNULL = open(os.devnull, 'w')
         subprocess.call([
             "inkscape", "--without-gui",
             "--export-id={}".format(svgid),
             "-w", str(w),
             "-h", str(h),
-            "-e", thePresentation[1], theTemplate.name]
+            "-e", thePresentation[1], theTemplate.name],
+            stdout=FNULL,
+            stderr=FNULL
         )
 
         os.remove(theTemplate.name)       # remove temporary SVG
@@ -277,7 +282,7 @@ class Podcast:
         template="""
             <span class="song">
                 <span class="artists">{artist}</span>
-                <span class="separator"> ♫ </span>
+                <span class="separator"> ♬ </span>
                 <span class="title">{title}</span> <span class="duration">[{l}]</span>
                 {composer}{album}
             </span>
@@ -374,7 +379,7 @@ class Podcast:
 
     def songCompleteName(self, song):
         albumYear=" 【{:.4}】"
-        template="{artist} ♫ {title} ({l})"
+        template="{artist} ♬ {title} ({l})"
         
         if 'date' in song:
             albumYear = albumYear.format(song['date'][0])
@@ -398,6 +403,8 @@ class Podcast:
         return name
           
     def imagify(self):
+        self.logger.info("Create images for each podcast chapter...")
+    
         # Extract artwork from every audio file
         for i in range(len(self.files)):
             theArtwork = []
@@ -520,6 +527,8 @@ class Podcast:
         youtubeTracks=""
         composers=""
         albums=""
+        
+        self.logger.info("Build textual content from media tags...")
         
         i=0
         pos=self.introDuration/1000
@@ -652,6 +661,9 @@ class Podcast:
         )
 
     def concatAudioFiles(self):
+        self.logger.info("Build media...")
+    
+    
         coder=[
             "-y",
             "-filter_complex",
@@ -679,11 +691,14 @@ class Podcast:
 #         params.append("-i")
 #         params.append("anullsrc=channel_layout=2:sample_rate=44100")
 
+        FNULL = open(os.devnull, 'w')
         subprocess.call(
             ["ffmpeg"] +
             params +
             coder +
-            [self.output]
+            [self.output],
+            stdout=FNULL,
+            stderr=FNULL
         )
 
     def ffmetadataChapter(self,song):
@@ -712,6 +727,8 @@ class Podcast:
         )
 
     def extendedPodcast(self):
+        self.logger.info("Tag for extended podcast...")
+        
         nhml = tempfile.NamedTemporaryFile(suffix='.nhml', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
         nhml.write(self.chapterImagesInfo)
         nhml.close()
@@ -768,13 +785,19 @@ class Podcast:
 
     def youtubefy(self):
         # YouTube has problems with extended podcasts. Re-encode video for submission.
+        
+        self.logger.info("Optimizing media for YouTube...")
+        
+        FNULL = open(os.devnull, 'w')
         subprocess.call([
             "ffmpeg", "-y",
             "-i", self.output,
             "-c:v", "libx264", "-tune", "stillimage", "-vf", "fps=2", # video filters
             "-c:a", "copy", # audio processing: just copy source
             self.youtubeOutput
-        ])
+        ],
+        stdout=FNULL,
+        stderr=FNULL)
 
     #### End of methods for content generation and manipulation
 
@@ -823,20 +846,24 @@ class Podcast:
         
         # Upload media
         metamedia = {
-#             'name': "{index:04} {title} :: media".format(
-#                 index=int(self.episode),
-#                 title=self.title
-#             ),
             'name': self.output,
             'type': 'audio/x-m4a',  # mimetype
         }
 
         with open(self.output, 'rb') as themedia:
-                metamedia['bits'] = xmlrpc_client.Binary(themedia.read())
+#                 metamedia['bits'] = xmlrpc_client.Binary(themedia.read())
+                metamedia['bits'] = xmlrpc_client.Binary(bytearray(10)) #dummy placeholder
 
+        self.logger.info('Upload to WordPress...')
         metamedia.update(self.wp.call(media.UploadFile(metamedia)))
+        subprocess.call([
+            "scp",
+            self.output,
+            self.serverFolder
+        ])
         
         # Create post for WordPress
+        self.logger.info('Create WordPress post...')
         post = WordPressPost()
         post.title = self.title
         post.slug = self.getSlug()
@@ -853,6 +880,7 @@ class Podcast:
 
         
         # Tag the post with artists in media
+        self.logger.info('Tag WordPress post...')
         for song in self.files:
             if 'artists' in song:
                 for a in range(len(song['artists'])):
@@ -874,8 +902,23 @@ class Podcast:
         # Post it
         post.id = self.wp.call(posts.NewPost(post))
         
+        # Update media post just to make things tighter and look nicer
+        self.logger.info('Update WordPress media and attach to post...')
+        metamedia = self.wp.call(posts.GetPost(metamedia['id']))
+        metamedia.parent_id = post.id
+        metamedia.title = self.title + " :: media"
+        metamedia.slug = self.getSlug() + ".media"
+        metamedia.content = """Podcast media file for <a href="/{slug}">{title}</a>""".format(
+            slug = self.getSlug(),
+            title = self.title
+        )
+
+        self.wp.call(posts.EditPost(metamedia.id, metamedia))
+        
     def toYouTube(self):
         self.youtubefy()
+
+        self.logger.info("Send media to YouTube...")
 
         yt = open(os.path.splitext(self.output)[0] + ".youtube.txt", mode='wt')
         yt.write(self.youtubeDescription)
@@ -932,7 +975,7 @@ class Podcast:
 
 def main():
 #     p = Podcast(logger=logging.DEBUG)
-    p = Podcast()
+    p = Podcast(logger=logging.INFO)
 
     parser = argparse.ArgumentParser(
         description='Create extended podcast from well tagged audio files',
@@ -968,6 +1011,9 @@ def main():
 
     parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
         help="Duration in miliseconds for introduction image")
+
+    parser.add_argument('--server-folder', dest='serverFolder',
+        help="""SSH/SCP/SFTP notation for server folder, as host.name.com:folder1/folder2/ (workaround while WordPress XML-RPC upload fails with large files)""")
 
     parser.add_argument('--wordpress-url', dest='wordpress',
         help="""WordPress URL, preferably ending with ‘/xmlrpc.php’""")

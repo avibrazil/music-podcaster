@@ -13,9 +13,14 @@ parser.add_argument('files', type=str, nargs='+',
 args = parser.parse_args()
 
 for f in vars(args)['files']:
-    audio = mutagen.File(f, easy=True)
+    audio = mutagen.File(f, easy=False)
     if 'covr' in audio:
         del audio['covr']
     elif u'APIC:' in audio:
         del audio['APIC:']
     pprint.pprint(audio)
+
+    for i in range(len(audio['----:com.apple.iTunes:ARTISTS'])):
+        print(
+            audio['----:com.apple.iTunes:ARTISTS'][i]
+        )

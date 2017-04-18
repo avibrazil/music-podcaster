@@ -11,7 +11,7 @@ class Worker:
         
         post = self.wp.call(posts.GetPost(self.i))
         
-        pprint(vars(post._def['enclosure']))
+#        pprint(vars(post._def['enclosure']))
         pprint(vars(post))
 
 
