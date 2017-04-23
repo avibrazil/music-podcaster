@@ -27,16 +27,16 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:document-units="px"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="intro"
      showgrid="false"
      units="px"
-     inkscape:zoom="1.1272499"
-     inkscape:cx="1110.5089"
-     inkscape:cy="639.25976"
+     inkscape:zoom="0.52447917"
+     inkscape:cx="1098.9754"
+     inkscape:cy="-3022.2264"
      inkscape:window-width="1680"
-     inkscape:window-height="1005"
+     inkscape:window-height="1001"
      inkscape:window-x="0"
-     inkscape:window-y="732"
+     inkscape:window-y="1"
      inkscape:window-maximized="1"
      showborder="false" />
   <title
@@ -396,15 +396,15 @@
              width="800"
              id="rect4510" /></flowRegion><flowPara
            id="flow-album-text">{ALBUM}</flowPara></flowRoot>      <image
-         sodipodi:absref="/Volumes/aviram/src/music-podcaster/{COVER_ART_PATH}"
+         sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
          xlink:href="{COVER_ART_PATH}"
-         style="display:inline;visibility:visible"
-         y="97"
-         x="136"
-         id="cover-art"
-         preserveAspectRatio="xMaxYMin meet"
+         width="650"
          height="650"
-         width="650" />
+         preserveAspectRatio="xMaxYMin meet"
+         id="cover-art"
+         x="136"
+         y="97"
+         style="display:inline;visibility:visible" />
     </g>
     <g
        style="display:inline"
@@ -424,15 +424,15 @@
            id="rect5600"
            style="display:inline;visibility:visible;fill:#000000;fill-opacity:1" />
         <image
-           sodipodi:absref="/Volumes/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
+           sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
            xlink:href="{PREV_COVER_ART_PATH}"
-           width="200"
-           height="200"
-           preserveAspectRatio="xMaxYMin meet"
-           id="image5596"
-           x="124"
+           style="display:inline;visibility:visible"
            y="855"
-           style="display:inline;visibility:visible" />
+           x="124"
+           id="image5596"
+           preserveAspectRatio="xMaxYMin meet"
+           height="200"
+           width="200" />
         <path
            sodipodi:type="star"
            style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -489,15 +489,15 @@
            id="rect7333"
            style="display:inline;visibility:visible;fill:#000000;fill-opacity:1" />
         <image
-           sodipodi:absref="/Volumes/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
+           sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
            xlink:href="{NEXT_COVER_ART_PATH}"
-           width="200"
-           height="200"
-           preserveAspectRatio="xMaxYMin meet"
-           id="image7335"
-           x="1596"
+           style="display:inline;visibility:visible"
            y="855"
-           style="display:inline;visibility:visible" />
+           x="1596"
+           id="image7335"
+           preserveAspectRatio="xMaxYMin meet"
+           height="200"
+           width="200" />
         <path
            transform="matrix(0.49852722,0,0,1,1416.4232,-16)"
            sodipodi:type="star"
@@ -625,6 +625,18 @@
            y="0"
            x="0" />
       </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="349.24765"
+         y="4437.937"
+         id="text8214"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="349.24765"
+           y="4437.937"
+           style="font-size:50px;fill:#ffffff;fill-opacity:1"
+           id="tspan8222">№ {NO}</tspan></text>
     </g>
     <g
        id="end"
@@ -808,10 +820,10 @@
     <image
        sodipodi:absref="/home/aviram/src/music-podcaster/background.png"
        xlink:href="background.png"
-       style=""
-       id="image8383"
+       y="1758.293"
        x="332.89694"
-       y="1758.293" />
+       id="image8383"
+       style="" />
     <rect
        y="1645.6527"
        x="89.676643"
