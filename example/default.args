@@ -1,0 +1,20 @@
+-p
+abstra.to
+--description-head
+../head.thtml
+--description-prefix
+description.thtml
+--description-suffix
+../suffix.thtml
+--server-folder
+abstra.to:alkalay.net/media/
+--wordpress-url
+https://abstra.to/xmlrpc.php
+--wordpress-user
+admin
+--wordpress-pass
+........
+--youtube-credentials
+../youtube-uploader.json
+--youtube-playlist
+Brasil Abstrato
