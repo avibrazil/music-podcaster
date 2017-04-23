@@ -31,7 +31,7 @@
      showgrid="false"
      units="px"
      inkscape:zoom="0.52447917"
-     inkscape:cx="1098.9754"
+     inkscape:cx="1472.5981"
      inkscape:cy="-3022.2264"
      inkscape:window-width="1680"
      inkscape:window-height="1001"
@@ -398,13 +398,13 @@
            id="flow-album-text">{ALBUM}</flowPara></flowRoot>      <image
          sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
          xlink:href="{COVER_ART_PATH}"
-         width="650"
-         height="650"
-         preserveAspectRatio="xMaxYMin meet"
-         id="cover-art"
-         x="136"
+         style="display:inline;visibility:visible"
          y="97"
-         style="display:inline;visibility:visible" />
+         x="136"
+         id="cover-art"
+         preserveAspectRatio="xMaxYMin meet"
+         height="650"
+         width="650" />
     </g>
     <g
        style="display:inline"
@@ -426,13 +426,13 @@
         <image
            sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
            xlink:href="{PREV_COVER_ART_PATH}"
-           style="display:inline;visibility:visible"
-           y="855"
-           x="124"
-           id="image5596"
-           preserveAspectRatio="xMaxYMin meet"
+           width="200"
            height="200"
-           width="200" />
+           preserveAspectRatio="xMaxYMin meet"
+           id="image5596"
+           x="124"
+           y="855"
+           style="display:inline;visibility:visible" />
         <path
            sodipodi:type="star"
            style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -491,13 +491,13 @@
         <image
            sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
            xlink:href="{NEXT_COVER_ART_PATH}"
-           style="display:inline;visibility:visible"
-           y="855"
-           x="1596"
-           id="image7335"
-           preserveAspectRatio="xMaxYMin meet"
+           width="200"
            height="200"
-           width="200" />
+           preserveAspectRatio="xMaxYMin meet"
+           id="image7335"
+           x="1596"
+           y="855"
+           style="display:inline;visibility:visible" />
         <path
            transform="matrix(0.49852722,0,0,1,1416.4232,-16)"
            sodipodi:type="star"
@@ -637,7 +637,30 @@
            y="4437.937"
            style="font-size:50px;fill:#ffffff;fill-opacity:1"
            id="tspan8222">№ {NO}</tspan></text>
-    </g>
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot8216"
+         style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Arial;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"><flowRegion
+           id="flowRegion8218"><rect
+             id="rect8220"
+             width="528.14301"
+             height="64.826218"
+             x="1647.3485"
+             y="4389.9502" /></flowRegion><flowPara
+           id="flowPara8222"></flowPara></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot8224"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="translate(0,0.69022131)"><flowRegion
+           id="flowRegion8226"><rect
+             id="rect8228"
+             width="663.51538"
+             height="57.199707"
+             x="1504.3496"
+             y="4388.0435"
+             style="text-align:end;text-anchor:end" /></flowRegion><flowPara
+           id="flowPara8230"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1">{EPISODEURL}</flowPara></flowRoot>    </g>
     <g
        id="end"
        transform="translate(63.299873,1202.6976)">
@@ -820,10 +843,10 @@
     <image
        sodipodi:absref="/home/aviram/src/music-podcaster/background.png"
        xlink:href="background.png"
-       y="1758.293"
-       x="332.89694"
+       style=""
        id="image8383"
-       style="" />
+       x="332.89694"
+       y="1758.293" />
     <rect
        y="1645.6527"
        x="89.676643"
