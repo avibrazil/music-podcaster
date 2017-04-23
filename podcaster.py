@@ -214,6 +214,7 @@ class Podcast:
         empty = ""
         theData = {
             'TITLE': empty,
+            'NO': empty,
             'ALBUM': empty,
             'ARTIST': empty,
             'COMPOSER': empty,
@@ -429,7 +430,8 @@ class Podcast:
             self.logger.debug('About to make Intro image')
 
             data = {
-                'TITLE': self.title
+                'TITLE': self.title,
+                'NO': self.episode
             }
             
             self.images['intro']=self.templateSVGtoJPG("intro", 1280, 720, data)
