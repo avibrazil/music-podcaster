@@ -28,12 +28,12 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:document-units="px"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer7"
      showgrid="false"
      units="px"
-     inkscape:zoom="0.52447917"
-     inkscape:cx="1217.6711"
-     inkscape:cy="-2989.2463"
+     inkscape:zoom="0.14359393"
+     inkscape:cx="1929.994"
+     inkscape:cy="-2113.3155"
      inkscape:window-width="1680"
      inkscape:window-height="1006"
      inkscape:window-x="0"
@@ -674,17 +674,6 @@
          y="1758.293" />
     </clipPath>
     <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath9156">
-      <rect
-         y="3409.6941"
-         x="291.50772"
-         height="1080"
-         width="1920"
-         id="rect9158"
-         style="opacity:0.56499999;fill:#38704f;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    </clipPath>
-    <clipPath
        id="background-shapper"
        clipPathUnits="objectBoundingBox">
       <rect
@@ -694,17 +683,6 @@
          height="1080"
          x="0"
          y="0" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath9350">
-      <rect
-         style="opacity:0.56499999;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect9352"
-         width="1600"
-         height="1200"
-         x="332.89694"
-         y="1758.2928" />
     </clipPath>
     <filter
        inkscape:collect="always"
@@ -760,17 +738,6 @@
          y="0"
          x="0" />
     </pattern>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath9792">
-      <rect
-         y="1728.2622"
-         x="3820.9333"
-         height="1080"
-         width="1920"
-         id="rect9794"
-         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    </clipPath>
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
@@ -848,29 +815,229 @@
   <g
      style="display:inline;visibility:visible"
      visibility="visible"
-     id="chapter"
+     id="whatever"
      inkscape:groupmode="layer"
      inkscape:label="Song Chapter">
     <g
-       inkscape:label="Current"
-       id="layer5"
-       inkscape:groupmode="layer"
-       style="display:inline" />
-    <g
-       style="display:inline"
-       inkscape:label="Navigate"
-       id="layer2"
-       inkscape:groupmode="layer">
+       id="chapter"
+       transform="translate(2576.7106,4749.5045)">
+      <rect
+         y="0"
+         x="0"
+         height="1080"
+         width="1920"
+         id="rect4148"
+         style="display:inline;visibility:visible;opacity:1;fill:url(#linearGradient5823);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <g
-         inkscape:label="Prev"
-         display="{PREV_VISIBILITY}"
-         id="layer3"
-         inkscape:groupmode="layer" />
+         inkscape:label="Current"
+         id="current"
+         style="display:inline">
+        <g
+           id="g8528">
+          <flowRoot
+             transform="translate(-172,34.86493)"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             id="flow-album-root"
+             xml:space="preserve"><flowRegion
+               id="flow-album-box"><rect
+                 style="fill:#ffffff;fill-opacity:1"
+                 y="540.57855"
+                 x="1165.7161"
+                 height="177.78687"
+                 width="800"
+                 id="rect4510" /></flowRegion><flowPara
+               id="flow-album-text">{ALBUM}</flowPara></flowRoot>          <flowRoot
+             xml:space="preserve"
+             id="flow-artist-root"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             transform="translate(-172,-159.97398)"><flowRegion
+               id="flow-artist-box"><rect
+                 id="rect4502"
+                 width="800"
+                 height="177.78687"
+                 x="1165.7161"
+                 y="540.57855"
+                 style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
+               id="flow-artist-text">{ARTIST}</flowPara></flowRoot>          <flowRoot
+             xml:space="preserve"
+             id="flow-name-root"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             transform="translate(-247.55286,-39.63784)"><flowRegion
+               id="flowRegion4492"><rect
+                 id="flow-name-box"
+                 width="1043.655"
+                 height="261.37067"
+                 x="1078.8429"
+                 y="160.76118" /></flowRegion><flowPara
+               id="flow-name-text"
+               style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:60px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#ffff7b;fill-opacity:1">{NAME}</flowPara><flowPara
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:Arial;-inkscape-font-specification:Arial;fill:#ffffff;fill-opacity:1"
+               id="flowPara4234">{COMPOSER}</flowPara></flowRoot>          <image
+             sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
+             xlink:href="{COVER_ART_PATH}"
+             width="650"
+             height="650"
+             preserveAspectRatio="xMaxYMin meet"
+             id="cover-art"
+             x="136"
+             y="97"
+             style="display:inline;visibility:visible" />
+        </g>
+        <g
+           id="g8244"
+           transform="matrix(0.37684773,-0.0940737,-0.0940737,-0.37684773,848.21676,492.07883)"
+           style="display:inline;visibility:visible;fill:#e0e0e0;fill-opacity:1">
+          <path
+             d="m 295.363,233.871 c -2.035,3.441 -7.992,8.613 -11.175,7.703 l -11.766,-7.742 -0.863,1.461 -0.207,-0.121 c -0.071,0.297 -0.184,0.59 -0.352,0.867 -0.773,1.305 -2.324,1.824 -3.465,1.149 -1.14,-0.676 -1.437,-2.29 -0.664,-3.594 0.762,-1.285 2.274,-1.793 3.406,-1.168 l -6.332,-4.168 -0.847,1.43 -0.215,-0.126 c -0.067,0.305 -0.184,0.61 -0.356,0.899 -0.773,1.309 -2.328,1.816 -3.468,1.141 -1.141,-0.676 -1.438,-2.278 -0.664,-3.586 0.761,-1.282 2.265,-1.793 3.402,-1.168 l -5.914,-3.903 -0.84,1.414 -0.227,-0.132 c -0.066,0.312 -0.187,0.625 -0.363,0.925 -0.773,1.305 -2.32,1.817 -3.465,1.141 -1.14,-0.672 -1.441,-2.281 -0.668,-3.586 0.774,-1.305 2.328,-1.816 3.469,-1.141 l -6.703,-4.41 -0.344,-1.347 -1.035,-2.102 -0.637,-0.363 8.102,-13.688 0.625,0.387 2.34,-0.105 1.347,-0.344 7.09,3.754 c -1.14,-0.676 -1.441,-2.282 -0.668,-3.59 0.774,-1.305 2.328,-1.813 3.469,-1.137 1.141,0.676 1.434,2.277 0.66,3.582 -0.176,0.301 -0.39,0.555 -0.637,0.766 l 0.227,0.136 -0.836,1.415 6.266,3.312 c -1.094,-0.695 -1.371,-2.262 -0.61,-3.547 0.774,-1.305 2.321,-1.816 3.461,-1.144 1.141,0.675 1.442,2.285 0.668,3.589 -0.172,0.29 -0.383,0.54 -0.617,0.747 l 0.215,0.128 -0.848,1.43 6.703,3.547 c -1.093,-0.695 -1.375,-2.266 -0.617,-3.551 0.774,-1.304 2.332,-1.82 3.473,-1.144 1.14,0.675 1.433,2.285 0.66,3.59 -0.168,0.281 -0.367,0.523 -0.59,0.726 l 0.203,0.121 -0.863,1.461 12.445,6.594 c 2.328,2.348 0.66,10.055 -1.375,13.492 z M 278.91,232.52 c 0.465,-0.727 0.43,-1.727 -0.57,-2.395 l -2.664,-1.785 -1.914,3.234 2.3,1.5 c 1.141,0.742 2.317,0.266 2.848,-0.554 z m 7.266,-12.274 c 0.57,-0.859 0.476,-2.23 -0.797,-2.91 l -2.422,-1.297 -1.914,3.234 2.848,1.477 c 0.996,0.52 1.839,0.164 2.285,-0.504 z m -14.508,9.965 1.926,-3.258 -6.364,-4.246 -1.968,3.328 6.406,4.176 z m 7.16,-12.098 1.922,-3.25 -6.738,-3.605 -1.969,3.324 6.785,3.531 z m -15.664,6.551 1.984,-3.352 -5.949,-3.976 -2.023,3.422 5.988,3.906 z m 6.652,-11.238 1.985,-3.348 -6.309,-3.371 -2.019,3.414 6.343,3.305 z m -14.742,5.965 2.043,-3.45 -0.582,-0.39 c -2.648,-1.77 -5.105,1.465 -2.363,3.254 l 0.902,0.586 z m 6.172,-10.426 2.039,-3.442 -0.949,-0.507 c -2.887,-1.547 -4.535,2.156 -1.711,3.629 l 0.621,0.32 z m -17.785,3.445 -91.332,-51.805 c -15.488,21.426 -30.258,22.348 -41.563,16.961 C 99.809,172.441 92.438,159.273 86.406,156.168 74.223,149.891 52.875,163.43 26.117,146.145 -4.844,126.141 5.738,95.418 20.211,70.969 c 14.477,-24.449 36.32,-48.5 68.75,-30.981 28.023,15.145 26.422,40.379 37.781,48.043 5.625,3.793 20.719,3.918 30.387,10.883 10.16,7.32 16.457,20.715 5.121,44.602 l 89.348,55.156 -1.895,-1.145 -8.156,13.778 1.914,1.109 0,-0.004 z m -15.973,-9.203 8.356,-14.117 -2.09,-1.254 -8.371,14.144 2.105,1.231 0,-0.004 z m -16.91,-9.562 8.746,-14.778 -2.09,-1.262 -8.769,14.809 2.113,1.231 z m -15.527,-8.782 9.109,-15.39 -2.094,-1.254 -9.125,15.414 2.11,1.23 z m -13.321,-7.531 9.422,-15.914 -2.097,-1.254 -9.434,15.938 2.109,1.23 z m -12.488,-7.062 9.707,-16.403 -2.09,-1.254 -9.722,16.426 2.101,1.231 0.004,0 z m -11.238,-6.356 9.973,-16.844 -2.09,-1.254 -9.989,16.872 2.106,1.226 z m -9.688,-5.48 10.196,-17.219 -2.09,-1.262 -10.215,17.254 2.109,1.227 z m -8.89,-5.028 10.402,-17.57 -2.09,-1.254 -10.418,17.598 2.102,1.226 0.004,0 z m -7.852,-4.441 10.582,-17.879 -2.09,-1.25 -10.597,17.902 2.105,1.231 0,-0.004 z m -6.898,-3.899 10.746,-18.152 -2.09,-1.25 -10.762,18.172 2.106,1.23 z m 6.691,-20.621 c -0.219,-6.515 -3.656,-12.781 -9.679,-16.347 -9.383,-5.555 -21.493,-2.453 -27.047,6.929 -5.555,9.383 -2.453,21.496 6.929,27.051 6.02,3.563 13.168,3.559 18.981,0.617 l -4.504,-2.558 c -4.027,1.179 -8.516,0.75 -12.41,-1.555 -7.453,-4.414 -9.922,-14.035 -5.508,-21.492 4.414,-7.453 14.035,-9.914 21.488,-5.5 3.895,2.305 6.426,6.035 7.328,10.133 l 4.418,2.722 0.004,0 z m -7.437,7.918 c 0.066,-0.113 0.132,-0.226 0.195,-0.343 0.066,-0.114 0.129,-0.231 0.191,-0.348 0.063,-0.113 0.122,-0.234 0.18,-0.352 0,0 0,0 0.004,0 0.113,-0.234 0.219,-0.472 0.32,-0.707 0.047,-0.121 0.094,-0.242 0.141,-0.363 0.094,-0.238 0.184,-0.48 0.262,-0.727 0.32,-0.972 0.527,-1.968 0.629,-2.964 0.05,-0.5 0.074,-1 0.074,-1.5 -0.004,-0.747 -0.067,-1.493 -0.184,-2.227 -0.043,-0.246 -0.086,-0.488 -0.137,-0.73 -0.101,-0.485 -0.234,-0.965 -0.386,-1.434 l 0.004,0 c -1.039,-3.191 -3.2,-6.027 -6.313,-7.871 -6.797,-4.024 -15.566,-1.781 -19.586,5.015 -4.023,6.793 -1.777,15.567 5.02,19.59 3.113,1.844 6.644,2.368 9.941,1.743 0,0 -0.004,0 0,0 0.246,-0.047 0.488,-0.094 0.731,-0.153 0.238,-0.058 0.476,-0.125 0.714,-0.199 0.95,-0.281 1.872,-0.664 2.747,-1.141 0.218,-0.121 0.429,-0.242 0.644,-0.371 0.195,-0.121 0.391,-0.246 0.582,-0.379 0.039,-0.023 0.078,-0.05 0.117,-0.074 0.184,-0.129 0.364,-0.266 0.543,-0.402 0.582,-0.449 1.133,-0.946 1.649,-1.492 0.023,-0.024 0.043,-0.047 0.066,-0.071 0.164,-0.179 0.328,-0.359 0.484,-0.547 0.083,-0.101 0.168,-0.207 0.25,-0.304 0.083,-0.102 0.157,-0.203 0.235,-0.309 0.074,-0.098 0.152,-0.195 0.223,-0.297 0.082,-0.113 0.156,-0.23 0.234,-0.344 0.074,-0.109 0.144,-0.222 0.215,-0.335 0.07,-0.114 0.14,-0.227 0.211,-0.344 l 0,-0.02 z M 54.008,124.422 83.336,74.883 C 83.762,74.16 83.234,73.07 82.152,72.434 L 76.508,69.09 c -1.082,-0.641 -2.293,-0.578 -2.719,0.14 l -29.332,49.473 c -0.426,0.719 0.102,1.817 1.18,2.453 l 5.648,3.344 c 1.078,0.641 2.293,0.574 2.719,-0.145 l 0.004,0.067 z"
+             style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path8246"
+             inkscape:connector-curvature="0" />
+        </g>
+        <path
+           id="path4299"
+           d="m 917.7105,594.34762 c -7.2271,-4.95464 -14.8333,-8.6626 -20.3329,-8.6626 l -6.4255,30.07419 c 3.6122,0.26335 6.9611,1.46904 9.7871,3.39733 l 16.9713,-24.80892 z m -41.5616,41.33777 c 0,7.36342 5.9696,13.33341 13.3334,13.33341 7.3642,0 13.3334,-5.96962 13.3334,-13.33341 0,-7.36379 -5.9692,-13.33341 -13.3334,-13.33341 -7.3635,0 -13.3334,5.96962 -13.3334,13.33341 z m 13.3334,-3.33363 c 1.8411,0 3.3336,1.4925 3.3336,3.33326 0,1.84076 -1.4925,3.33326 -3.3336,3.33326 -1.8408,0 -3.3332,-1.49212 -3.3332,-3.33326 0,-1.84076 1.4924,-3.33326 3.3332,-3.33326 z m -19.9996,3.33363 c 0,-10.151 7.5691,-18.51525 17.3673,-19.80698 l -3.9776,-29.78479 c -24.4856,3.23791 -43.3901,24.22153 -43.3901,49.59177 0,10.47989 3.2331,20.11428 8.7431,28.14814 l 24.7165,-16.90802 c -2.1816,-3.20401 -3.4592,-7.07215 -3.4592,-11.24012 z M 930.74,607.37746 905.9445,624.3395 c 2.227,3.22487 3.5381,7.13024 3.5381,11.34589 0,11.04568 -8.9542,19.99993 -20.0003,19.99993 -4.2078,0 -8.1072,-1.30589 -11.3288,-3.52546 l -16.8987,24.70277 c 8.0335,5.50962 17.7476,8.82239 28.2275,8.82239 27.6166,0 50,-22.38376 50,-50 0,-10.47989 -3.2331,-20.27406 -8.7423,-28.30756 z"
+           style="clip-rule:evenodd;display:inline;visibility:visible;fill:#e0e0e0;fill-opacity:1;fill-rule:evenodd"
+           inkscape:connector-curvature="0" />
+      </g>
       <g
-         inkscape:label="Next"
-         display="{NEXT_VISIBILITY}"
-         id="layer4"
-         inkscape:groupmode="layer" />
+         style="display:inline"
+         inkscape:label="Navigate"
+         id="navigate">
+        <rect
+           style="display:inline;visibility:visible;fill:#000000;fill-opacity:1"
+           id="rect8123"
+           width="1920"
+           height="250"
+           x="0"
+           y="830" />
+        <g
+           inkscape:label="Prev"
+           display="{PREV_VISIBILITY}"
+           id="layer3">
+          <rect
+             y="830"
+             x="0"
+             height="250"
+             width="960"
+             id="rect5600"
+             style="display:inline;visibility:visible;fill:#000000;fill-opacity:1" />
+          <image
+             sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
+             xlink:href="{PREV_COVER_ART_PATH}"
+             style="display:inline;visibility:visible"
+             y="855"
+             x="124"
+             id="image5596"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
+          <flowRoot
+             xml:space="preserve"
+             id="flowRoot5610"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+               id="flowRegion5612"><rect
+                 id="rect5614"
+                 width="606"
+                 height="100"
+                 x="340"
+                 y="855"
+                 style="fill:#ffff7b;fill-opacity:1" /></flowRegion><flowPara
+               id="flowPara5616"
+               style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Italic';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffff7b;fill-opacity:1">{PREV_NAME}</flowPara></flowRoot>          <flowRoot
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             id="flowRoot5623"
+             xml:space="preserve"><flowRegion
+               id="flowRegion5625"><rect
+                 style="fill:#ffff7b;fill-opacity:1"
+                 y="955"
+                 x="340"
+                 height="100"
+                 width="606"
+                 id="rect5627" /></flowRegion><flowPara
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1"
+               id="flowPara5629">{PREV_ARTIST}</flowPara></flowRoot>          <path
+             sodipodi:type="star"
+             style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             id="path5598"
+             sodipodi:sides="3"
+             sodipodi:cx="862"
+             sodipodi:cy="968"
+             sodipodi:r1="104.30724"
+             sodipodi:r2="52.153618"
+             sodipodi:arg1="0"
+             sodipodi:arg2="1.0471976"
+             inkscape:flatsided="true"
+             inkscape:rounded="0"
+             inkscape:randomized="0"
+             d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
+             inkscape:transform-center-x="13.000052"
+             transform="matrix(-0.49852722,0,0,1,503.5768,-16)" />
+        </g>
+        <g
+           inkscape:label="Next"
+           display="{NEXT_VISIBILITY}"
+           id="layer4">
+          <rect
+             transform="scale(-1,1)"
+             y="830"
+             x="-1920"
+             height="250"
+             width="960"
+             id="rect7333"
+             style="display:inline;visibility:visible;fill:#000000;fill-opacity:1" />
+          <image
+             sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
+             xlink:href="{NEXT_COVER_ART_PATH}"
+             style="display:inline;visibility:visible"
+             y="855"
+             x="1596"
+             id="image7335"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
+          <path
+             transform="matrix(0.49852722,0,0,1,1416.4232,-16)"
+             sodipodi:type="star"
+             style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             id="path7337"
+             sodipodi:sides="3"
+             sodipodi:cx="862"
+             sodipodi:cy="968"
+             sodipodi:r1="104.30724"
+             sodipodi:r2="52.153618"
+             sodipodi:arg1="0"
+             sodipodi:arg2="1.0471976"
+             inkscape:flatsided="true"
+             inkscape:rounded="0"
+             inkscape:randomized="0"
+             d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
+             inkscape:transform-center-x="13.000052" />
+          <flowRoot
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             id="flowRoot7366"
+             xml:space="preserve"><flowRegion
+               id="flowRegion7368"><rect
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1"
+                 y="855"
+                 x="974"
+                 height="100"
+                 width="606"
+                 id="rect7370" /></flowRegion><flowPara
+               style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Italic';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1"
+               id="flowPara7372">{NEXT_NAME}</flowPara></flowRoot>          <flowRoot
+             xml:space="preserve"
+             id="flowRoot7401"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+               id="flowRegion7403"><rect
+                 id="rect7405"
+                 width="606"
+                 height="100"
+                 x="974"
+                 y="955"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1" /></flowRegion><flowPara
+               id="flowPara7407"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1">{NEXT_ARTIST}</flowPara></flowRoot>        </g>
+      </g>
     </g>
   </g>
   <g
@@ -879,7 +1046,8 @@
      inkscape:groupmode="layer"
      style="display:inline">
     <g
-       id="intro">
+       id="intro"
+       transform="translate(8.97392,0)">
       <title
          id="title9160">Intro</title>
       <use
@@ -981,7 +1149,7 @@
     </g>
     <g
        id="credits"
-       transform="translate(2653.3156,3495.9696)">
+       transform="translate(2576.7106,3488.1801)">
       <title
          id="title8266">Credits</title>
       <use
@@ -1087,9 +1255,9 @@
     <image
        sodipodi:absref="/Users/aviram/src/music-podcaster/background.png"
        xlink:href="background.png"
-       id="image8383"
+       y="1758.293"
        x="332.89694"
-       y="1758.293" />
+       id="image8383" />
     <rect
        y="1645.6527"
        x="89.676643"
@@ -1274,204 +1442,6 @@
          xlink:href="#choro-bossa-moda-maracatu"
          y="0"
          x="0" />
-    </g>
-    <g
-       id="g9050"
-       transform="translate(3648.7273,1392.4674)">
-      <rect
-         style="display:inline;visibility:visible;opacity:1;fill:url(#linearGradient5823);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4148"
-         width="1920"
-         height="1080"
-         x="0"
-         y="0" />
-      <rect
-         y="830"
-         x="0"
-         height="250"
-         width="1920"
-         id="rect8123"
-         style="display:inline;visibility:visible;fill:#000000;fill-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         style="clip-rule:evenodd;display:inline;visibility:visible;fill:#e0e0e0;fill-opacity:1;fill-rule:evenodd"
-         d="m 917.7105,594.34762 c -7.2271,-4.95464 -14.8333,-8.6626 -20.3329,-8.6626 l -6.4255,30.07419 c 3.6122,0.26335 6.9611,1.46904 9.7871,3.39733 l 16.9713,-24.80892 z m -41.5616,41.33777 c 0,7.36342 5.9696,13.33341 13.3334,13.33341 7.3642,0 13.3334,-5.96962 13.3334,-13.33341 0,-7.36379 -5.9692,-13.33341 -13.3334,-13.33341 -7.3635,0 -13.3334,5.96962 -13.3334,13.33341 z m 13.3334,-3.33363 c 1.8411,0 3.3336,1.4925 3.3336,3.33326 0,1.84076 -1.4925,3.33326 -3.3336,3.33326 -1.8408,0 -3.3332,-1.49212 -3.3332,-3.33326 0,-1.84076 1.4924,-3.33326 3.3332,-3.33326 z m -19.9996,3.33363 c 0,-10.151 7.5691,-18.51525 17.3673,-19.80698 l -3.9776,-29.78479 c -24.4856,3.23791 -43.3901,24.22153 -43.3901,49.59177 0,10.47989 3.2331,20.11428 8.7431,28.14814 l 24.7165,-16.90802 c -2.1816,-3.20401 -3.4592,-7.07215 -3.4592,-11.24012 z M 930.74,607.37746 905.9445,624.3395 c 2.227,3.22487 3.5381,7.13024 3.5381,11.34589 0,11.04568 -8.9542,19.99993 -20.0003,19.99993 -4.2078,0 -8.1072,-1.30589 -11.3288,-3.52546 l -16.8987,24.70277 c 8.0335,5.50962 17.7476,8.82239 28.2275,8.82239 27.6166,0 50,-22.38376 50,-50 0,-10.47989 -3.2331,-20.27406 -8.7423,-28.30756 z"
-         id="path4299" />
-      <flowRoot
-         transform="translate(-247.55286,-39.63784)"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         id="flow-name-root"
-         xml:space="preserve"><flowRegion
-           id="flowRegion4492"><rect
-             y="160.76118"
-             x="1078.8429"
-             height="261.37067"
-             width="1043.655"
-             id="flow-name-box" /></flowRegion><flowPara
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:60px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#ffff7b;fill-opacity:1"
-           id="flow-name-text">{NAME}</flowPara><flowPara
-           id="flowPara4234"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:Arial;-inkscape-font-specification:Arial;fill:#ffffff;fill-opacity:1">{COMPOSER}</flowPara></flowRoot>      <flowRoot
-         transform="translate(-172,-159.97398)"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         id="flow-artist-root"
-         xml:space="preserve"><flowRegion
-           id="flow-artist-box"><rect
-             style="fill:#ffffff;fill-opacity:1"
-             y="540.57855"
-             x="1165.7161"
-             height="177.78687"
-             width="800"
-             id="rect4502" /></flowRegion><flowPara
-           id="flow-artist-text">{ARTIST}</flowPara></flowRoot>      <flowRoot
-         xml:space="preserve"
-         id="flow-album-root"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         transform="translate(-172,34.86493)"><flowRegion
-           id="flow-album-box"><rect
-             id="rect4510"
-             width="800"
-             height="177.78687"
-             x="1165.7161"
-             y="540.57855"
-             style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
-           id="flow-album-text">{ALBUM}</flowPara></flowRoot>      <image
-         sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
-         xlink:href="{COVER_ART_PATH}"
-         width="650"
-         height="650"
-         preserveAspectRatio="xMaxYMin meet"
-         id="cover-art"
-         x="136"
-         y="97"
-         style="display:inline;visibility:visible" />
-      <rect
-         style="display:inline;visibility:visible;fill:#000000;fill-opacity:1"
-         id="rect5600"
-         width="960"
-         height="250"
-         x="0"
-         y="830" />
-      <image
-         sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
-         xlink:href="{PREV_COVER_ART_PATH}"
-         style="display:inline;visibility:visible"
-         y="855"
-         x="124"
-         id="image5596"
-         preserveAspectRatio="xMaxYMin meet"
-         height="200"
-         width="200" />
-      <path
-         transform="matrix(-0.49852722,0,0,1,503.5768,-16)"
-         inkscape:transform-center-x="13.000052"
-         d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
-         inkscape:randomized="0"
-         inkscape:rounded="0"
-         inkscape:flatsided="true"
-         sodipodi:arg2="1.0471976"
-         sodipodi:arg1="0"
-         sodipodi:r2="52.153618"
-         sodipodi:r1="104.30724"
-         sodipodi:cy="968"
-         sodipodi:cx="862"
-         sodipodi:sides="3"
-         id="path5598"
-         style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         sodipodi:type="star" />
-      <flowRoot
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         id="flowRoot5610"
-         xml:space="preserve"><flowRegion
-           id="flowRegion5612"><rect
-             style="fill:#ffff7b;fill-opacity:1"
-             y="855"
-             x="340"
-             height="100"
-             width="606"
-             id="rect5614" /></flowRegion><flowPara
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Italic';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffff7b;fill-opacity:1"
-           id="flowPara5616">{PREV_NAME}</flowPara></flowRoot>      <flowRoot
-         xml:space="preserve"
-         id="flowRoot5623"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
-           id="flowRegion5625"><rect
-             id="rect5627"
-             width="606"
-             height="100"
-             x="340"
-             y="955"
-             style="fill:#ffff7b;fill-opacity:1" /></flowRegion><flowPara
-           id="flowPara5629"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1">{PREV_ARTIST}</flowPara></flowRoot>      <rect
-         style="display:inline;visibility:visible;fill:#000000;fill-opacity:1"
-         id="rect7333"
-         width="960"
-         height="250"
-         x="-1920"
-         y="830"
-         transform="scale(-1,1)" />
-      <image
-         sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
-         xlink:href="{NEXT_COVER_ART_PATH}"
-         style="display:inline;visibility:visible"
-         y="855"
-         x="1596"
-         id="image7335"
-         preserveAspectRatio="xMaxYMin meet"
-         height="200"
-         width="200" />
-      <path
-         inkscape:transform-center-x="13.000052"
-         d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
-         inkscape:randomized="0"
-         inkscape:rounded="0"
-         inkscape:flatsided="true"
-         sodipodi:arg2="1.0471976"
-         sodipodi:arg1="0"
-         sodipodi:r2="52.153618"
-         sodipodi:r1="104.30724"
-         sodipodi:cy="968"
-         sodipodi:cx="862"
-         sodipodi:sides="3"
-         id="path7337"
-         style="display:inline;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         sodipodi:type="star"
-         transform="matrix(0.49852722,0,0,1,1416.4232,-16)" />
-      <flowRoot
-         xml:space="preserve"
-         id="flowRoot7366"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
-           id="flowRegion7368"><rect
-             id="rect7370"
-             width="606"
-             height="100"
-             x="974"
-             y="855"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1" /></flowRegion><flowPara
-           id="flowPara7372"
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Italic';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1">{NEXT_NAME}</flowPara></flowRoot>      <flowRoot
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         id="flowRoot7401"
-         xml:space="preserve"><flowRegion
-           id="flowRegion7403"><rect
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffff7b;fill-opacity:1"
-             y="955"
-             x="974"
-             height="100"
-             width="606"
-             id="rect7405" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.5px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1"
-           id="flowPara7407">{NEXT_ARTIST}</flowPara></flowRoot>      <g
-         style="fill:#e0e0e0;fill-opacity:1"
-         transform="matrix(0.37684773,-0.0940737,-0.0940737,-0.37684773,848.21676,492.07883)"
-         id="g8244">
-        <path
-           inkscape:connector-curvature="0"
-           id="path8246"
-           style="fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           d="m 295.363,233.871 c -2.035,3.441 -7.992,8.613 -11.175,7.703 l -11.766,-7.742 -0.863,1.461 -0.207,-0.121 c -0.071,0.297 -0.184,0.59 -0.352,0.867 -0.773,1.305 -2.324,1.824 -3.465,1.149 -1.14,-0.676 -1.437,-2.29 -0.664,-3.594 0.762,-1.285 2.274,-1.793 3.406,-1.168 l -6.332,-4.168 -0.847,1.43 -0.215,-0.126 c -0.067,0.305 -0.184,0.61 -0.356,0.899 -0.773,1.309 -2.328,1.816 -3.468,1.141 -1.141,-0.676 -1.438,-2.278 -0.664,-3.586 0.761,-1.282 2.265,-1.793 3.402,-1.168 l -5.914,-3.903 -0.84,1.414 -0.227,-0.132 c -0.066,0.312 -0.187,0.625 -0.363,0.925 -0.773,1.305 -2.32,1.817 -3.465,1.141 -1.14,-0.672 -1.441,-2.281 -0.668,-3.586 0.774,-1.305 2.328,-1.816 3.469,-1.141 l -6.703,-4.41 -0.344,-1.347 -1.035,-2.102 -0.637,-0.363 8.102,-13.688 0.625,0.387 2.34,-0.105 1.347,-0.344 7.09,3.754 c -1.14,-0.676 -1.441,-2.282 -0.668,-3.59 0.774,-1.305 2.328,-1.813 3.469,-1.137 1.141,0.676 1.434,2.277 0.66,3.582 -0.176,0.301 -0.39,0.555 -0.637,0.766 l 0.227,0.136 -0.836,1.415 6.266,3.312 c -1.094,-0.695 -1.371,-2.262 -0.61,-3.547 0.774,-1.305 2.321,-1.816 3.461,-1.144 1.141,0.675 1.442,2.285 0.668,3.589 -0.172,0.29 -0.383,0.54 -0.617,0.747 l 0.215,0.128 -0.848,1.43 6.703,3.547 c -1.093,-0.695 -1.375,-2.266 -0.617,-3.551 0.774,-1.304 2.332,-1.82 3.473,-1.144 1.14,0.675 1.433,2.285 0.66,3.59 -0.168,0.281 -0.367,0.523 -0.59,0.726 l 0.203,0.121 -0.863,1.461 12.445,6.594 c 2.328,2.348 0.66,10.055 -1.375,13.492 z M 278.91,232.52 c 0.465,-0.727 0.43,-1.727 -0.57,-2.395 l -2.664,-1.785 -1.914,3.234 2.3,1.5 c 1.141,0.742 2.317,0.266 2.848,-0.554 z m 7.266,-12.274 c 0.57,-0.859 0.476,-2.23 -0.797,-2.91 l -2.422,-1.297 -1.914,3.234 2.848,1.477 c 0.996,0.52 1.839,0.164 2.285,-0.504 z m -14.508,9.965 1.926,-3.258 -6.364,-4.246 -1.968,3.328 6.406,4.176 z m 7.16,-12.098 1.922,-3.25 -6.738,-3.605 -1.969,3.324 6.785,3.531 z m -15.664,6.551 1.984,-3.352 -5.949,-3.976 -2.023,3.422 5.988,3.906 z m 6.652,-11.238 1.985,-3.348 -6.309,-3.371 -2.019,3.414 6.343,3.305 z m -14.742,5.965 2.043,-3.45 -0.582,-0.39 c -2.648,-1.77 -5.105,1.465 -2.363,3.254 l 0.902,0.586 z m 6.172,-10.426 2.039,-3.442 -0.949,-0.507 c -2.887,-1.547 -4.535,2.156 -1.711,3.629 l 0.621,0.32 z m -17.785,3.445 -91.332,-51.805 c -15.488,21.426 -30.258,22.348 -41.563,16.961 C 99.809,172.441 92.438,159.273 86.406,156.168 74.223,149.891 52.875,163.43 26.117,146.145 -4.844,126.141 5.738,95.418 20.211,70.969 c 14.477,-24.449 36.32,-48.5 68.75,-30.981 28.023,15.145 26.422,40.379 37.781,48.043 5.625,3.793 20.719,3.918 30.387,10.883 10.16,7.32 16.457,20.715 5.121,44.602 l 89.348,55.156 -1.895,-1.145 -8.156,13.778 1.914,1.109 0,-0.004 z m -15.973,-9.203 8.356,-14.117 -2.09,-1.254 -8.371,14.144 2.105,1.231 0,-0.004 z m -16.91,-9.562 8.746,-14.778 -2.09,-1.262 -8.769,14.809 2.113,1.231 z m -15.527,-8.782 9.109,-15.39 -2.094,-1.254 -9.125,15.414 2.11,1.23 z m -13.321,-7.531 9.422,-15.914 -2.097,-1.254 -9.434,15.938 2.109,1.23 z m -12.488,-7.062 9.707,-16.403 -2.09,-1.254 -9.722,16.426 2.101,1.231 0.004,0 z m -11.238,-6.356 9.973,-16.844 -2.09,-1.254 -9.989,16.872 2.106,1.226 z m -9.688,-5.48 10.196,-17.219 -2.09,-1.262 -10.215,17.254 2.109,1.227 z m -8.89,-5.028 10.402,-17.57 -2.09,-1.254 -10.418,17.598 2.102,1.226 0.004,0 z m -7.852,-4.441 10.582,-17.879 -2.09,-1.25 -10.597,17.902 2.105,1.231 0,-0.004 z m -6.898,-3.899 10.746,-18.152 -2.09,-1.25 -10.762,18.172 2.106,1.23 z m 6.691,-20.621 c -0.219,-6.515 -3.656,-12.781 -9.679,-16.347 -9.383,-5.555 -21.493,-2.453 -27.047,6.929 -5.555,9.383 -2.453,21.496 6.929,27.051 6.02,3.563 13.168,3.559 18.981,0.617 l -4.504,-2.558 c -4.027,1.179 -8.516,0.75 -12.41,-1.555 -7.453,-4.414 -9.922,-14.035 -5.508,-21.492 4.414,-7.453 14.035,-9.914 21.488,-5.5 3.895,2.305 6.426,6.035 7.328,10.133 l 4.418,2.722 0.004,0 z m -7.437,7.918 c 0.066,-0.113 0.132,-0.226 0.195,-0.343 0.066,-0.114 0.129,-0.231 0.191,-0.348 0.063,-0.113 0.122,-0.234 0.18,-0.352 0,0 0,0 0.004,0 0.113,-0.234 0.219,-0.472 0.32,-0.707 0.047,-0.121 0.094,-0.242 0.141,-0.363 0.094,-0.238 0.184,-0.48 0.262,-0.727 0.32,-0.972 0.527,-1.968 0.629,-2.964 0.05,-0.5 0.074,-1 0.074,-1.5 -0.004,-0.747 -0.067,-1.493 -0.184,-2.227 -0.043,-0.246 -0.086,-0.488 -0.137,-0.73 -0.101,-0.485 -0.234,-0.965 -0.386,-1.434 l 0.004,0 c -1.039,-3.191 -3.2,-6.027 -6.313,-7.871 -6.797,-4.024 -15.566,-1.781 -19.586,5.015 -4.023,6.793 -1.777,15.567 5.02,19.59 3.113,1.844 6.644,2.368 9.941,1.743 0,0 -0.004,0 0,0 0.246,-0.047 0.488,-0.094 0.731,-0.153 0.238,-0.058 0.476,-0.125 0.714,-0.199 0.95,-0.281 1.872,-0.664 2.747,-1.141 0.218,-0.121 0.429,-0.242 0.644,-0.371 0.195,-0.121 0.391,-0.246 0.582,-0.379 0.039,-0.023 0.078,-0.05 0.117,-0.074 0.184,-0.129 0.364,-0.266 0.543,-0.402 0.582,-0.449 1.133,-0.946 1.649,-1.492 0.023,-0.024 0.043,-0.047 0.066,-0.071 0.164,-0.179 0.328,-0.359 0.484,-0.547 0.083,-0.101 0.168,-0.207 0.25,-0.304 0.083,-0.102 0.157,-0.203 0.235,-0.309 0.074,-0.098 0.152,-0.195 0.223,-0.297 0.082,-0.113 0.156,-0.23 0.234,-0.344 0.074,-0.109 0.144,-0.222 0.215,-0.335 0.07,-0.114 0.14,-0.227 0.211,-0.344 l 0,-0.02 z M 54.008,124.422 83.336,74.883 C 83.762,74.16 83.234,73.07 82.152,72.434 L 76.508,69.09 c -1.082,-0.641 -2.293,-0.578 -2.719,0.14 l -29.332,49.473 c -0.426,0.719 0.102,1.817 1.18,2.453 l 5.648,3.344 c 1.078,0.641 2.293,0.574 2.719,-0.145 l 0.004,0.067 z" />
-      </g>
     </g>
   </g>
 </svg>
