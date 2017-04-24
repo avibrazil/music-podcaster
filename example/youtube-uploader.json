@@ -1,0 +1,14 @@
+{
+    "installed": {
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "client_id": "8.6.51.0.6..-9eo.............ed.tet.rg.n.cg.2.apps.googleusercontent.com",
+        "client_secret": "L..l.t.3y.X.hw.y.h.I.mA.",
+        "project_id": "music-podcaster",
+        "redirect_uris": [
+            "urn:ietf:wg:oauth:2.0:oob",
+            "http://localhost"
+        ],
+        "token_uri": "https://accounts.google.com/o/oauth2/token"
+    }
+}

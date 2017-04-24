@@ -215,6 +215,7 @@ class Podcast:
         theData = {
             'TITLE': empty,
             'NO': empty,
+            'EPISODEURL': empty,
             'ALBUM': empty,
             'ARTIST': empty,
             'COMPOSER': empty,
@@ -431,6 +432,7 @@ class Podcast:
 
             data = {
                 'TITLE': self.title,
+                'EPISODEURL': self.getWordPressURL() + self.getSlug(),
                 'NO': self.episode
             }
             
@@ -590,6 +592,11 @@ class Podcast:
         else:
             self.descriptionPrefixText=""
         
+        if self.descriptionHead:
+            self.descriptionHeadText = self.descriptionHead.read()
+        else:        
+            self.descriptionSuffixText=""
+        
         if self.descriptionSuffix:
             self.descriptionSuffixText = Template(
                 self.descriptionSuffix.read()
@@ -597,8 +604,8 @@ class Podcast:
         else:        
             self.descriptionSuffixText=""
         
-        template="{prefix}\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
-        htmlTemplate="""{prefix}
+        template="{head}{prefix}\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
+        htmlTemplate="""{head}{prefix}
         
             <div class="podcast-parts">
                 <ol>
@@ -612,22 +619,25 @@ class Podcast:
             tracks=tracks,
             composers=composers,
             albums=albums,
-            prefix=self.removeHTML(self.descriptionPrefixText),
-            suffix=self.removeHTML(self.descriptionSuffixText)
+            head   = self.removeHTML(self.descriptionHeadText),
+            prefix = self.removeHTML(self.descriptionPrefixText),
+            suffix = self.removeHTML(self.descriptionSuffixText)
         ) 
         
         self.htmlDescription = htmlTemplate.format(
             tracks=htmlTracks,
-            prefix=self.descriptionPrefixText,
-            suffix=self.descriptionSuffixText
+            head   = self.descriptionHeadText,
+            prefix = self.descriptionPrefixText,
+            suffix = self.descriptionSuffixText
         )
         
         self.youtubeDescription = template.format(
             tracks=youtubeTracks,
             composers=composers,
             albums=albums,
-            prefix=self.removeHTML(self.descriptionPrefixText),
-            suffix=self.removeHTML(self.descriptionSuffixText)
+            head   = self.removeHTML(self.descriptionHeadText),
+            prefix = self.removeHTML(self.descriptionPrefixText),
+            suffix = self.removeHTML(self.descriptionSuffixText)
         ) 
         
         if self.title.endswith(' | '): self.title = self.title[:-3]
@@ -867,9 +877,12 @@ class Podcast:
         # Create post for WordPress
         self.logger.info('Create WordPress post...')
         post = WordPressPost()
-        post.title = self.title
+        post.title = '{i:04d} {title}'.format(i=int(self.episode), title=self.title)
         post.slug = self.getSlug()
-        post.content = 	Template(self.htmlDescription).safe_substitute(youtubeid=self.youtubeID)
+        post.content = 	Template(self.htmlDescription).safe_substitute(
+            youtubeid=self.youtubeID,
+            mediaurl=metamedia['url']
+        )
         post.custom_fields = []
         post.custom_fields.append({
             'key': 'enclosure',
@@ -1004,6 +1017,9 @@ def main():
     
     parser.add_argument('-a', dest='podcastArtwork', default="PodcastArtwork.jpg",
         help="image to embed as artwork in final M4A podcast file")
+    
+    parser.add_argument('--description-head', dest='descriptionHead', type=open,
+        default=None, help="HTML text for description, before description prefix")
     
     parser.add_argument('--description-prefix', dest='descriptionPrefix', type=open,
         default=None, help="HTML text for description, before track list")
