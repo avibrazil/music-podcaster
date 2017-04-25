@@ -28,7 +28,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:document-units="px"
-     inkscape:current-layer="layer8"
+     inkscape:current-layer="g8528"
      showgrid="false"
      units="px"
      inkscape:zoom="0.15403964"
@@ -37,8 +37,8 @@
      inkscape:window-width="1680"
      inkscape:window-height="1001"
      inkscape:window-x="0"
-     inkscape:window-y="1"
-     inkscape:window-maximized="1"
+     inkscape:window-y="731"
+     inkscape:window-maximized="0"
      showborder="false" />
   <title
      id="title4154">Audio presentation</title>
@@ -1212,13 +1212,13 @@
           <image
              sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
              xlink:href="{COVER_ART_PATH}"
-             style="display:inline;visibility:visible"
-             y="97"
-             x="136"
-             id="cover-art"
-             preserveAspectRatio="xMaxYMin meet"
+             width="650"
              height="650"
-             width="650" />
+             preserveAspectRatio="xMaxYMin meet"
+             id="cover-art"
+             x="136"
+             y="97"
+             style="display:inline;visibility:visible" />
           <flowRoot
              xml:space="preserve"
              id="flow-name-root"
@@ -1231,7 +1231,7 @@
                  x="1078.8429"
                  y="160.76118" /></flowRegion><flowPara
                id="flow-name-text"
-               style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:Arial;-inkscape-font-specification:'Arial Italic';fill:#ffffff;fill-opacity:1">{NAME}</flowPara><flowPara
+               style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:70px;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';fill:#ffffff;fill-opacity:1">{NAME}</flowPara><flowPara
                style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:Arial;-inkscape-font-specification:Arial;fill:#ffffff;fill-opacity:1"
                id="flowPara4234">{COMPOSER}</flowPara></flowRoot>          <g
              id="instrument"
@@ -1249,11 +1249,11 @@
               <circle
                  cx="1875.7826"
                  cy="448.64059"
-                 r="112.60347"
+                 r="109.58491"
                  style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
                  id="circle9093" />
               <path
-                 transform="matrix(2.3267016,0,0,2.3267016,-321.34428,-665.79838)"
+                 transform="matrix(2.2413954,0,0,2.2413954,-244.34665,-630.28065)"
                  d="m 1009.4668,418.61553 c -1.1887,-1.20477 -4.1659,-2.71841 -5.3801,-2.01822 l -4.0392,4.38662 -0.50434,-0.51163 -0.073,0.071 c -0.06,-0.11477 -0.1361,-0.22347 -0.2335,-0.32003 -0.4513,-0.45678 -1.1416,-0.51094 -1.5411,-0.11662 -0.399,0.39458 -0.3555,1.08802 0.096,1.54438 0.4448,0.4497 1.118,0.50332 1.5189,0.13054 l -2.1736,2.36135 -0.49455,-0.50054 -0.0755,0.0738 c -0.0587,-0.11846 -0.13814,-0.23168 -0.23842,-0.33277 -0.45175,-0.45843 -1.14247,-0.50723 -1.54154,-0.11307 -0.39936,0.39468 -0.3571,1.08317 0.0949,1.54108 0.44405,0.44858 1.11423,0.50426 1.51718,0.13093 l -2.02903,2.20963 -0.49004,-0.49468 -0.0797,0.0775 c -0.0591,-0.12134 -0.14091,-0.23756 -0.24397,-0.34274 -0.45133,-0.45676 -1.13928,-0.50847 -1.54029,-0.11334 -0.39936,0.39292 -0.35801,1.08471 0.0934,1.54147 0.45175,0.4567 1.14248,0.50726 1.54196,0.11294 l -2.30116,2.49881 -0.003,0.58857 -0.2096,0.96955 -0.22444,0.21443 4.73158,4.79176 0.21704,-0.22306 0.97195,-0.19682 0.58853,0.003 2.5274,-2.26903 c -0.399,0.39458 -0.3579,1.08512 0.094,1.54314 0.4518,0.45669 1.1422,0.506 1.5416,0.11137 0.3993,-0.39468 0.3555,-1.08236 -0.096,-1.53904 -0.1031,-0.10559 -0.2171,-0.18798 -0.3402,-0.24933 l 0.079,-0.0792 -0.4884,-0.49552 2.2342,-2.00295 c -0.3781,0.39764 -0.3313,1.06973 0.1131,1.51951 0.4516,0.4567 1.1396,0.50796 1.5389,0.11505 0.3995,-0.39427 0.358,-1.08646 -0.094,-1.54274 -0.1004,-0.10151 -0.2127,-0.18254 -0.3301,-0.24356 l 0.075,-0.0747 -0.495,-0.50044 2.3896,-2.14431 c -0.3777,0.39755 -0.3325,1.07179 0.1107,1.52189 0.4516,0.45628 1.1445,0.50847 1.5439,0.11373 0.399,-0.39416 0.3542,-1.08555 -0.097,-1.54231 -0.098,-0.0982 -0.2043,-0.17721 -0.3168,-0.23772 l 0.071,-0.0705 -0.5043,-0.51164 4.4358,-3.98468 c 0.7156,-1.20318 -0.7599,-4.19791 -1.9483,-5.40103 z m -6.6197,2.24204 c 0.2656,0.25093 0.3538,0.66529 0.01,1.04222 l -0.9112,1.00639 -1.1179,-1.13215 0.791,-0.85198 c 0.3926,-0.42179 0.9245,-0.34686 1.2266,-0.0646 z m 4.2432,4.29666 c 0.3222,0.29439 0.4241,0.86719 -0.029,1.27705 l -0.8619,0.7811 -1.1178,-1.13214 1.0184,-0.89874 c 0.3558,-0.31573 0.7386,-0.25594 0.9903,-0.0273 z m -6.9812,-2.60561 1.1252,1.14077 -2.17874,2.39668 -1.1496,-1.16522 2.20314,-2.37223 z m 4.1817,4.23522 1.1227,1.1379 -2.3981,2.17172 -1.1497,-1.16347 2.4251,-2.14615 z m -7.10604,-1.0847 1.1586,1.17341 -2.03589,2.24322 -1.18187,-1.19819 2.05916,-2.21844 z m 3.88474,3.93406 1.1587,1.17168 -2.24594,2.03162 -1.1794,-1.19531 2.26664,-2.00799 z m -6.66717,-0.93857 1.19297,1.20765 -0.19907,0.21988 c -0.9062,0.99858 -2.24716,-0.0783 -1.3043,-1.09433 l 0.3104,-0.3332 z m 3.60433,3.64975 1.1905,1.20477 -0.3378,0.30556 c -1.0273,0.93149 -2.08392,-0.42058 -1.075,-1.31521 l 0.2223,-0.19512 z m -7.65867,0.40861 -32.20379,30.64479 c -8.55893,-7.21287 -14.72046,-6.07708 -18.81174,-2.70508 -3.89307,3.2082 -5.57057,9.37297 -7.72991,11.2669 -4.36069,3.82762 -14.51796,0.45532 -23.73676,10.29915 -10.66645,11.39165 -3.16941,22.92648 5.28259,31.48517 8.45364,8.55829 19.89214,16.19778 31.4168,5.67622 9.95786,-9.09448 6.71272,-19.29554 10.59273,-23.60839 1.9216,-2.13482 8.10886,-3.7339 11.36594,-7.58622 3.42274,-4.04861 4.63581,-10.19648 -2.46999,-18.84601 l 31.0452,-31.81785 -0.66098,0.66464 -4.76299,-4.82319 0.67248,-0.65179 4.2e-4,0.003 z m -5.61745,5.41812 4.8799,4.94193 -0.72991,0.7294 -4.88884,-4.95148 0.73844,-0.72149 4.1e-4,0.003 z m -5.96553,5.66169 5.10787,5.17345 -0.72908,0.73268 -5.12049,-5.18382 0.7417,-0.72231 z m -5.47742,5.19945 5.31973,5.38762 -0.73156,0.72982 -5.32877,-5.39583 0.7406,-0.72161 z m -4.69956,4.4594 5.50205,5.57077 -0.73279,0.73013 -5.50943,-5.5794 0.74017,-0.7215 z m -4.40548,4.18135 5.66926,5.74239 -0.72991,0.72941 -5.67779,-5.75031 0.7368,-0.7211 0.003,-3.9e-4 z m -3.9644,3.76315 5.82372,5.89628 -0.72991,0.7294 -5.83316,-5.90614 0.73935,-0.71954 z m -3.41757,3.24439 5.95379,6.02745 -0.7291,0.73269 -5.96519,-6.03987 0.7405,-0.72027 z m -3.13612,2.97691 6.0744,6.1505 -0.72992,0.72941 -6.08384,-6.16037 0.73771,-0.71913 0.003,-4.1e-4 z m -2.76994,2.62934 6.18003,6.25897 -0.73033,0.72776 -6.18852,-6.26687 0.73842,-0.7215 4e-4,0.003 z m -2.43364,2.3089 6.27538,6.35429 -0.73031,0.72777 -6.28401,-6.36086 0.73894,-0.7212 z m 4.8629,7.78425 c 0.57809,2.69861 -0.19119,5.62487 -2.29955,7.70725 -3.28459,3.24393 -8.57701,3.21151 -11.82043,-0.0728 -3.24392,-3.2846 -3.21181,-8.57824 0.0724,-11.82207 2.10744,-2.08084 5.04401,-2.81216 7.73344,-2.19976 l -1.58777,1.51257 c -1.77506,-0.0714 -3.57498,0.56516 -4.93812,1.91127 -2.60883,2.57734 -2.63646,6.78247 -0.0587,9.39293 2.57735,2.6088 6.78165,2.63316 9.39045,0.0558 1.36357,-1.34622 2.02074,-3.1379 1.97104,-4.91369 l 1.53565,-1.57113 0.003,-4.2e-4 z m -3.86676,-2.48983 c 0.0387,0.0397 0.0773,0.0793 0.11531,0.12082 0.0389,0.0401 0.0767,0.0815 0.11412,0.12331 0.0374,0.04 0.0741,0.0836 0.11005,0.1262 0,0 0,0 10e-4,-4e-4 0.0704,0.0846 0.13836,0.1714 0.20396,0.25759 0.0318,0.0449 0.0634,0.0898 0.0951,0.13461 0.0629,0.088 0.12476,0.17831 0.18217,0.27176 0.23111,0.36645 0.41826,0.75435 0.5623,1.153 0.0718,0.20027 0.13298,0.40318 0.1842,0.60856 0.075,0.30726 0.12567,0.62015 0.15278,0.93365 0.008,0.10545 0.0147,0.20928 0.0185,0.3139 0.008,0.20957 0.003,0.42038 -0.0105,0.62862 l 0.003,-4.1e-4 c -0.0996,1.41729 -0.69642,2.8038 -1.78605,3.88045 -2.37934,2.34989 -6.21132,2.32772 -8.55947,-0.0516 -2.34906,-2.3778 -2.32617,-6.21216 0.0533,-8.56162 1.08962,-1.07666 2.48629,-1.65396 3.90467,-1.7353 0,0 -0.003,4e-4 0,0 0.10584,-0.005 0.21009,-0.0105 0.31595,-0.0118 0.10375,-5.8e-4 0.20835,0.003 0.3137,0.008 0.41903,0.018 0.83704,0.0808 1.24536,0.18699 0.1019,0.0274 0.20104,0.0553 0.30258,0.0864 0.0926,0.0297 0.18584,0.0609 0.27793,0.096 0.0184,0.005 0.0372,0.0118 0.0557,0.0184 0.0888,0.034 0.17678,0.072 0.26425,0.10939 0.28512,0.12476 0.56241,0.27241 0.83033,0.44379 0.0118,0.008 0.0225,0.015 0.0345,0.0223 0.0858,0.0567 0.17154,0.11373 0.2549,0.17506 0.0444,0.033 0.0902,0.0679 0.13393,0.0992 0.0445,0.0334 0.0852,0.0674 0.12817,0.1027 0.0404,0.0327 0.0825,0.0646 0.12213,0.0992 0.0452,0.0379 0.0876,0.0785 0.13136,0.11727 0.0415,0.0372 0.0821,0.0764 0.12265,0.11557 0.0404,0.0397 0.0808,0.0789 0.122,0.11963 l 0.003,0.008 z m -27.90715,10.4317 17.12663,17.34153 c 0.24911,0.25329 0.144,0.75516 -0.23523,1.12735 l -1.97546,1.95235 c -0.3787,0.37425 -0.8826,0.47254 -1.13122,0.2213 l -17.1215,-17.31401 c -0.2487,-0.25166 -0.1444,-0.75681 0.23318,-1.12861 l 1.97711,-1.95273 c 0.37707,-0.37384 0.88301,-0.4709 1.13173,-0.21926 l -0.005,-0.028 z"
                  style="display:inline;visibility:visible;fill:#e0e0e0;fill-opacity:1;fill-rule:nonzero;stroke:none"
                  id="path8246"
@@ -1265,11 +1265,11 @@
              xml:space="preserve"
              id="flow-artist-root"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-             transform="translate(-172,-159.97398)"><flowRegion
+             transform="translate(-172,-134.97398)"><flowRegion
                id="flow-artist-box"><rect
                  id="rect4502"
-                 width="800"
-                 height="177.78687"
+                 width="850"
+                 height="150"
                  x="1165.7161"
                  y="540.57855"
                  style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
@@ -1285,7 +1285,7 @@
             <circle
                cx="1875.7826"
                cy="448.64059"
-               r="112.60347"
+               r="109.58491"
                style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
                id="circle9054" />
             <circle
@@ -1308,7 +1308,7 @@
                inkscape:connector-curvature="0" />
           </g>
           <flowRoot
-             transform="translate(-172,34.86493)"
+             transform="translate(-172,59.86493)"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              id="flow-album-root"
              xml:space="preserve"><flowRegion
@@ -1316,10 +1316,10 @@
                  style="fill:#ffffff;fill-opacity:1"
                  y="540.57855"
                  x="1165.7161"
-                 height="177.78687"
-                 width="800"
+                 height="150"
+                 width="850"
                  id="rect4510" /></flowRegion><flowPara
-               id="flow-album-text">{ALBUM}</flowPara></flowRoot>          <path
+               id="flow-album-text">{ALBUM} </flowPara></flowRoot>          <path
              cx="1875.7826"
              cy="448.64059"
              r="112.60347"
@@ -1352,13 +1352,13 @@
           <image
              sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
              xlink:href="{PREV_COVER_ART_PATH}"
-             width="200"
-             height="200"
-             preserveAspectRatio="xMaxYMin meet"
-             id="image5596"
-             x="124"
+             style="display:inline;visibility:visible"
              y="855"
-             style="display:inline;visibility:visible" />
+             x="124"
+             id="image5596"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
           <flowRoot
              xml:space="preserve"
              id="flowRoot5610"
@@ -1416,13 +1416,13 @@
           <image
              sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
              xlink:href="{NEXT_COVER_ART_PATH}"
-             width="200"
-             height="200"
-             preserveAspectRatio="xMaxYMin meet"
-             id="image7335"
-             x="1596"
+             style="display:inline;visibility:visible"
              y="855"
-             style="display:inline;visibility:visible" />
+             x="1596"
+             id="image7335"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
           <path
              transform="matrix(0.49852722,0,0,1,1416.4232,-16)"
              sodipodi:type="star"
@@ -1684,9 +1684,9 @@
     <image
        sodipodi:absref="/home/aviram/src/music-podcaster/background.png"
        xlink:href="background.png"
-       id="image8383"
+       y="1758.293"
        x="332.89694"
-       y="1758.293" />
+       id="image8383" />
     <rect
        y="1439.274"
        x="-1686.549"
@@ -1819,7 +1819,9 @@
      inkscape:groupmode="layer">
     <g
        id="podcast-artwork"
-       transform="translate(2912.8374,15.660416)">
+       transform="translate(2912.8374,15.660416)"
+       inkscape:export-xdpi="700"
+       inkscape:export-ydpi="700">
       <use
          transform="matrix(0.1875,0,0,0.33333333,0,720)"
          width="100%"
