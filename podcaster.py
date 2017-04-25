@@ -74,16 +74,13 @@ class Podcast:
             if self.output and self.episode: self.output += "-"
             if self.episode:                 self.output += '{:04d}'.format(int(self.episode))
             if self.output and self.title:   self.output += "-"
-            if self.title:                   self.output += self.title
+            if self.title:                   self.output += self.safeFileName(self.title)
             if self.output:
                 self.output = self.output.replace(" ","_")
         
         if self.output == None:              self.output = "output"
         if not self.output.endswith('.m4a'): self.output += '.m4a'
 
-        # self.output = unicode(self.output, self.targetEncoding)
-        self.output = unidecode(self.output) # transliterate
-        
         self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')
         self.youtubeOutput = self.output.replace('.m4a', '.youtube.mp4')
         
@@ -207,6 +204,14 @@ class Podcast:
 
     #### Methods for content generation and manipulation
     
+    def safeFileName(self, s):
+        safe = s
+        safe = safe.replace('•','-')
+        safe = safe.replace('|','-')
+        safe = safe.replace('/','-')
+        safe = safe.replace('\\','-')
+        return unidecode(safe)
+    
     def removeHTML(self, s):
         return re.sub(r'<[^>]+>','', s)
 
@@ -258,9 +263,9 @@ class Podcast:
             "--export-id={}".format(svgid),
             "-w", str(w),
             "-h", str(h),
-            "-e", thePresentation[1], theTemplate.name],
-            stdout=FNULL,
-            stderr=FNULL
+            "-e", thePresentation[1], theTemplate.name]# ,
+#             stdout=FNULL,
+#             stderr=FNULL
         )
 
         os.remove(theTemplate.name)       # remove temporary SVG
@@ -673,7 +678,7 @@ class Podcast:
         )
 
     def concatAudioFiles(self):
-        self.logger.info("Build media...")
+        self.logger.info("Build audio track as concatenation of input files...")
     
     
         coder=[
