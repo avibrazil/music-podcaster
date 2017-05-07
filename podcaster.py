@@ -257,16 +257,21 @@ class Podcast:
         thePresentation = tempfile.mkstemp(suffix='.png')
         os.close(thePresentation[0])
 
-        FNULL = open(os.devnull, 'w')
-        subprocess.call([
-            "inkscape", "--without-gui",
-            "--export-id={}".format(svgid),
-            "-w", str(w),
-            "-h", str(h),
-            "-e", thePresentation[1], theTemplate.name]# ,
-#             stdout=FNULL,
-#             stderr=FNULL
+        FNULL = open(os.devnull, 'w+')
+        subprocess.call(
+            [
+                "inkscape", "--without-gui",
+                "--export-id={}".format(svgid),
+                "-w", str(w),
+                "-h", str(h),
+                "-e", thePresentation[1], theTemplate.name
+            ],
+            stdin=FNULL,
+            stdout=FNULL,
+            stderr=FNULL
         )
+        
+        FNULL.close()
 
         os.remove(theTemplate.name)       # remove temporary SVG
 
@@ -385,8 +390,8 @@ class Podcast:
         ).replace('\n', ' ')
 
     def songCompleteName(self, song):
-        albumYear=" 【{:.4}】"
-        template="{artist} ♬ {title} ({l})"
+        albumYear=" ({:.4})"
+        template="{artist} ♫ {title} [{l}]"
         
         if 'date' in song:
             albumYear = albumYear.format(song['date'][0])
@@ -708,15 +713,18 @@ class Podcast:
 #         params.append("-i")
 #         params.append("anullsrc=channel_layout=2:sample_rate=44100")
 
-        FNULL = open(os.devnull, 'w')
+        FNULL = open(os.devnull, 'w+')
         subprocess.call(
             ["ffmpeg"] +
             params +
             coder +
             [self.output],
+            stdin=FNULL,
             stdout=FNULL,
             stderr=FNULL
         )
+        
+        FNULL.close()
 
     def ffmetadataChapter(self,song):
         # unused, obsolete
@@ -805,16 +813,22 @@ class Podcast:
         
         self.logger.info("Optimizing media for YouTube...")
         
-        FNULL = open(os.devnull, 'w')
-        subprocess.call([
-            "ffmpeg", "-y",
-            "-i", self.output,
-            "-c:v", "libx264", "-tune", "stillimage", "-vf", "fps=2", # video filters
-            "-c:a", "copy", # audio processing: just copy source
-            self.youtubeOutput
-        ],
-        stdout=FNULL,
-        stderr=FNULL)
+        FNULL = open(os.devnull, 'w+')
+        subprocess.call(
+            [
+                "ffmpeg", "-y",
+                "-i", self.output,
+                "-c:v", "libx264", "-tune", "stillimage", "-vf", "fps=2", # video filters
+                "-c:a", "copy", # audio processing: just copy source
+                self.youtubeOutput
+            ],
+            stdin=FNULL,
+            stdout=FNULL,
+            stderr=FNULL
+        )
+
+        FNULL.close()
+
 
     #### End of methods for content generation and manipulation
 
