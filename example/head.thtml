@@ -1,1 +1,1 @@
-<div class="video-container"><iframe class="video" frameborder="0" allowfullscreen src="https://www.youtube-nocookie.com/embed/${youtubeid}?rel=0&showinfo=0&list=PLg2MCa6HqaCb1IBtOPl5aqNsojFCYtCpm"></iframe></div>
+<div class="video-container"><iframe class="video" frameborder="0" allowfullscreen src="https://www.youtube-nocookie.com/embed/${youtubeid}?rel=0&showinfo=0&list=${youtubelist}"></iframe></div>
