@@ -13,8 +13,10 @@ https://abstra.to/xmlrpc.php
 --wordpress-user
 admin
 --wordpress-pass
-........
+abcdefg123
 --youtube-credentials
 ../youtube-uploader.json
 --youtube-playlist
-PLg2.Ca6.qaCb1.BtOPl.aqNs.jFC.t.pm
+Brasil Abstrato
+--youtube-playlist-id
+PLg2fCa6fqaCb1fBtOPlfaqNsfjFCftfpm

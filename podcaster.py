@@ -611,7 +611,7 @@ class Podcast:
         if self.descriptionHead:
             self.descriptionHeadText = Template(
                 self.descriptionHead.read()
-            ).safe_substitute(youtubelist=self.ytPL)
+            ).safe_substitute(youtubelist=self.ytPLid)
         else:        
             self.descriptionHeadText=""
         
@@ -1080,6 +1080,9 @@ def main():
 
     parser.add_argument('--youtube-playlist', dest='ytPL',
         help="""YouTube playlist name""")
+
+    parser.add_argument('--youtube-playlist-id', dest='ytPLid',
+        help="""YouTube playlist id""")
 
     parser.add_argument('f', type=str, nargs='+',
                         help='music files to be added to podcast')
