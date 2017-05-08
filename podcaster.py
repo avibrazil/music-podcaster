@@ -210,6 +210,13 @@ class Podcast:
         safe = safe.replace('|','-')
         safe = safe.replace('/','-')
         safe = safe.replace('\\','-')
+        safe = safe.replace("""'""","")
+        safe = safe.replace("""“""","")
+        safe = safe.replace("""”""","")
+        safe = safe.replace("""‘""","")
+        safe = safe.replace("""’""","")
+        safe = safe.replace("""«""","")
+        safe = safe.replace("""»""","")
         return unidecode(safe)
     
     def removeHTML(self, s):
@@ -913,7 +920,7 @@ class Podcast:
             )
         })
         
-        if self.wordpressDraft == False:
+        if self.wordpressDraft is False:
             post.post_status = 'publish'
 
         
