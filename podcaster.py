@@ -542,10 +542,9 @@ class Podcast:
         composers=""
         albums=""
         
-        self.logger.info("Build textual content from media tags...")
-        
         i=0
         pos=self.introDuration/1000
+        self.logger.info("Build track textual content from media tags...")
         for song in self.files:
             i+=1
             name=self.songCompleteName(song)
@@ -603,9 +602,11 @@ class Podcast:
             self.descriptionPrefixText=""
         
         if self.descriptionHead:
-            self.descriptionHeadText = self.descriptionHead.read()
+            self.descriptionHeadText = Template(
+                self.descriptionHead.read()
+            ).safe_substitute(youtubelist=self.ytPL)
         else:        
-            self.descriptionSuffixText=""
+            self.descriptionHeadText=""
         
         if self.descriptionSuffix:
             self.descriptionSuffixText = Template(
@@ -614,7 +615,7 @@ class Podcast:
         else:        
             self.descriptionSuffixText=""
         
-        template="{head}{prefix}\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
+        template="{head}{prefix}\n\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
         htmlTemplate="""{head}{prefix}
         
             <div class="podcast-parts">
@@ -626,27 +627,27 @@ class Podcast:
             {suffix}"""
         
         self.description = template.format(
+            head   = self.removeHTML(self.descriptionHeadText),
+            prefix = self.removeHTML(self.descriptionPrefixText),
             tracks=tracks,
             composers=composers,
             albums=albums,
-            head   = self.removeHTML(self.descriptionHeadText),
-            prefix = self.removeHTML(self.descriptionPrefixText),
             suffix = self.removeHTML(self.descriptionSuffixText)
         ) 
         
         self.htmlDescription = htmlTemplate.format(
+            prefix = self.descriptionPrefixText,
             tracks=htmlTracks,
             head   = self.descriptionHeadText,
-            prefix = self.descriptionPrefixText,
             suffix = self.descriptionSuffixText
         )
         
         self.youtubeDescription = template.format(
+            head   = self.removeHTML(self.descriptionHeadText),
+            prefix = self.removeHTML(self.descriptionPrefixText),
             tracks=youtubeTracks,
             composers=composers,
             albums=albums,
-            head   = self.removeHTML(self.descriptionHeadText),
-            prefix = self.removeHTML(self.descriptionPrefixText),
             suffix = self.removeHTML(self.descriptionSuffixText)
         ) 
         
@@ -896,7 +897,7 @@ class Podcast:
         # Create post for WordPress
         self.logger.info('Create WordPress post...')
         post = WordPressPost()
-        post.title = '{i:04d} {title}'.format(i=int(self.episode), title=self.title)
+        post.title = '{title}'.format(i=int(self.episode), title=self.title)
         post.slug = self.getSlug()
         post.content = 	Template(self.htmlDescription).safe_substitute(
             youtubeid=self.youtubeID,
@@ -911,6 +912,9 @@ class Podcast:
                 duration = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(self.length))))
             )
         })
+        
+        if self.wordpressDraft == False:
+            post.post_status = 'publish'
 
         
         # Tag the post with artists in media
@@ -961,7 +965,7 @@ class Podcast:
         self.youtubeID=subprocess.check_output([
             self.ytupload,
             "-c", 'Music',
-            "-t", "{index:04} {title} « {podcast}".format(
+            "-t", "{title} « {podcast}".format(
                 index=int(self.episode),
                 title=self.title,
                 podcast=self.podcast
@@ -1060,6 +1064,9 @@ def main():
 
     parser.add_argument('--wordpress-pass', dest='wordpressPass',
         help="""WordPress password""")
+
+    parser.add_argument('-d', dest='wordpressDraft', action='store_true',
+        default=False, help="Keep post in draft mode")
 
     parser.add_argument('--youtube-credentials', dest='ytCred',
         help="""YouTube credentials JSON file""")
