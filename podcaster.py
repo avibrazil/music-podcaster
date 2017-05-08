@@ -906,6 +906,7 @@ class Podcast:
         post = WordPressPost()
         post.title = '{title}'.format(i=int(self.episode), title=self.title)
         post.slug = self.getSlug()
+        post.comment_status = 'open'
         post.content = 	Template(self.htmlDescription).safe_substitute(
             youtubeid=self.youtubeID,
             mediaurl=metamedia['url']
