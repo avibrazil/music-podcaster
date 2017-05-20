@@ -144,6 +144,16 @@ class Podcast:
         if u'\xa9wrt' in k:
             info['composer']=audio[u'\xa9wrt']
 
+        if '----:com.apple.iTunes:MusicBrainz Release Track Id' in k:
+            info['musicbrainz_releasetrackid']=[]
+            for i in range(len(audio['----:com.apple.iTunes:MusicBrainz Release Track Id'])):
+                info['musicbrainz_releasetrackid'].append(
+                    audio['----:com.apple.iTunes:MusicBrainz Release Track Id'][i].decode('UTF-8')
+                )
+
+        if u'TXXX:MusicBrainz Release Track Id' in k:
+            info['musicbrainz_releasetrackid']=audio[u'TXXX:MusicBrainz Release Track Id'].text
+
         if '----:com.apple.iTunes:MusicBrainz Work Id' in k:
             info['musicbrainz_workid']=[]
             for i in range(len(audio['----:com.apple.iTunes:MusicBrainz Work Id'])):
@@ -315,6 +325,11 @@ class Podcast:
                 id = song['musicbrainz_trackid'][0],
                 title = song['title'][0]
             )
+#             title = """<a href="https://musicbrainz.org/release/{album}/#{track}">{title}</a>""".format(
+#                 album = song['musicbrainz_albumid'][0],
+#                 track = song['musicbrainz_releasetrackid'][0],
+#                 title = song['title'][0]
+#             )
         except KeyError:
             title = song['title'][0]
 
@@ -322,11 +337,13 @@ class Podcast:
         # Compute artist name
         try:
             artist = song['artist'][0]
+            w = self.getWordPressURL().rstrip('/')
             if len(song['musicbrainz_artistid']) == 1:
                 # Only 1 artist
-                artist = """<a href="https://musicbrainz.org/artist/{mbid}">{artist}</a>""".format(
+                artist = """<a href="{w}/artist/{mbid}">{artist}</a>""".format(
                     mbid = song['musicbrainz_artistid'][0],
-                    artist = song['artist'][0]
+                    artist = song['artist'][0],
+                    w = w
                 )
             else:
                 # Multiple artists
@@ -335,9 +352,10 @@ class Podcast:
                     self.logger.debug('songCompleteNameHTML:replacing artist: %s', song['artists'][i])
                     artist = artist.replace(
                         song['artists'][i],
-                        """<a href="https://musicbrainz.org/artist/{mbid}">{artist}</a>""".format(
+                        """<a href="{w}/artist/{mbid}">{artist}</a>""".format(
                             artist = song['artists'][i],
-                            mbid = song['musicbrainz_artistid'][i]
+                            mbid = song['musicbrainz_artistid'][i],
+                            w = w
                         )
                     )
         except KeyError:
@@ -371,9 +389,11 @@ class Podcast:
         album = ""
         if 'album' in song:
             if 'musicbrainz_albumid' in song:
-                album = """<a href="https://musicbrainz.org/release/{id}">{album}</a>""".format(
+                album = """<a href="https://musicbrainz.org/release/{id}/#{track}">{album}</a>{albumYear}""".format(
                     id = song['musicbrainz_albumid'][0],
-                    album = song['album'][0] + albumYear
+                    track = song['musicbrainz_releasetrackid'][0],
+                    album = song['album'][0],
+                    albumYear = albumYear
                 )
             else:
                 album = song['album'][0] + albumYear
@@ -559,6 +579,11 @@ class Podcast:
                 i=i,
                 name=name
             )
+
+            self.logger.info("   {i:02}. {name}".format(
+                i=i,
+                name=name
+            ))
 
             htmlTracks += """\n<li class="track">{}</li>\n""".format(
                 self.songCompleteNameHTML(song)

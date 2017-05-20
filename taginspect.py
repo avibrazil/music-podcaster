@@ -20,7 +20,7 @@ for f in vars(args)['files']:
         del audio['APIC:']
     pprint.pprint(audio)
 
-    for i in range(len(audio['----:com.apple.iTunes:ARTISTS'])):
-        print(
-            audio['----:com.apple.iTunes:ARTISTS'][i]
-        )
+#    for i in range(len(audio['----:com.apple.iTunes:ARTISTS'])):
+#        print(
+#            audio['----:com.apple.iTunes:ARTISTS'][i]
+#        )
