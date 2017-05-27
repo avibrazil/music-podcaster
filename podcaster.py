@@ -27,6 +27,7 @@ import unicodedata
 from unidecode import unidecode
 import re
 import datetime
+from dateutil.parser import parse
 import logging
 from PIL import Image
 import os
@@ -930,6 +931,8 @@ class Podcast:
         self.logger.info('Create WordPress post...')
         post = WordPressPost()
         post.title = '{title}'.format(i=int(self.episode), title=self.title)
+        if self.date:
+            post.date = parse(self.date)            
         post.slug = self.getSlug()
         post.comment_status = 'open'
         post.content = 	Template(self.htmlDescription).safe_substitute(
@@ -1085,6 +1088,9 @@ def main():
 
     parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
         help="Duration in miliseconds for introduction image")
+
+    parser.add_argument('--date', dest='date',
+        help="""Date and time for post. Example: 2017-03-02 12:43 or simply 2017-03-02""")
 
     parser.add_argument('--server-folder', dest='serverFolder',
         help="""SSH/SCP/SFTP notation for server folder, as host.name.com:folder1/folder2/ (workaround while WordPress XML-RPC upload fails with large files)""")
