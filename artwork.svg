@@ -16,8 +16,7 @@
    viewBox="0 0 1920 1080"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   inkscape:export-filename="/Users/aviram/rect4136.png"
+   inkscape:version="0.92.1 r"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
    sodipodi:docname="artwork.svg">
@@ -28,16 +27,16 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="whatever"
      showgrid="false"
      units="px"
-     inkscape:zoom="0.36237864"
-     inkscape:cx="3726.8867"
-     inkscape:cy="1560.8546"
-     inkscape:window-width="1680"
-     inkscape:window-height="1001"
+     inkscape:zoom="0.45625"
+     inkscape:cx="1779.2719"
+     inkscape:cy="351.93753"
+     inkscape:window-width="1440"
+     inkscape:window-height="900"
      inkscape:window-x="0"
-     inkscape:window-y="731"
+     inkscape:window-y="31"
      inkscape:window-maximized="0"
      showborder="false"
      showguides="true"
@@ -1449,19 +1448,19 @@
         <g
            id="g8528">
           <image
-             sodipodi:absref="/Users/aviram/src/music-podcaster/{COVER_ART_PATH}"
+             sodipodi:absref="/home/aviram/src/music-podcaster/{COVER_ART_PATH}"
              xlink:href="{COVER_ART_PATH}"
-             style="display:inline;visibility:visible"
-             y="97"
-             x="136"
-             id="cover-art"
-             preserveAspectRatio="xMaxYMin meet"
+             width="650"
              height="650"
-             width="650" />
+             preserveAspectRatio="xMaxYMin meet"
+             id="cover-art"
+             x="136"
+             y="97"
+             style="display:inline;visibility:visible" />
           <flowRoot
              xml:space="preserve"
              id="flow-name-root"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              transform="translate(-247.55286,-39.63784)"><flowRegion
                id="flowRegion4492"><rect
                  id="flow-name-box"
@@ -1470,8 +1469,8 @@
                  x="1078.8429"
                  y="160.76118" /></flowRegion><flowPara
                id="flow-name-text"
-               style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:70px;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';fill:#ffffff;fill-opacity:1">{NAME}</flowPara><flowPara
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;font-family:Arial;-inkscape-font-specification:Arial;fill:#ffffff;fill-opacity:1"
+               style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:70px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';fill:#ffffff;fill-opacity:1">{NAME}</flowPara><flowPara
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;fill:#ffffff;fill-opacity:1"
                id="flowPara4234">{COMPOSER}</flowPara></flowRoot>          <g
              id="instrument"
              transform="translate(-55.000005,-39.838909)">
@@ -1503,7 +1502,7 @@
           <flowRoot
              xml:space="preserve"
              id="flow-artist-root"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              transform="translate(-172,-134.97398)"><flowRegion
                id="flow-artist-box"><rect
                  id="rect4502"
@@ -1512,7 +1511,8 @@
                  x="1165.7161"
                  y="540.57855"
                  style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
-               id="flow-artist-text">{ARTIST}</flowPara></flowRoot>          <g
+               id="flow-artist-text"
+               style="font-size:40px;line-height:1.25">{ARTIST}</flowPara></flowRoot>          <g
              id="vinyl"
              transform="matrix(0.43345386,0,0,0.43345386,76.417095,441.22002)">
             <circle
@@ -1548,7 +1548,7 @@
           </g>
           <flowRoot
              transform="translate(-172,59.86493)"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              id="flow-album-root"
              xml:space="preserve"><flowRegion
                id="flow-album-box"><rect
@@ -1558,25 +1558,8 @@
                  height="150"
                  width="850"
                  id="rect4510" /></flowRegion><flowPara
-               id="flow-album-text">{ALBUM} </flowPara></flowRoot>          <path
-             cx="1875.7826"
-             cy="448.64059"
-             r="112.60347"
-             style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-             id="path9074" />
-          <text
-             xml:space="preserve"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-             x="2721.4307"
-             y="-520.14923"
-             id="text8472"
-             sodipodi:linespacing="125%"><tspan
-               sodipodi:role="line"
-               id="tspan8474"
-               x="2721.4307"
-               y="-520.14923"
-               style="fill:#ffffff;fill-opacity:1" /></text>
-        </g>
+               id="flow-album-text"
+               style="font-size:40px;line-height:1.25">{ALBUM} </flowPara></flowRoot>        </g>
       </g>
       <g
          style="display:inline"
@@ -1601,19 +1584,19 @@
              id="rect5600"
              style="display:inline;visibility:visible;fill:#000000;fill-opacity:0" />
           <image
-             sodipodi:absref="/Users/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
+             sodipodi:absref="/home/aviram/src/music-podcaster/{PREV_COVER_ART_PATH}"
              xlink:href="{PREV_COVER_ART_PATH}"
-             width="200"
-             height="200"
-             preserveAspectRatio="xMaxYMin meet"
-             id="image5596"
-             x="124"
+             style="display:inline;visibility:visible"
              y="855"
-             style="display:inline;visibility:visible" />
+             x="124"
+             id="image5596"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
           <flowRoot
              xml:space="preserve"
              id="flowRoot5610"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
                id="flowRegion5612"><rect
                  id="rect5614"
                  width="606"
@@ -1623,7 +1606,7 @@
                  style="fill:#ffff7b;fill-opacity:1" /></flowRegion><flowPara
                id="flowPara5616"
                style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Italic';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1">{PREV_NAME}</flowPara></flowRoot>          <flowRoot
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              id="flowRoot5623"
              xml:space="preserve"><flowRegion
                id="flowRegion5625"><rect
@@ -1648,7 +1631,7 @@
              inkscape:flatsided="true"
              inkscape:rounded="0"
              inkscape:randomized="0"
-             d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
+             d="m 966.30724,968 -156.46086,90.3327 V 877.66728 Z"
              inkscape:transform-center-x="13.000052"
              transform="matrix(-0.49852722,0,0,1,503.5768,-16)" />
         </g>
@@ -1665,15 +1648,15 @@
              id="rect7333"
              style="display:inline;visibility:visible;fill:#000000;fill-opacity:0" />
           <image
-             sodipodi:absref="/Users/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
+             sodipodi:absref="/home/aviram/src/music-podcaster/{NEXT_COVER_ART_PATH}"
              xlink:href="{NEXT_COVER_ART_PATH}"
-             width="200"
-             height="200"
-             preserveAspectRatio="xMaxYMin meet"
-             id="image7335"
-             x="1596"
+             style="display:inline;visibility:visible"
              y="855"
-             style="display:inline;visibility:visible" />
+             x="1596"
+             id="image7335"
+             preserveAspectRatio="xMaxYMin meet"
+             height="200"
+             width="200" />
           <path
              transform="matrix(0.49852722,0,0,1,1416.4232,-16)"
              sodipodi:type="star"
@@ -1689,10 +1672,10 @@
              inkscape:flatsided="true"
              inkscape:rounded="0"
              inkscape:randomized="0"
-             d="m 966.30724,968 -156.46086,90.3327 0,-180.66542 z"
+             d="m 966.30724,968 -156.46086,90.3327 V 877.66728 Z"
              inkscape:transform-center-x="13.000052" />
           <flowRoot
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
              id="flowRoot7366"
              xml:space="preserve"><flowRegion
                id="flowRegion7368"><rect
@@ -1706,7 +1689,7 @@
                id="flowPara7372">{NEXT_NAME}</flowPara></flowRoot>          <flowRoot
              xml:space="preserve"
              id="flowRoot7401"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;display:inline;visibility:visible;fill:#ffff7b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
                id="flowRegion7403"><rect
                  id="rect7405"
                  width="606"
@@ -1758,31 +1741,31 @@
       <flowRoot
          xml:space="preserve"
          id="flowRoot8216"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
            id="flowRegion8218"><rect
              id="rect8220"
              width="528.14301"
              height="64.826218"
              x="1647.3485"
              y="4389.9502" /></flowRegion><flowPara
-           id="flowPara8222" /></flowRoot>      <g
+           id="flowPara8222"
+           style="font-size:40px;line-height:1.25"> </flowPara></flowRoot>      <g
          id="g8349"
          transform="translate(-9.2434809,0)">
         <text
-           sodipodi:linespacing="125%"
            id="text8214"
            y="4506.5767"
            x="307.30127"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              id="tspan8222"
-             style="font-size:50px;fill:#ffffff;fill-opacity:1"
+             style="font-size:50px;line-height:1.25;fill:#ffffff;fill-opacity:1"
              y="4506.5767"
              x="307.30127"
              sodipodi:role="line">№ {NO}</tspan></text>
         <flowRoot
            transform="translate(-41.946375,69.329744)"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Arial;-inkscape-font-specification:Arial;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            id="flowRoot8224"
            xml:space="preserve"><flowRegion
              id="flowRegion8226"><rect
@@ -1792,7 +1775,7 @@
                height="57.199707"
                width="663.51538"
                id="rect8228" /></flowRegion><flowPara
-             style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1"
+             style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1"
              id="flowPara8230">{EPISODEURL}</flowPara></flowRoot>      </g>
     </g>
     <g
@@ -1933,11 +1916,11 @@
      inkscape:groupmode="layer"
      style="display:inline">
     <image
-       sodipodi:absref="/Users/aviram/src/music-podcaster/background.png"
+       sodipodi:absref="/home/aviram/src/music-podcaster/background.png"
        xlink:href="background.png"
-       id="image8383"
+       y="1758.293"
        x="332.89694"
-       y="1758.293" />
+       id="image8383" />
     <rect
        y="1439.274"
        x="-1686.549"
@@ -1948,7 +1931,8 @@
     <flowRoot
        transform="translate(993.18919,-1981.904)"
        id="flowRoot8193"
-       xml:space="preserve"><flowRegion
+       xml:space="preserve"
+       style="line-height:0.01%"><flowRegion
          id="flowRegion8195"><rect
            y="3970.8928"
            x="486.46747"
@@ -2419,11 +2403,10 @@
       </g>
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.12062454px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="3387.6643"
          y="-620.74683"
-         id="text8827"
-         sodipodi:linespacing="100%"><tspan
+         id="text8827"><tspan
            sodipodi:role="line"
            id="tspan8829"
            x="3387.6643"
@@ -2431,7 +2414,7 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35px;line-height:100%;font-family:'Myriad Set';-inkscape-font-specification:'Myriad Set, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1">Listen on iOS</tspan><tspan
            sodipodi:role="line"
            x="3387.6643"
-           y="-539.47052"
+           y="-540.16089"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:95px;line-height:100%;font-family:'Myriad Set';-inkscape-font-specification:'Myriad Set, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1"
            id="tspan8831">iPhone</tspan></text>
     </g>

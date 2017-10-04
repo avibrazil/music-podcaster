@@ -17,6 +17,23 @@
 # Made in Brazil
 #
 
+#
+# Cheat sheet for dependencies...
+#
+# Python libs:
+# dnf install python3-mutagen python3-unidecode python3-wordpress-xmlrpc.noarch
+#
+# External programs:
+# dnf install inkscape gpac ffmpeg libmp4v2
+#
+# External repo:
+# git clone https://github.com/tokland/youtube-upload
+#
+# Dependencies for external repos:
+# dnf install python2-google-api-client
+#
+
+
 import argparse
 import mutagen
 import pprint
@@ -660,28 +677,28 @@ class Podcast:
             {suffix}"""
         
         self.description = template.format(
-            head   = self.removeHTML(self.descriptionHeadText),
-            prefix = self.removeHTML(self.descriptionPrefixText),
-            tracks=tracks,
-            composers=composers,
-            albums=albums,
-            suffix = self.removeHTML(self.descriptionSuffixText)
+            head      = self.removeHTML(self.descriptionHeadText),
+            prefix    = self.removeHTML(self.descriptionPrefixText),
+            tracks    = tracks,
+            composers = composers,
+            albums    = albums,
+            suffix    = self.removeHTML(self.descriptionSuffixText)
         ) 
         
         self.htmlDescription = htmlTemplate.format(
-            prefix = self.descriptionPrefixText,
-            tracks=htmlTracks,
             head   = self.descriptionHeadText,
+            prefix = self.descriptionPrefixText,
+            tracks = htmlTracks,
             suffix = self.descriptionSuffixText
         )
         
         self.youtubeDescription = template.format(
-            head   = self.removeHTML(self.descriptionHeadText),
-            prefix = self.removeHTML(self.descriptionPrefixText),
-            tracks=youtubeTracks,
-            composers=composers,
-            albums=albums,
-            suffix = self.removeHTML(self.descriptionSuffixText)
+            head      = self.removeHTML(self.descriptionHeadText),
+            prefix    = self.removeHTML(self.descriptionPrefixText),
+            tracks    = youtubeTracks,
+            composers = composers,
+            albums    = albums,
+            suffix    = self.removeHTML(self.descriptionSuffixText)
         ) 
         
         if self.title.endswith(' | '): self.title = self.title[:-3]
@@ -698,6 +715,18 @@ class Podcast:
             "-c:a", "libfdk_aac", "-vbr", "3",
             "-map_metadata", "-1",
         ]
+
+# 
+# ffmpeg \
+# -ss 0:1:0 -t 0:0:5 \
+# -i ../Musica/Brazil\ Jazz\ and\ Fusion/Renato\ Borghetti/1995\ •\ Accordionist/09\ Sétima\ do\ Pontal.m4a \
+# -f lavfi -t 0.5 -i anullsrc=channel_layout=stereo:sample_rate=44100 \
+# -ss 0:1:0 -t 0:0:5 \
+# -i ../Musica/Brazil\ Jazz\ and\ Fusion/Spok\ Frevo\ Orquestra/2007\ •\ 100\ Anos\ do\ Frevo\ -\ É\ de\ perder\ o\ sapato/01\ Instrumental/10\ Gostosão.mp3 \
+# -y -filter_complex "concat=n=3:v=0:a=1 [out]" -map [out] -vn -c:a libfdk_aac -vbr 4 -map_metadata -1 out.m4a
+# 
+
+
 
         params = []
     
@@ -719,7 +748,7 @@ class Podcast:
     def concatAudioFiles(self):
         self.logger.info("Build audio track as concatenation of input files...")
     
-    
+        ffmpegCompressor = "aac"     # best option: "libfdk_aac"
         coder=[
             "-y",
             "-filter_complex",
@@ -728,7 +757,8 @@ class Podcast:
             ),
             "-map", "[out]",
             "-vn",
-            "-c:a", "libfdk_aac", "-vbr", "4",
+#            "-c:a", "libfdk_aac", "-vbr", "4",  # best option
+            "-c:a", "aac", "-b:a", "160k",       # use if libfdk_aac not avaialble in ffmpeg
             "-map_metadata", "-1",
         ]
 
@@ -911,20 +941,27 @@ class Podcast:
         
         # Upload media
         metamedia = {
+            'title': '{i:04d} {title}'.format(i=int(self.episode), title=self.title),
             'name': self.output,
             'type': 'audio/x-m4a',  # mimetype
+            'overwrite': 1
         }
 
         with open(self.output, 'rb') as themedia:
-#                 metamedia['bits'] = xmlrpc_client.Binary(themedia.read())
-                metamedia['bits'] = xmlrpc_client.Binary(bytearray(10)) #dummy placeholder
+            # XML-RPC is a weak protocol to send such a big file, so send only 10 bytes
+            # just to get the media URL. Then send the real file by SCP.
+            # metamedia['bits'] = xmlrpc_client.Binary(themedia.read())    
+            metamedia['bits'] = xmlrpc_client.Binary(bytearray(10)) #dummy placeholder
 
         self.logger.info('Upload to WordPress...')
         metamedia.update(self.wp.call(media.UploadFile(metamedia)))
+
+        # self.logger.info(metamedia)
+
         subprocess.call([
             "scp",
             self.output,
-            self.serverFolder
+            os.path.join(self.serverFolder, os.path.basename(metamedia['url']))
         ])
         
         # Create post for WordPress
@@ -994,7 +1031,8 @@ class Podcast:
 
         self.logger.info("Send media to YouTube...")
 
-        yt = open(os.path.splitext(self.output)[0] + ".youtube.txt", mode='wt')
+        ytfile = os.path.splitext(self.output)[0] + ".youtube.txt"
+        yt = open(ytfile, mode='wt')
         yt.write(self.youtubeDescription)
         yt.close()
         
