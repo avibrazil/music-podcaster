@@ -31,6 +31,7 @@
 #
 # Dependencies for external repos:
 # dnf install python2-google-api-client
+# dnf install python3-google-api-client
 #
 
 
@@ -436,7 +437,7 @@ class Podcast:
 
     def songCompleteName(self, song):
         albumYear=" ({:.4})"
-        template="{artist} ♫ {title} [{l}]"
+        template="{artist} ♬ {title} [{l}]"
         
         if 'date' in song:
             albumYear = albumYear.format(song['date'][0])
@@ -1044,7 +1045,8 @@ class Podcast:
                 title=self.title,
                 podcast=self.podcast
             ),
-            "-d", self.youtubeDescription,
+#            "-d", self.youtubeDescription,
+            "--description-file", ytfile,
 #            "--tags={}".format("a"),
             "--privacy=unlisted",
             "--playlist={}".format(self.ytPL),
@@ -1155,7 +1157,7 @@ def main():
         help="""YouTube playlist id""")
 
     parser.add_argument('f', type=str, nargs='+',
-                        help='music files to be added to podcast')
+        help='music files to be added to podcast')
 
     args = parser.parse_args(namespace=p)
     
