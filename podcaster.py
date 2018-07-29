@@ -49,6 +49,7 @@ from dateutil.parser import parse
 import logging
 from PIL import Image
 import os
+from shutil import copyfile
 import math
 import sys
 from string import Template
@@ -64,7 +65,7 @@ class Podcast:
 
     #### Methods for orchestration
 
-    def __init__ (self, logger=logging.ERROR):
+    def __init__ (self, logger=logging.DEBUG):
         self.ytupload = "/home/aviram/src/youtube-upload/bin/youtube-upload"
         self.audio = None
         self.length = 0
@@ -79,7 +80,7 @@ class Podcast:
                 </TextStreamHeader>"""
         
         self.targetEncoding = 'UTF-8'
-        
+                
         logging.basicConfig()
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logger)
@@ -87,6 +88,11 @@ class Podcast:
         self.logger.info("Get media info...")
 
     def make(self):
+        self.missingArtworkFullPath="{}/{}".format(
+            os.path.dirname(sys.argv[0]),
+            self.missingArtwork
+        )
+        
         # Compute output file name
         if (self.output == None):
             if self.podcast:                 self.output = self.podcast
@@ -100,7 +106,8 @@ class Podcast:
         if self.output == None:              self.output = "output"
         if not self.output.endswith('.m4a'): self.output += '.m4a'
 
-        self.sampleOutput = self.output.replace('.m4a', '.sample.m4a')
+        self.sampleOutput  = self.output.replace('.m4a', '.sample.m4a')
+        self.teaser        = self.output.replace('.m4a', '.jpg')
         self.youtubeOutput = self.output.replace('.m4a', '.youtube.mp4')
         
         self.makeDescriptions()
@@ -108,6 +115,9 @@ class Podcast:
         if not self.logger.isEnabledFor(logging.DEBUG):
             # Generate images for each audio file
             self.imagify()
+            
+            # Generate image for social media
+            self.visualTeaser()
         
             # Make the audio track
             self.concatAudioFiles()
@@ -285,7 +295,7 @@ class Podcast:
         template = template.format(**theData)
 
         # SVG data is ready in memory, now write SVG file
-        theTemplate = tempfile.NamedTemporaryFile(suffix='.svg', dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
+        theTemplate = tempfile.NamedTemporaryFile(suffix='.{}.svg'.format(svgid), dir='.', encoding=self.targetEncoding, mode='w+t', delete=False)
         theTemplate.write(template)
         theTemplate.close()
 
@@ -309,13 +319,13 @@ class Podcast:
         
         FNULL.close()
 
-        os.remove(theTemplate.name)       # remove temporary SVG
+        #os.remove(theTemplate.name)       # remove temporary SVG
 
         # Convert PNG to JPG
         thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
         os.close(thePresentationJPG[0])
 
-        im = Image.open(thePresentation[1])
+        im = Image.open(thePresentation[1]).convert(mode='RGB')
         im.save(thePresentationJPG[1], quality=85, optimize=True)
 
         os.remove(thePresentation[1])   # remove temporary PNG
@@ -474,10 +484,7 @@ class Podcast:
                 os.close(theArtwork[0])
                 self.files[i]['artworkFile'] = theArtwork[1]
             else:
-                self.files[i]['artworkFile'] = "{}/{}".format(
-                    os.path.dirname(sys.argv[0]),
-                    self.missingArtwork
-                )
+                self.files[i]['artworkFile'] = self.missingArtworkFullPath
 
 
         # build GPAC's NHML sequence of images for video
@@ -578,6 +585,47 @@ class Podcast:
         
         self.chapterInfo += """</TextStream>\n"""
         self.chapterImagesInfo += """</NHNTStream>\n"""
+
+
+    def visualTeaser(self):
+    	# Use the Intro image as social media teaser
+    	copyfile(self.images['intro'],self.teaser)
+
+    def visualTeaserGIF(self):
+        imageList = []
+        
+        masterHeight = 1080
+        masterWidth  = 0
+        
+        # Open all images
+        for i in range(len(self.files)):
+            if 'artwork' in self.files[i] and self.files[i]['artworkFile'] == self.missingArtworkFullPath:
+                currentImage = Image.open(self.files[i]['artworkFile'])
+                masterWidth += currentImage.size[0] * masterHeight/float(currentImage.size[1])
+                imageList.append(currentImage)
+        
+        masterImage=Image.new('RGB', (2*masterWidth,masterHeight))
+
+        # Concatenate resized images in a single long image
+        xOffset=0
+        for currentImage in imageList:
+            newWidth=currentImage.size[0] * masterHeight/float(currentImage.size[1])
+            masterImage.paste(
+                currentImage.resize((newWidth, masterHeight), Image.ANTIALIAS),
+                (xOffset,0)
+            )
+            xOffset += newWidth
+
+        masterImage.paste(masterImage, (xOffset,0))
+        
+        teaserIndex = 0
+        for x in range(xOffset-1920,80):
+            masterImage.crop((
+                x,      0,
+                x+1920, 1080
+            )).save("teaser-")
+        
+        
 
     def makeDescriptions(self):
         self.description=""
@@ -716,17 +764,6 @@ class Podcast:
             "-c:a", "libfdk_aac", "-vbr", "3",
             "-map_metadata", "-1",
         ]
-
-# 
-# ffmpeg \
-# -ss 0:1:0 -t 0:0:5 \
-# -i ../Musica/Brazil\ Jazz\ and\ Fusion/Renato\ Borghetti/1995\ •\ Accordionist/09\ Sétima\ do\ Pontal.m4a \
-# -f lavfi -t 0.5 -i anullsrc=channel_layout=stereo:sample_rate=44100 \
-# -ss 0:1:0 -t 0:0:5 \
-# -i ../Musica/Brazil\ Jazz\ and\ Fusion/Spok\ Frevo\ Orquestra/2007\ •\ 100\ Anos\ do\ Frevo\ -\ É\ de\ perder\ o\ sapato/01\ Instrumental/10\ Gostosão.mp3 \
-# -y -filter_complex "concat=n=3:v=0:a=1 [out]" -map [out] -vn -c:a libfdk_aac -vbr 4 -map_metadata -1 out.m4a
-# 
-
 
 
         params = []
@@ -939,8 +976,10 @@ class Podcast:
         self.wp = Client(self.wordpress, self.wordpressUser, self.wordpressPass)
         
         self.wpCategories = self.wp.call(taxonomies.GetTerms('post_tag'))
-        
-        # Upload media
+
+
+
+        # Upload podcast media
         metamedia = {
             'title': '{i:04d} {title}'.format(i=int(self.episode), title=self.title),
             'name': self.output,
@@ -950,11 +989,11 @@ class Podcast:
 
         with open(self.output, 'rb') as themedia:
             # XML-RPC is a weak protocol to send such a big file, so send only 10 bytes
-            # just to get the media URL. Then send the real file by SCP.
+            # just to get the media URL. Then send the real file by SCP later.
             # metamedia['bits'] = xmlrpc_client.Binary(themedia.read())    
             metamedia['bits'] = xmlrpc_client.Binary(bytearray(10)) #dummy placeholder
 
-        self.logger.info('Upload to WordPress...')
+        self.logger.info('Upload media to WordPress...')
         metamedia.update(self.wp.call(media.UploadFile(metamedia)))
 
         # self.logger.info(metamedia)
@@ -964,6 +1003,25 @@ class Podcast:
             self.output,
             os.path.join(self.serverFolder, os.path.basename(metamedia['url']))
         ])
+        
+
+
+
+        # Upload post thumbnail
+        metathumb = {
+            'title': '{i:04d} {title}'.format(i=int(self.episode), title=self.title),
+            'name': self.teaser,
+            'type': 'image/jpeg',  # mimetype
+            'overwrite': 1
+        }
+
+        with open(self.teaser, 'rb') as thethumb:
+            metathumb['bits'] = xmlrpc_client.Binary(thethumb.read())    
+
+        self.logger.info('Upload thumb to WordPress...')
+        metathumb.update(self.wp.call(media.UploadFile(metathumb)))
+
+        
         
         # Create post for WordPress
         self.logger.info('Create WordPress post...')
@@ -977,6 +1035,7 @@ class Podcast:
             youtubeid=self.youtubeID,
             mediaurl=metamedia['url']
         )
+        post.thumbnail = metathumb['id']
         post.custom_fields = []
         post.custom_fields.append({
             'key': 'enclosure',
@@ -1026,6 +1085,22 @@ class Podcast:
         )
 
         self.wp.call(posts.EditPost(metamedia.id, metamedia))
+        
+        
+        # Update thumbnail post just to make things tighter and look nicer
+        self.logger.info('Update WordPress thumbnail and attach to post...')
+        metathumb = self.wp.call(posts.GetPost(metathumb['id']))
+        metathumb.parent_id = post.id
+        metathumb.title = self.title + " :: thumbnail"
+        metathumb.slug = self.getSlug() + ".thumbnail"
+        metathumb.content = """Thumbnail for <a href="/{slug}">{title}</a>""".format(
+            slug = self.getSlug(),
+            title = self.title
+        )
+
+        self.wp.call(posts.EditPost(metathumb.id, metathumb))
+        
+        
         
     def toYouTube(self):
         self.youtubefy()
