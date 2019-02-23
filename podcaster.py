@@ -53,6 +53,7 @@ from shutil import copyfile
 import math
 import sys
 from string import Template
+from collections import OrderedDict
 
 
 from wordpress_xmlrpc import Client, WordPressPost, WordPressTerm
@@ -129,7 +130,11 @@ class Podcast:
             #self.toHTML()
         
             # Write textual description optimized for YouTube
-            self.toYouTube()
+            if self.youtubeID == None:
+                self.toYouTube()
+            else:
+                # youtubeID probably already set by --youtube-id THE_ID
+                pass
         
         self.toWordPress()
         
@@ -259,7 +264,13 @@ class Podcast:
         return unidecode(safe)
     
     def removeHTML(self, s):
-        return re.sub(r'<[^>]+>','', s)
+        # Remove HTML
+        transformed = re.sub(r'<[^>]+>','', s)
+        
+        # Remove WordPress shortcodes
+        transformed = re.sub(r'\[iframe[^\]]+\]','', transformed)
+        
+        return transformed
 
     def templateSVGtoJPG(self, svgid, w, h, data={}):
         empty = ""
@@ -319,7 +330,7 @@ class Podcast:
         
         FNULL.close()
 
-        #os.remove(theTemplate.name)       # remove temporary SVG
+        os.remove(theTemplate.name)       # remove temporary SVG
 
         # Convert PNG to JPG
         thePresentationJPG=tempfile.mkstemp(suffix='.jpg', dir='.')
@@ -522,8 +533,8 @@ class Podcast:
         
             if i > 0:
                 data['PREV_VISIBILITY']="visible"
-                data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&amp;")
-                data['PREV_ARTIST']=self.files[i-1]['artist'][0].replace('&',"&amp;")
+                data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&#38;")
+                data['PREV_ARTIST']=self.files[i-1]['artist'][0].replace('&',"&#38;")
                 data['PREV_COVER_ART_PATH']=self.files[i-1]['artworkFile']
             else:
                 data['PREV_VISIBILITY']="none"
@@ -531,21 +542,21 @@ class Podcast:
             
             if i < len(self.files)-1:
                 data['NEXT_VISIBILITY']="visible"
-                data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&amp;")
-                data['NEXT_ARTIST']=self.files[i+1]['artist'][0].replace('&',"&amp;")
+                data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&#38;")
+                data['NEXT_ARTIST']=self.files[i+1]['artist'][0].replace('&',"&#38;")
                 data['NEXT_COVER_ART_PATH']=self.files[i+1]['artworkFile']
             else:
                 data['NEXT_VISIBILITY']="none"
                 data['NEXT_NAME']=data['NEXT_ARTIST']=data['NEXT_COVER_ART_PATH']="whatever"
 
-            data['NAME']=self.files[i]['title'][0].replace('&',"&amp;")
-            data['ARTIST']=self.files[i]['artist'][0].replace('&',"&amp;")
-            data['ALBUM']=self.files[i]['album'][0].replace('&',"&amp;") + albumYear
+            data['NAME']=self.files[i]['title'][0].replace('&',"&#38;")
+            data['ARTIST']=self.files[i]['artist'][0].replace('&',"&#38;")
+            data['ALBUM']=self.files[i]['album'][0].replace('&',"&#38;") + albumYear
             data['COVER_ART_PATH']=self.files[i]['artworkFile']
 
             data['COMPOSER']=""
             if 'composer' in self.files[i]:
-                data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&amp;")
+                data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&#38;")
         
 
             self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
@@ -786,7 +797,7 @@ class Podcast:
     def concatAudioFiles(self):
         self.logger.info("Build audio track as concatenation of input files...")
     
-        ffmpegCompressor = "aac"     # best option: "libfdk_aac"
+        ffmpegCompressor = "aac"
         coder=[
             "-y",
             "-filter_complex",
@@ -889,7 +900,7 @@ class Podcast:
             "-B", "1",
             "-M", str(self.episode),
             "-E", "https://github.com/avibrazil/music-podcaster",
-            "-e", "Avi Alkalay",
+            "-e", "Avi Alkalay using https://github.com/avibrazil/music-podcaster",
             "-C", "Copyright by its holders",
             "-a", self.artist,
             "-s", self.title,
@@ -1028,10 +1039,13 @@ class Podcast:
         post = WordPressPost()
         post.title = '{title}'.format(i=int(self.episode), title=self.title)
         if self.date:
-            post.date = parse(self.date)            
+            post.date = parse(self.date)
+            theyear = self.date.year
+        else:
+            theyear = datetime.datetime.now().year
         post.slug = self.getSlug()
         post.comment_status = 'open'
-        post.content = 	Template(self.htmlDescription).safe_substitute(
+        post.content = Template(self.htmlDescription).safe_substitute(
             youtubeid=self.youtubeID,
             mediaurl=metamedia['url']
         )
@@ -1039,16 +1053,48 @@ class Podcast:
         post.custom_fields = []
         post.custom_fields.append({
             'key': 'enclosure',
-            'value': """{url}\n{bytesize}\naudio/x-m4a\na:1:{{s:8:"duration";s:8:"{duration}";}}""".format(
+            'value': """{url}\n{bytesize}\naudio/x-m4a\na:4:{{s:8:"duration";s:8:"{duration}";s:10:"episode_no";s:4:"{episode}";s:6:"season";s:4:"{season}";s:12:"episode_type";s:4:"full";}}""".format(
                 url = metamedia['url'],
                 bytesize = self.byteSize,
-                duration = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(self.length))))
+                duration = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(self.length)))),
+                episode = '{:04d}'.format(int(self.episode)),
+                season = theyear
             )
         })
+
+        
+#         for song in self.files:
+#             if 'artists' in song:
+#                 for a in range(len(song['artists'])):
+#                     if post.excerpt:
+#                         post.excerpt += " · "
+#                     post.excerpt += song['artists'][a]
+#             else:
+#                 if post.excerpt:
+#                     post.excerpt += " · "
+#                 post.excerpt += song['artist'][0]
+
+
+        # Make excerpt as the list of artists
+        arts = []
+        for song in self.files:
+            if 'artists' in song:
+                for a in range(len(song['artists'])):
+                    arts.append(song['artists'][a])
+            else:
+                arts.append(song['artist'][0])
+
+        # https://stackoverflow.com/a/7961390
+        arts = list(OrderedDict.fromkeys(arts))
+        post.excerpt = " · ".join(arts)
+
+
+
+
+
         
         if self.wordpressDraft is False:
             post.post_status = 'publish'
-
         
         # Tag the post with artists in media
         self.logger.info('Tag WordPress post...')
@@ -1103,8 +1149,6 @@ class Podcast:
         
         
     def toYouTube(self):
-        self.youtubefy()
-
         self.logger.info("Send media to YouTube...")
 
         ytfile = os.path.splitext(self.output)[0] + ".youtube.txt"
@@ -1112,7 +1156,7 @@ class Podcast:
         yt.write(self.youtubeDescription)
         yt.close()
         
-        self.youtubeID=subprocess.check_output([
+        command = [
             self.ytupload,
             "-c", 'Music',
             "-t", "{title} « {podcast}".format(
@@ -1120,17 +1164,32 @@ class Podcast:
                 title=self.title,
                 podcast=self.podcast
             ),
-#            "-d", self.youtubeDescription,
+        #            "-d", self.youtubeDescription,
             "--description-file", ytfile,
-#            "--tags={}".format("a"),
-            "--privacy=unlisted",
+        #            "--tags={}".format("a"),
+        #            "--privacy=unlisted",
             "--playlist={}".format(self.ytPL),
-            "--client-secrets=" + self.ytCred,
             "--thumbnail=" + self.images['intro'],
+            "--client-secrets=" + self.ytSecrets,
+            "--credentials-file=" + self.ytCred,
             self.youtubeOutput
-        ])
+        ]
         
-        self.youtubeID=self.youtubeID.decode().rstrip() # bytes to string
+        if self.youtubeDebug:
+            # Print the command and worj with fake data
+            self.logger.info(" ".join(command))
+            self.youtubeID="CcJEgvs7Ovo"
+        else:
+            # Do the actual work with YouTube
+            
+            # Optimize media file for YouTube
+            self.youtubefy()
+
+            # Upload to YouTube
+            self.youtubeID=subprocess.check_output(command)
+            self.youtubeID=self.youtubeID.decode().rstrip() # bytes to string
+
+
 
     def toHTML(self):
         html = open(os.path.splitext(self.output)[0] + ".html", mode='wt')
@@ -1222,14 +1281,23 @@ def main():
     parser.add_argument('-d', dest='wordpressDraft', action='store_true',
         default=False, help="Keep post in draft mode")
 
-    parser.add_argument('--youtube-credentials', dest='ytCred',
+    parser.add_argument('--youtube-upload-credentials', dest='ytCred',
         help="""YouTube credentials JSON file""")
+
+    parser.add_argument('--youtube-upload-client-secrets', dest='ytSecrets',
+        help="""YouTube client secrets JSON file""")
 
     parser.add_argument('--youtube-playlist', dest='ytPL',
         help="""YouTube playlist name""")
 
     parser.add_argument('--youtube-playlist-id', dest='ytPLid',
         help="""YouTube playlist id""")
+
+    parser.add_argument('--youtube-debug', dest='youtubeDebug', action='store_true',
+        help="""Do everything related to YouTube preparation but do not upload""")
+
+    parser.add_argument('--youtube-id', dest='youtubeID',
+        help="""Do not upload for YouTube, use this video ID instead.""")
 
     parser.add_argument('f', type=str, nargs='+',
         help='music files to be added to podcast')
