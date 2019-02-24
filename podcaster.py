@@ -403,8 +403,14 @@ class Podcast:
 
 
         # Compute composer
-        try:
-            composer = ', '.join(song['composer'])
+        
+        
+        
+        composer = ''
+        if 'composer' in song:
+            # check if not dealing with empty stuff:
+            if song['composer'] and song['composer'][0]:
+                composer = ', '.join(song['composer'])
 #             if 'musicbrainz_workid' in song:
 #                 co=[]
 #                 for i in range(len(song['composer'])):
@@ -413,9 +419,8 @@ class Podcast:
 #                         comp = song['composer'][i].encode(self.targetEncoding)
 #                     ))
 #                 composer = ' • '.join(co)
-            composer = composerTemplate.format(composer = composer)
-        except KeyError:
-            composer = ""
+                composer = composerTemplate.format(composer = composer)
+            
 
 
         # Compute album year
@@ -490,7 +495,7 @@ class Podcast:
     
             if 'artwork' in self.files[i]:
                 # overwrite theArtwork tuple if file has artwork
-                theArtwork=tempfile.mkstemp(dir='.')
+                theArtwork=tempfile.mkstemp(dir='.',suffix=".jpg")
                 os.write(theArtwork[0], self.files[i]['artwork'])
                 os.close(theArtwork[0])
                 self.files[i]['artworkFile'] = theArtwork[1]
@@ -676,10 +681,12 @@ class Podcast:
             pos += song['theLength']
             
             if 'composer' in song:
-                composers += "{i:02}. {name}\n".format(
-                    i=i,
-                    name=', '.join(song['composer'])
-                )
+                # check if not dealing with empty stuff:
+                if song['composer'] and song['composer'][0]:
+                    composers += "{i:02}. {name}\n".format(
+                        i=i,
+                        name=', '.join(song['composer'])
+                    )
             
             if ('album') in song:
                 albumYear = " ({:.4})"
@@ -1040,9 +1047,9 @@ class Podcast:
         post.title = '{title}'.format(i=int(self.episode), title=self.title)
         if self.date:
             post.date = parse(self.date)
-            theyear = self.date.year
-        else:
-            theyear = datetime.datetime.now().year
+#             theyear = self.date.year()
+#         else:
+#             theyear = datetime.datetime.now().year
         post.slug = self.getSlug()
         post.comment_status = 'open'
         post.content = Template(self.htmlDescription).safe_substitute(
@@ -1053,14 +1060,15 @@ class Podcast:
         post.custom_fields = []
         post.custom_fields.append({
             'key': 'enclosure',
-            'value': """{url}\n{bytesize}\naudio/x-m4a\na:4:{{s:8:"duration";s:8:"{duration}";s:10:"episode_no";s:4:"{episode}";s:6:"season";s:4:"{season}";s:12:"episode_type";s:4:"full";}}""".format(
+            'value': """{url}\n{bytesize}\naudio/x-m4a\na:2:{{s:8:"duration";s:8:"{duration}";s:10:"episode_no";s:4:"{episode}";}}""".format(
                 url = metamedia['url'],
                 bytesize = self.byteSize,
                 duration = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(self.length)))),
-                episode = '{:04d}'.format(int(self.episode)),
-                season = theyear
+                episode = '{:04d}'.format(int(self.episode))
             )
         })
+        
+        # post.guid = self.getWordPressURL() + self.getSlug()
 
         
 #         for song in self.files:
