@@ -45,7 +45,9 @@ import unicodedata
 from unidecode import unidecode
 import re
 import datetime
+from datetime import timezone
 from dateutil.parser import parse
+from dateutil import tz
 import logging
 from PIL import Image
 import os
@@ -53,7 +55,6 @@ from shutil import copyfile
 import math
 import sys
 from string import Template
-from collections import OrderedDict
 
 
 from wordpress_xmlrpc import Client, WordPressPost, WordPressTerm
@@ -71,6 +72,7 @@ class Podcast:
         self.audio = None
         self.length = 0
         self.files = []
+        self.artists = []
         self.chapterImagesInfo = """<?xml version="1.0" encoding="UTF-8" ?>
             <NHNTStream version="1.0" timeScale="1000"
             mediaType="vide" mediaSubType="jpeg" width="1280" height="720"
@@ -79,13 +81,13 @@ class Podcast:
             <TextStream version="1.1">
                 <TextStreamHeader><TextSampleDescription/>
                 </TextStreamHeader>"""
-        
+
         self.targetEncoding = 'UTF-8'
-                
+
         logging.basicConfig()
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logger)
-        
+
         self.logger.info("Get media info...")
 
     def make(self):
@@ -93,7 +95,10 @@ class Podcast:
             os.path.dirname(sys.argv[0]),
             self.missingArtwork
         )
-        
+
+        if (self.date != None):
+            self.date = parse(self.date).replace(tzinfo = tz.tzlocal()).astimezone(tz.tzutc())
+
         # Compute output file name
         if (self.output == None):
             if self.podcast:                 self.output = self.podcast
@@ -103,44 +108,44 @@ class Podcast:
             if self.title:                   self.output += self.safeFileName(self.title)
             if self.output:
                 self.output = self.output.replace(" ","_")
-        
+
         if self.output == None:              self.output = "output"
         if not self.output.endswith('.m4a'): self.output += '.m4a'
 
         self.sampleOutput  = self.output.replace('.m4a', '.sample.m4a')
         self.teaser        = self.output.replace('.m4a', '.jpg')
         self.youtubeOutput = self.output.replace('.m4a', '.youtube.mp4')
-        
+
         self.makeDescriptions()
-        
+
         if not self.logger.isEnabledFor(logging.DEBUG):
             # Generate images for each audio file
             self.imagify()
-            
+
             # Generate image for social media
             self.visualTeaser()
-        
+
             # Make the audio track
             self.concatAudioFiles()
-        
+
             # Merge audio and chapters into one final M4A media file
             self.extendedPodcast()
-        
+
             # Write HTML file with full description
             #self.toHTML()
-        
+
             # Write textual description optimized for YouTube
             if self.youtubeID == None:
                 self.toYouTube()
             else:
                 # youtubeID probably already set by --youtube-id THE_ID
                 pass
-        
+
         self.toWordPress()
-        
+
         # Remove temporary files
         self.clean()
-        
+
     def clean(self):
         try:
             for f in self.files:
@@ -261,6 +266,7 @@ class Podcast:
         safe = safe.replace("""’""","")
         safe = safe.replace("""«""","")
         safe = safe.replace("""»""","")
+        safe = safe.replace("""#""","")
         return unidecode(safe)
     
     def removeHTML(self, s):
@@ -445,7 +451,7 @@ class Podcast:
 
             album = albumTemplate.format(album = album)
 
-                    
+
         l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
         if song['theLength'] < 60*60:
             if song['theLength'] < 10*60:
@@ -464,35 +470,35 @@ class Podcast:
     def songCompleteName(self, song):
         albumYear=" ({:.4})"
         template="{artist} ♬ {title} [{l}]"
-        
+
         if 'date' in song:
             albumYear = albumYear.format(song['date'][0])
         else:
             albumYear = ""
-        
+
         l = str(datetime.timedelta(seconds=math.floor(song['theLength'])))
         if song['theLength'] < 60*60:
             if song['theLength'] < 10*60:
                 l=l[-4:]
             else:
                 l=l[-5:]
-        
+
         name=template.format(
             artist = song['artist'][0],
             album = song['album'][0],
             title = song['title'][0] + albumYear,
             l = l
         )
-                
+
         return name
-          
+
     def imagify(self):
         self.logger.info("Create images for each podcast chapter...")
-    
+
         # Extract artwork from every audio file
         for i in range(len(self.files)):
             theArtwork = []
-    
+
             if 'artwork' in self.files[i]:
                 # overwrite theArtwork tuple if file has artwork
                 theArtwork=tempfile.mkstemp(dir='.',suffix=".jpg")
@@ -514,7 +520,7 @@ class Podcast:
                 'EPISODEURL': self.getWordPressURL() + self.getSlug(),
                 'NO': self.episode
             }
-            
+
             self.images['intro']=self.templateSVGtoJPG("intro", 1280, 720, data)
 
             self.chapterInfo += self.timedTextChapter(cursor/1000, "Introduction")
@@ -523,19 +529,19 @@ class Podcast:
                 cursor=int(cursor),
                 file=self.images['intro']
             )
-            
+
             cursor += self.introDuration
-        
-        
+
+
         for i in range(len(self.files)):
             self.logger.debug('About to make image for %s', self.files[i]['title'][0])
 
             data = {}
-            
+
             albumYear=""
             if 'date' in self.files[i]:
                 albumYear = " ({:.4})".format(self.files[i]['date'][0])
-        
+
             if i > 0:
                 data['PREV_VISIBILITY']="visible"
                 data['PREV_NAME']=self.files[i-1]['title'][0].replace('&',"&#38;")
@@ -544,7 +550,7 @@ class Podcast:
             else:
                 data['PREV_VISIBILITY']="none"
                 data['PREV_NAME']=data['PREV_ARTIST']=data['PREV_COVER_ART_PATH']="whatever"
-            
+
             if i < len(self.files)-1:
                 data['NEXT_VISIBILITY']="visible"
                 data['NEXT_NAME']=self.files[i+1]['title'][0].replace('&',"&#38;")
@@ -562,7 +568,7 @@ class Podcast:
             data['COMPOSER']=""
             if 'composer' in self.files[i]:
                 data['COMPOSER']=", ".join(self.files[i]['composer']).replace('&',"&#38;")
-        
+
 
             self.files[i]['image'] = self.templateSVGtoJPG("chapter", 1280, 720, data)
 
@@ -575,19 +581,19 @@ class Podcast:
 
             cursor += 1000 * self.files[i]['theLength']
             i += 1
-        
+
         # Add image for credits...
         self.images['credits'] = self.templateSVGtoJPG("credits", 1280, 720)
-        
+
         self.chapterInfo += self.timedTextChapter(cursor/1000, "Credits")
 
         self.chapterImagesInfo += """<NHNTSample DTS="{cursor}" mediaFile="{file}" isRAP="yes" />\n""".format(
             cursor=cursor,
             file=self.images['credits']
         )
-        
+
         cursor += self.introDuration
-        
+
 
         self.images['end']     = self.templateSVGtoJPG("end", 1280, 720)
 
@@ -603,9 +609,12 @@ class Podcast:
         self.chapterImagesInfo += """</NHNTStream>\n"""
 
 
+
     def visualTeaser(self):
-    	# Use the Intro image as social media teaser
-    	copyfile(self.images['intro'],self.teaser)
+        # Use the Intro image as social media teaser
+        copyfile(self.images['intro'],self.teaser)
+
+
 
     def visualTeaserGIF(self):
         imageList = []
@@ -640,8 +649,8 @@ class Podcast:
                 x,      0,
                 x+1920, 1080
             )).save("teaser-")
-        
-        
+
+
 
     def makeDescriptions(self):
         self.description=""
@@ -651,7 +660,8 @@ class Podcast:
         youtubeTracks=""
         composers=""
         albums=""
-        
+
+
         i=0
         pos=self.introDuration/1000
         self.logger.info("Build track textual content from media tags...")
@@ -671,7 +681,7 @@ class Podcast:
             htmlTracks += """\n<li class="track">{}</li>\n""".format(
                 self.songCompleteNameHTML(song)
             )
-            
+
             youtubeTracks += "{i:02}. [{pos}] {name}\n".format(
                 i=i,
                 name=name,
@@ -679,7 +689,7 @@ class Podcast:
                 pos = "{:0>8}".format(str(datetime.timedelta(seconds=math.floor(pos))))
             )
             pos += song['theLength']
-            
+
             if 'composer' in song:
                 # check if not dealing with empty stuff:
                 if song['composer'] and song['composer'][0]:
@@ -687,63 +697,79 @@ class Podcast:
                         i=i,
                         name=', '.join(song['composer'])
                     )
-            
+
             if ('album') in song:
                 albumYear = " ({:.4})"
                 if 'date' in song:
                     albumYear = albumYear.format(song['date'][0])
                 else:
                     albumYear = ""
-                
+
                 albumArtist=""
                 if 'performer'   in song: albumArtist=song['performer'][0]   # MP3
                 if 'albumartist' in song: albumArtist=song['albumartist'][0] # MPEG-4
-                
+
                 albums += "{i:02}. {albumArtist} » {album}{year}\n".format(
                     i=i,
                     album=', '.join(song['album']),
                     albumArtist=albumArtist,
                     year=albumYear
                 )
-            
+
             if (not self.title or self.title.endswith(" | ")):
                 self.title += song['title'][0]
                 self.title += " | "
-        
-            if self.artist: self.artist += " | "
-            self.artist += song['artist'][0]
+
+#             if self.artist: self.artist += " | "
+#             self.artist += song['artist'][0]
+
+            # Prepare list of artists for excerpt and MP4 tag
+            if 'artists' in song:
+                for a in range(len(song['artists'])):
+                    self.artists.append(song['artists'][a])
+            else:
+                self.artists.append(song['artist'][0])
+
+
+
+
+
 
         if self.descriptionPrefix:
             self.descriptionPrefixText = self.descriptionPrefix.read()
         else:
-            self.descriptionPrefixText=""
-        
+            self.descriptionPrefixText = ""
+
         if self.descriptionHead:
-            self.descriptionHeadText = Template(
-                self.descriptionHead.read()
-            ).safe_substitute(youtubelist=self.ytPLid)
-        else:        
-            self.descriptionHeadText=""
-        
+            self.descriptionHeadText = self.descriptionHead.read()
+        else:
+            self.descriptionHeadText = ""
+
         if self.descriptionSuffix:
-            self.descriptionSuffixText = Template(
-                self.descriptionSuffix.read()
-            ).safe_substitute(episodeurl=self.getWordPressURL() + self.getSlug())
-        else:        
-            self.descriptionSuffixText=""
-        
-        template="{head}{prefix}\n\nTRACK LIST\n{tracks}\n\nCOMPOSERS\n{composers}\n\nALBUMS\n{albums}\n{suffix}"
-        htmlTemplate="""{head}{prefix}
-        
+            self.descriptionSuffixText = self.descriptionSuffix.read()
+        else:
+            self.descriptionSuffixText = ""
+
+        if self.excerpt:
+            self.excerptText = self.excerpt.read()
+        else:
+            self.excerptText = ""
+
+
+
+
+        template="${head}${prefix}\n\nTRACK LIST\n${tracks}\n\nCOMPOSERS\n${composers}\n\nALBUMS\n${albums}\n${suffix}"
+        htmlTemplate="""${head}${prefix}
+
             <div class="podcast-parts">
                 <ol>
-                    {tracks}
+                    ${tracks}
                 </ol>
             </div>
-            
-            {suffix}"""
-        
-        self.description = template.format(
+
+            ${suffix}"""
+
+        self.description = Template(template).safe_substitute(
             head      = self.removeHTML(self.descriptionHeadText),
             prefix    = self.removeHTML(self.descriptionPrefixText),
             tracks    = tracks,
@@ -751,24 +777,39 @@ class Podcast:
             albums    = albums,
             suffix    = self.removeHTML(self.descriptionSuffixText)
         ) 
-        
-        self.htmlDescription = htmlTemplate.format(
+
+        self.htmlDescription = Template(htmlTemplate).safe_substitute(
             head   = self.descriptionHeadText,
             prefix = self.descriptionPrefixText,
             tracks = htmlTracks,
             suffix = self.descriptionSuffixText
         )
-        
-        self.youtubeDescription = template.format(
+
+        self.youtubeDescription = Template(template).safe_substitute(
             head      = self.removeHTML(self.descriptionHeadText),
             prefix    = self.removeHTML(self.descriptionPrefixText),
             tracks    = youtubeTracks,
             composers = composers,
             albums    = albums,
             suffix    = self.removeHTML(self.descriptionSuffixText)
-        ) 
-        
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # Handle title
         if self.title.endswith(' | '): self.title = self.title[:-3]
+
+
 
     def concatSampleAudioFiles(self):
         coder=[
@@ -909,7 +950,7 @@ class Podcast:
             "-E", "https://github.com/avibrazil/music-podcaster",
             "-e", "Avi Alkalay using https://github.com/avibrazil/music-podcaster",
             "-C", "Copyright by its holders",
-            "-a", self.artist,
+            "-a", ' | '.join(self.artists),
             "-s", self.title,
             "-A", self.podcast,
             "-l", self.description,
@@ -990,6 +1031,8 @@ class Podcast:
 
         return url
 
+
+
     def toWordPress(self):
         self.wp = Client(self.wordpress, self.wordpressUser, self.wordpressPass)
         
@@ -1039,22 +1082,24 @@ class Podcast:
         self.logger.info('Upload thumb to WordPress...')
         metathumb.update(self.wp.call(media.UploadFile(metathumb)))
 
-        
-        
+
+
         # Create post for WordPress
         self.logger.info('Create WordPress post...')
         post = WordPressPost()
         post.title = '{title}'.format(i=int(self.episode), title=self.title)
         if self.date:
-            post.date = parse(self.date)
+            post.date = self.date
 #             theyear = self.date.year()
 #         else:
 #             theyear = datetime.datetime.now().year
         post.slug = self.getSlug()
         post.comment_status = 'open'
         post.content = Template(self.htmlDescription).safe_substitute(
-            youtubeid=self.youtubeID,
-            mediaurl=metamedia['url']
+            youtubeid    = self.youtubeID,
+            youtubelist  = self.ytPLid,
+            episodeurl   = self.getWordPressURL() + self.getSlug(),
+            mediaurl     = metamedia['url']
         )
         post.thumbnail = metathumb['id']
         post.custom_fields = []
@@ -1067,43 +1112,23 @@ class Podcast:
                 episode = '{:04d}'.format(int(self.episode))
             )
         })
-        
+
+        # GUID can't be set. Wish I could set it like this:
         # post.guid = self.getWordPressURL() + self.getSlug()
 
-        
-#         for song in self.files:
-#             if 'artists' in song:
-#                 for a in range(len(song['artists'])):
-#                     if post.excerpt:
-#                         post.excerpt += " · "
-#                     post.excerpt += song['artists'][a]
-#             else:
-#                 if post.excerpt:
-#                     post.excerpt += " · "
-#                 post.excerpt += song['artist'][0]
 
-
-        # Make excerpt as the list of artists
-        arts = []
-        for song in self.files:
-            if 'artists' in song:
-                for a in range(len(song['artists'])):
-                    arts.append(song['artists'][a])
-            else:
-                arts.append(song['artist'][0])
-
-        # https://stackoverflow.com/a/7961390
-        arts = list(OrderedDict.fromkeys(arts))
-        post.excerpt = " · ".join(arts)
+        post.excerpt = Template(self.excerptText).safe_substitute(
+            artists      = ' · '.join(self.artists),
+            episodeurl   = self.getWordPressURL() + self.getSlug()
+        )
 
 
 
 
 
-        
         if self.wordpressDraft is False:
             post.post_status = 'publish'
-        
+
         # Tag the post with artists in media
         self.logger.info('Tag WordPress post...')
         for song in self.files:
@@ -1123,10 +1148,10 @@ class Podcast:
                     song['musicbrainz_artistid'][0],
                     song['artist'][0]
                 ))
-        
+
         # Post it
         post.id = self.wp.call(posts.NewPost(post))
-        
+
         # Update media post just to make things tighter and look nicer
         self.logger.info('Update WordPress media and attach to post...')
         metamedia = self.wp.call(posts.GetPost(metamedia['id']))
@@ -1139,8 +1164,8 @@ class Podcast:
         )
 
         self.wp.call(posts.EditPost(metamedia.id, metamedia))
-        
-        
+
+
         # Update thumbnail post just to make things tighter and look nicer
         self.logger.info('Update WordPress thumbnail and attach to post...')
         metathumb = self.wp.call(posts.GetPost(metathumb['id']))
@@ -1153,43 +1178,53 @@ class Podcast:
         )
 
         self.wp.call(posts.EditPost(metathumb.id, metathumb))
-        
-        
-        
+
+
+
     def toYouTube(self):
         self.logger.info("Send media to YouTube...")
 
         ytfile = os.path.splitext(self.output)[0] + ".youtube.txt"
         yt = open(ytfile, mode='wt')
-        yt.write(self.youtubeDescription)
+        yt.write(Template(self.youtubeDescription).safe_substitute(
+            youtubeid    = self.youtubeID,
+            youtubelist  = self.ytPLid,
+            episodeurl   = self.getWordPressURL() + self.getSlug(),
+        ))
+
         yt.close()
-        
+
         command = [
             self.ytupload,
-            "-c", 'Music',
-            "-t", "{title} « {podcast}".format(
-                index=int(self.episode),
-                title=self.title,
-                podcast=self.podcast
-            ),
-        #            "-d", self.youtubeDescription,
-            "--description-file", ytfile,
-        #            "--tags={}".format("a"),
-        #            "--privacy=unlisted",
-            "--playlist={}".format(self.ytPL),
-            "--thumbnail=" + self.images['intro'],
-            "--client-secrets=" + self.ytSecrets,
-            "--credentials-file=" + self.ytCred,
-            self.youtubeOutput
+            "-c",                                      'Music',
+            "-t",                                      "{title} « {podcast}".format(
+                                                            title=self.title,
+                                                            podcast=self.podcast
+                                                        ),
+            "--description-file",                       ytfile,
+            "--playlist",                               self.ytPL,
+            "--thumbnail",                              self.images['intro'],
+            "--client-secrets",                         self.ytSecrets,
+            "--credentials-file",                       self.ytCred,
+            "--default-language",                       "en",
+            "--default-audio-language",                 "pt"
+           #"--tags={}".format("a"),
+           #"--privacy=unlisted",
         ]
-        
+
+        if self.date:
+            command.append("--recording-date")
+            command.append(self.date.isoformat(timespec='microseconds').replace("+00:00", "Z"))
+
+        command.append(self.youtubeOutput)
+
         if self.youtubeDebug:
             # Print the command and worj with fake data
             self.logger.info(" ".join(command))
             self.youtubeID="CcJEgvs7Ovo"
         else:
             # Do the actual work with YouTube
-            
+
             # Optimize media file for YouTube
             self.youtubefy()
 
@@ -1228,10 +1263,9 @@ class Podcast:
 
 
 
-
 def main():
 #     p = Podcast(logger=logging.DEBUG)
-    p = Podcast(logger=logging.INFO)
+    podcast = Podcast(logger=logging.INFO)
 
     parser = argparse.ArgumentParser(
         description='Create extended podcast from well tagged audio files',
@@ -1260,18 +1294,21 @@ def main():
         help="image to embed as artwork in final M4A podcast file")
     
     parser.add_argument('--description-head', dest='descriptionHead', type=open,
-        default=None, help="HTML text for description, before description prefix")
+        default=None, help="HTML template for description, before description prefix")
     
     parser.add_argument('--description-prefix', dest='descriptionPrefix', type=open,
-        default=None, help="HTML text for description, before track list")
+        default=None, help="HTML template for description, before track list")
     
     parser.add_argument('--description-suffix', dest='descriptionSuffix', type=open,
-        default=None, help="text for description, after track list")
+        default=None, help="HTML template for description, after track list")
+
+    parser.add_argument('--excerpt', dest='excerpt', type=open,
+        default=None, help="plain text template for post excerpt")
 
     parser.add_argument('--intro', dest='introDuration', type=int, default="3000",
         help="Duration in miliseconds for introduction image")
 
-    parser.add_argument('--date', dest='date',
+    parser.add_argument('--date', dest='date', default=None,
         help="""Date and time for post. Example: 2017-03-02 12:43 or simply 2017-03-02""")
 
     parser.add_argument('--server-folder', dest='serverFolder',
@@ -1310,12 +1347,12 @@ def main():
     parser.add_argument('f', type=str, nargs='+',
         help='music files to be added to podcast')
 
-    args = parser.parse_args(namespace=p)
+    args = parser.parse_args(namespace=podcast)
     
-    for f in p.f:
-        p.add(f)
+    for f in podcast.f:
+        podcast.add(f)
 
-    p.make()
+    podcast.make()
 
 
 __name__ == '__main__' and main()
