@@ -1,5 +1,5 @@
 -p
-abstra.to
+test.abstra.to
 --description-head
 ../head.thtml
 --description-prefix
@@ -9,17 +9,17 @@ description.thtml
 --excerpt
 ../excerpt.txt
 --server-folder
-abstra.to:alkalay.net/media/
+test.abstra.to:alkalay.net/media.test/
 --wordpress-url
-https://abstra.to/xmlrpc.php
+https://test.abstra.to/xmlrpc.php
 --wordpress-user
 podcaster
 --wordpress-pass
 abc123cde456
 --youtube-upload-credentials
-../youtube-credentials.json
+../youtube-credentials.test.json
 --youtube-upload-client-secrets
-../youtube-client-secrets.json
+../youtube-client-secrets.test.json
 --youtube-playlist
 Brasil Abstrato
 --youtube-playlist-id
