@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 This is an episode full of emotions and lyricism. <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d"><strong>Joyce</strong></a> comes along with <a href="[sc name=&quot;site_base_url&quot;]/artist/305b6d28-1214-4707-8acb-a7910b6e6e40"><strong>Neilor Proveta</strong></a>'s precise clarinet to bring once again her amazing scats. <a href="[sc name=&quot;site_base_url&quot;]/artist/9a82694c-13ee-44f0-9704-e2e0efe21303"><strong>André Mehmari</strong></a> also takes us for a flight in <em>Mairiporã</em> with a delicate execution full of instruments and voice, like a prayer. <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/23881bc5-1e0c-49f8-b23f-de5261b84efa">Ernesto Nazareth</a></strong>'s <em><a href="https://www.ernestonazareth150anos.com.br/works/view/38">Celestial</a></em> is not well known but has an important place amongst master's works. <a href="[sc name=&quot;site_base_url&quot;]/artist/612d6725-e4f2-4e08-9fa0-5f3438812d05"><strong>Arthur Maia</strong></a> died not long ago but made history with a legacy of outstanding compositions that also show the delicate side of his instrument, the electric bass. <a href="[sc name=&quot;site_base_url&quot;]/artist/3f59f2d6-a328-4709-87df-7a66854ede2a"><strong>Quarteto Romançal</strong></a> deserves special attention, their recordings are rare and live in the edge of popular and classical music. Take this episode with an open heart !</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Num programa emocionante do começo ao fim, selecionamos composições e execuções muito líricas. <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d"><strong>Joyce</strong></a> vem acompanhada do clarinete preciso de <a href="[sc name=&quot;site_base_url&quot;]/artist/305b6d28-1214-4707-8acb-a7910b6e6e40"><strong>Proveta</strong></a> para mais um de seus scats. <a href="[sc name=&quot;site_base_url&quot;]/artist/9a82694c-13ee-44f0-9704-e2e0efe21303"><strong>André Mehmari</strong></a> também nos leva para voar em <em>Mairiporã</em> com uma delicada execução cheia de instrumentos e voz, como se fosse uma reza. A <em><a href="https://www.ernestonazareth150anos.com.br/works/view/38">Celestial</a></em>, de <a href="[sc name=&quot;site_base_url&quot;]/artist/23881bc5-1e0c-49f8-b23f-de5261b84efa"><strong>Ernesto Nazareth</strong></a>, é pouco conhecida mas ocupa um lugar de muita importância na obra do mestre. <a href="[sc name=&quot;site_base_url&quot;]/artist/612d6725-e4f2-4e08-9fa0-5f3438812d05"><strong>Arthur Maia</strong></a>, um grande baixista, nos deixou recentemente, mas fez história com um legado de maravilhosas composições que mostram também o lado delicado de seu instrumento quase percussivo. E atenção especial ao <a href="[sc name=&quot;site_base_url&quot;]/artist/3f59f2d6-a328-4709-87df-7a66854ede2a"><strong>Quarteto Romançal</strong></a>, cuja obra é rara e difícil de encontrar. Ouça este programa de peito aberto !</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

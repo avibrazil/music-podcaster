@@ -1,0 +1,6 @@
+{{dataset.artists|join(' · ')}}
+
+🇬🇧 Full text about this episode at:
+🇧🇷 Texto sobre este programa em:
+
+{{dataset.getWordPressURL()}}/{{dataset.getSlug()}}

@@ -1,0 +1,43 @@
+{##-
+## Jinja template for a podcast episode page to be published on WordPress, in HTML
+##
+## Parts defined as blocks (that can be rewritten in a modular way with Jinja inheritance):
+## 1. Header -- usually where the media player goes in the page
+## 2. Description -- text for podcast episode page
+## 3. Track list -- Since this is a music playlist, here goes the list of songs
+## 4. Suffix -- Epilogue comments
+##
+##
+## Part of Brasil Abstrato podcast
+## Avi Alkalay <avi at unix dot sh>
+## 2023-03-11
+##
+-##}
+
+{%- block description -%}
+🇬🇧 Column for english description.
+🇧🇷 Coluna com descrição em portugues.
+{%- endblock %}
+
+{% block tracklist %}
+TRACK LIST
+{% for i in range(dataset.files|length) -%}
+{{"{:02d}".format(i+1)}}. {{dataset.files[i].artist[0]}} ♬ {{dataset.files[i].title[0]}} [{{ dataset.prettySongLength(dataset.files[i].theLength) }}]
+{% endfor %}
+
+COMPOSERS
+{% for i in range(dataset.files|length) -%}
+{%- if dataset.files[i].composer -%}
+{{"{:02d}".format(i+1)}}. {{dataset.files[i].composer|join(', ')}}
+{% endif -%}
+{% endfor %}
+
+ALBUMS
+{% for i in range(dataset.files|length) -%}
+{{"{:02d}".format(i+1)}}. {{dataset.files[i].album[0]}}
+{% endfor %}
+{% endblock %}
+
+{%- block suffix -%}
+Originally posted on Brasil Abstrato radio and podcast: {{dataset.getWordPressURL()}}/{{dataset.getSlug()}}
+{%- endblock -%}

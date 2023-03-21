@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 From the most original rhythms, strongest contrasts, Brazilian Northeast is a land of intriguing culture. This second part dedicated to northeastern artists (<a href="[sc name=&quot;site_base_url&quot;]/e0007/">see the first part</a>), we bring <a href="[sc name=&quot;site_base_url&quot;]/artist/834f0ffb-cde3-452b-b252-5888f0cd706a"><strong>Heraldo do Monte</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/25c6026e-01ae-4834-b882-ee8d4431d4ab"><strong>SaGRAMA</strong></a>, <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/bf4605e0-f145-4774-92e8-a0c53a9a4276">Spok Frevo Orquestra</a></strong>, <a href="[sc name=&quot;site_base_url&quot;]/artist/c7a4c4a0-9544-44e3-87f2-5779d18b753f"><strong>Hermeto Pascoal</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/3af54f38-15ba-4b6c-809f-e885dda5f1c1"><strong>Fernando Melo</strong></a> (from <a href="[sc name=&quot;site_base_url&quot;]/artist/2edfd795-ebbb-44b3-88fc-547f9a2c71ac/"><strong>Duofel</strong></a>) and many others.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Berço dos ritmos mais originais, terra dos maiores contrastes, região de cultura intrigante é o Nordeste Brasileiro. Esta segunda parte dedicada aos músicos nordestinos (<a href="[sc name=&quot;site_base_url&quot;]/e0007/">veja a primeira parte</a>) trazemos <a href="[sc name=&quot;site_base_url&quot;]/artist/834f0ffb-cde3-452b-b252-5888f0cd706a"><strong>Heraldo do Monte</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/25c6026e-01ae-4834-b882-ee8d4431d4ab"><strong>SaGRAMA</strong></a>, a <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/bf4605e0-f145-4774-92e8-a0c53a9a4276">orquestra de frevo do Spok</a></strong>, <a href="[sc name=&quot;site_base_url&quot;]/artist/c7a4c4a0-9544-44e3-87f2-5779d18b753f"><strong>Hermeto Pascoal</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/3af54f38-15ba-4b6c-809f-e885dda5f1c1"><strong>Fernando Melo</strong></a> (do <a href="[sc name=&quot;site_base_url&quot;]/artist/2edfd795-ebbb-44b3-88fc-547f9a2c71ac/"><strong>Duofel</strong></a>) e muitos outros.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

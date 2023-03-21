@@ -1,11 +1,22 @@
-<div class="container-fluid">
-<div class="row">
-<div class="col-xs-12 col-sm-6" lang="en">
-<p>🇬🇧 The voice, when freed from the song lyrics, becomes an instrument. Of the kind that unleashes the most incredible possibilities. The queen of the “bá-tchicum-dum” style is undoubtedly <a href="https://abstra.to/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a> — she has more than 30 recordings like this. But there is also the <em>groovy-maracatu</em> side with <a href="https://abstra.to/artist/ae3c5c8f-40c3-4a3f-9c5b-d327a32b999f/"><strong>Grupo Feijão de Corda</strong></a>. Also the highly lyrical version of a <strong>Jacob do Bandolim</strong> composition adapted by <a href="https://abstra.to/artist/d90277e7-0f06-4a62-b7a4-7cda2f68f075/"><strong>Nó em Pingo D’Água</strong></a>. And since the whole world wants to play Brazil, we also invited german singer <a href="https://abstra.to/artist/2fca8757-a42d-43f7-ae45-2271e8a7f094/"><strong>Céline Rudolph</strong></a> and <a href="https://abstra.to/artist/d1c65138-8916-4bdb-aecf-e54041838fda/"><strong>Los Angeles Guitar Quartet</strong></a><strong> with <a href="https://abstra.to/artist/19bf356a-1505-47f9-9466-03582fce2a4d/">Luciana Souza</a></strong> to galvanize it all with a <em>for export</em> label. A selection to enjoy with eyes closed.</p>
-</div>
-<div class="col-xs-12 col-sm-6" lang="pt">
-<p>🇧🇷 A voz, quando subtraída a letra da canção, vira um instrumento. Dos mais bonitos, dos que permitem as mais incríveis possibilidades. A rainha do estilo “bá-tchicum-dum” é <a href="https://abstra.to/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a>, que tem mais de 30 gravações belíssimas do gênero. Mas há também a faceta <em>groovy-maracatu</em> com o <a href="https://abstra.to/artist/ae3c5c8f-40c3-4a3f-9c5b-d327a32b999f/"><strong>Grupo Feijão de Corda</strong></a>. E também a versão super lírica que o <a href="https://abstra.to/artist/d90277e7-0f06-4a62-b7a4-7cda2f68f075/"><strong>Nó em Pingo D’Água</strong></a> fez para uma composição de <strong>Jacob do Bandolim</strong>. Como o mundo inteiro quer cantar e tocar o Brasil, trouxemos também a alemã <a href="https://abstra.to/artist/2fca8757-a42d-43f7-ae45-2271e8a7f094/"><strong>Céline Rudolph</strong></a> e o <strong><a href="https://abstra.to/artist/d1c65138-8916-4bdb-aecf-e54041838fda/">Los Angeles Guitar Quartet</a> com <a href="https://abstra.to/artist/19bf356a-1505-47f9-9466-03582fce2a4d/">Luciana Souza</a></strong> prá deixar tudo bem <em>estilo exportação</em>. Uma seleção prá curtir de olhos fechados.</p>
-</div>
-</div>
-</div>
-<!--more-->
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 The voice, when freed from the song lyrics, becomes an instrument. Of the kind that unleashes the most incredible possibilities. The queen of the “bá-tchicum-dum” style is undoubtedly <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a> — she has more than 30 recordings like this. But there is also the <em>groovy-maracatu</em> side with <a href="[sc name=&quot;site_base_url&quot;]/artist/ae3c5c8f-40c3-4a3f-9c5b-d327a32b999f/"><strong>Grupo Feijão de Corda</strong></a>. Also the highly lyrical version of a <strong>Jacob do Bandolim</strong> composition adapted by <a href="[sc name=&quot;site_base_url&quot;]/artist/d90277e7-0f06-4a62-b7a4-7cda2f68f075/"><strong>Nó em Pingo D’Água</strong></a>. And since the whole world wants to play Brazil, we also invited german singer <a href="[sc name=&quot;site_base_url&quot;]/artist/2fca8757-a42d-43f7-ae45-2271e8a7f094/"><strong>Céline Rudolph</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/d1c65138-8916-4bdb-aecf-e54041838fda/"><strong>Los Angeles Guitar Quartet</strong></a><strong> with <a href="[sc name=&quot;site_base_url&quot;]/artist/19bf356a-1505-47f9-9466-03582fce2a4d/">Luciana Souza</a></strong> to galvanize it all with a <em>for export</em> label. A selection to enjoy with eyes closed.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 A voz, quando subtraída a letra da canção, vira um instrumento. Dos mais bonitos, dos que permitem as mais incríveis possibilidades. A rainha do estilo “bá-tchicum-dum” é <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a>, que tem mais de 30 gravações belíssimas do gênero. Mas há também a faceta <em>groovy-maracatu</em> com o <a href="[sc name=&quot;site_base_url&quot;]/artist/ae3c5c8f-40c3-4a3f-9c5b-d327a32b999f/"><strong>Grupo Feijão de Corda</strong></a>. E também a versão super lírica que o <a href="[sc name=&quot;site_base_url&quot;]/artist/d90277e7-0f06-4a62-b7a4-7cda2f68f075/"><strong>Nó em Pingo D’Água</strong></a> fez para uma composição de <strong>Jacob do Bandolim</strong>. Como o mundo inteiro quer cantar e tocar o Brasil, trouxemos também a alemã <a href="[sc name=&quot;site_base_url&quot;]/artist/2fca8757-a42d-43f7-ae45-2271e8a7f094/"><strong>Céline Rudolph</strong></a> e o <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/d1c65138-8916-4bdb-aecf-e54041838fda/">Los Angeles Guitar Quartet</a> com <a href="[sc name=&quot;site_base_url&quot;]/artist/19bf356a-1505-47f9-9466-03582fce2a4d/">Luciana Souza</a></strong> prá deixar tudo bem <em>estilo exportação</em>. Uma seleção prá curtir de olhos fechados.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

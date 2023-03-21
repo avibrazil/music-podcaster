@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 A inspiração para este programa veio ao assistir a <a href="[sc name=&quot;site_base_url&quot;]/artist/eb69a604-a3d6-4ffb-a199-0db36bbb41bb"><strong>Lari Basilio</strong></a> vencer um festival de música de 2014 com <em>Walking by Faith</em>. Sonzeira de primeira. A guitarra elétrica é menos comum na música brasileira mais tradicional, mesmo assim temos ótimos guitarristas por aqui, numa seleção que soa mais como rock instrumental ou jazz da pesada. Temos encontro marcado com os mestres <a href="[sc name=&quot;site_base_url&quot;]/artist/68862d2c-b642-4575-8c6e-71309f7402a1"><strong>Pepeu Gomes</strong></a> e <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/c3c5b9c3-0283-40b9-9fbb-4e9c6ac2dd00">Victor Biglione</a></strong>. <a href="[sc name=&quot;site_base_url&quot;]/artist/5746b4dd-b817-42b6-a5fb-540313ae80fc"><strong>Ulisses Rocha</strong></a>, geralmente no violão, sempre se mantém em forma na guitarra também. E trazemos também nossos comparsas do Rock-MPB, <a href="[sc name=&quot;site_base_url&quot;]/artist/40c3dbd1-66c8-4c12-b673-f22d52177b45"><strong>14 Bis</strong></a> e <a href="[sc name=&quot;site_base_url&quot;]/artist/b85aa7ef-8270-43ce-bc68-0d2aff7ef5a8"><strong>Cor do Som</strong></a>, que sempre nos presentearam com ótimos riffs e também gravações instrumentais. Menção especial ao guitarrista <a href="[sc name=&quot;site_base_url&quot;]/artist/1e0f369c-dd48-490f-a4e5-d786431bf8cd"><strong>Olmir Stocker</strong></a> (o <strong>Alemão</strong> do <a href="[sc name=&quot;site_base_url&quot;]/artist/8875da1c-d9e7-439a-b1a8-c315117931b6"><strong>Alemão e Zezo</strong></a> e que toca também no <a href="[sc name=&quot;site_base_url&quot;]/artist/b85aa7ef-8270-43ce-bc68-0d2aff7ef5a8"><strong>Cor do Som</strong></a> e no <a href="[sc name=&quot;site_base_url&quot;]/artist/edf44d0d-e225-4dd4-a6d0-5300ab592eb0"><strong>Grupo Medusa</strong></a>). Guitarra elétrica costuma andar junto de teclados, bateria e baixo mais pesados, então preste atenção neles também. Em alto e bom som !</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 Inspiration for this episode came from <a href="[sc name=&quot;site_base_url&quot;]/artist/eb69a604-a3d6-4ffb-a199-0db36bbb41bb"><strong>Lari Basilio</strong></a> wining a music festival in 2014 with her excellent <em>Walking by Faith</em>. Electric guitar is less common in traditional Brazilian music, but we bring our outstanding guitarists in a selection that may sound more like hard rock or jazz. We'll meet masters <a href="[sc name=&quot;site_base_url&quot;]/artist/68862d2c-b642-4575-8c6e-71309f7402a1"><strong>Pepeu Gomes</strong></a> and <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/c3c5b9c3-0283-40b9-9fbb-4e9c6ac2dd00">Victor Biglione</a></strong>. <a href="[sc name=&quot;site_base_url&quot;]/artist/5746b4dd-b817-42b6-a5fb-540313ae80fc"><strong>Ulisses Rocha</strong></a>, usually playing the acoustic guitar, is always in shape to play the electric guitar too. We also bring our friends from Brazilian-Rock-Pop scene, <a href="[sc name=&quot;site_base_url&quot;]/artist/40c3dbd1-66c8-4c12-b673-f22d52177b45"><strong>14 Bis</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/b85aa7ef-8270-43ce-bc68-0d2aff7ef5a8"><strong>Cor do Som</strong></a>, that always fed us with good riffs and instrumental recordings. Special mention to guitarist <a href="[sc name=&quot;site_base_url&quot;]/artist/1e0f369c-dd48-490f-a4e5-d786431bf8cd"><strong>Olmir Stocker</strong></a> (the <strong>Alemão</strong> of <a href="[sc name=&quot;site_base_url&quot;]/artist/8875da1c-d9e7-439a-b1a8-c315117931b6"><strong>Alemão e Zezo</strong></a> and who also plays in <strong>Cor do Som</strong> and <a href="[sc name=&quot;site_base_url&quot;]/artist/edf44d0d-e225-4dd4-a6d0-5300ab592eb0"><strong>Grupo Medusa</strong></a>). Electric guitar use to walk along heavier bass, drums and keyboard, so pay attention to these too !</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

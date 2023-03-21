@@ -1,0 +1,42 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Viola Brasileira, também conhecida como Viola Sertaneja ou Viola Caipira, instrumento que visualmente parece um violão mas possui alma completamente diferente. Um violão brasileiro tem 6 ou 7 cordas de nylon, já a viola tem 10 cordas de metal. Suas afinações também são diferentes, com nomes bonitos como Cebolão, Rio a Baixo etc.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph -->
+			<p>Não deixe os termos “caipira” ou “sertanejo” te enganarem. Se essas palavras tem o estigma (distorcido) de algo simplório, atrasado, ingênuo ou remoto, os músicos e o universo da Viola Caipira são na verdade bastante eruditos, tem formação musical avançada e universal e fazem uma bela e importante ponte entre toda sua erudição com a cultura rural, do boi, do campo, da colônia e de um Brasil rústico e nostálgico, cheio de sotaque e longe da cidade grande.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph -->
+			<p>A Viola de hoje é um instrumento que só existe no Brasil, motivo suficiente para valorizarmos seu universo. O estilo dos violeiros foi se transformando ao longo dos anos e das regiões do Brasil. No circuito tradicional temos <a href="[sc name=&quot;site_base_url&quot;]/artist/8ffc4a5e-5980-4863-824f-0694bd160b47"><strong>Renato Andrade</strong></a> como um ícone. Sua história é parecida com a de outros violeiros famosos: formação erudita — de violino, no caso de Renato — que a certa altura da vida se inclina para as maravilhas da viola. Eu considero Renato o Mozart da viola caipira pois não criou estilos, não revolucionou nada, mas deixou um legado emocionante e lindo. É como se sua obra fosse um eixo referencial de onde derivam as inovações de violeiros mais recentes.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph -->
+			<p>No circuito inovador, <a href="[sc name=&quot;site_base_url&quot;]/artist/e75b8b5a-0e70-43b6-b199-f4a7273fd051"><strong>Paulo Freire</strong></a> é um dos que merece menção. Inspirado pelo <em>Grande Sertão: Veredas</em>, de Guimarães Rosa, partiu para o Vale do Urucuia descobrir como era o som do sertão. E lá conheceu <strong>Manoel Oliveira</strong>, lavrador que lhe ensinou sua viola em troca da ajuda de Paulo na plantação. Acredito — e acho que Paulo concordaria comigo — que sua formação violeira não estaria completa se não fosse seu tempo de lavrador no sertão de Minas, além das aulas de música. O <a href="[sc name=&quot;site_base_url&quot;]/artist/2edfd795-ebbb-44b3-88fc-547f9a2c71ac"><strong>Duofel</strong></a>, apesar de sua veia vanguardista paulistana que nunca é associada com a viola, é um duo de viola brasileira (o Fernando) e violão (o Luis). Ainda no circuito novo, temos <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/2a9d9f53-5f92-4b66-9ecc-f9445917176b/">Neymar Dias</a></strong>, multi-instrumentista da cena paulistana que trafega com sua viola de Bach, de Beatles, ao mais moderno, sem deixar as clássicas modas de viola e guarañas de lado. Inesquecível também o <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/6a2e9746-26ec-43b9-b9e1-261e1da8a627/">Ricardo Vignini</a></strong> que explora diversas possibilidades da Viola, e na <em>Beijando o céu</em> que escolhemos aqui, trouxe ninguém menos que o guitarrista <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/90ec9432-8045-4a4d-8c63-857946c91d1a/">Lúcio Maia</a></strong>, do Nação Zumbi, para lhe acompanhar.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph -->
+			<p>Na seleção, tentei cobrir o Brasil inteiro, do Sul de <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/7306ade4-2d1d-4fc4-8e3d-265fcbff62ed/">Valdir Verona</a></strong> ao Nordeste de <strong><a href="[sc name=&quot;site_base_url&quot;]/artist/72c38acd-f546-4798-8eca-555426f608d1/">Adelmo Arcoverde</a></strong>. Mas calma que sempre vai ter mais Viola em todos os programas.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 <a href="https://en.wikipedia.org/wiki/Viola_caipira">Viola Caipira (as defined on Wikipedia)</a> looks like an acoustic guitar but has a completely different soul. Instead of 6 or 7 nylon strings of an acoustic guitar, the viola has 10 metal strings with unique tunings. While commonly associated with folk music of the countryside and its simple life, the <em>violeiros</em> (viola musicians) have advanced and universal musical education. Probably this contrast is the most fascinating aspect of viola recordings, because our violeiros are very successful in building bridges between these two worlds.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph -->
+			<p>Most traditional tunes on this selection can be heard from <a href="[sc name=&quot;site_base_url&quot;]/artist/8ffc4a5e-5980-4863-824f-0694bd160b47"><strong>Renato Andrade</strong></a>, maybe <a href="[sc name=&quot;site_base_url&quot;]/artist/ba59e0b3-b78a-4c15-a1d3-2e912693d0b8"><strong>Rodrigo Delage</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/f8f76536-8204-4b09-b06e-66e1f9c1f88b"><strong>Roberto Corrêa</strong></a>. While most other tracks sound more modern. Or a mix, I don't care, because they are all very beautiful.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

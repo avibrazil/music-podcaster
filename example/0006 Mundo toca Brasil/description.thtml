@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Este programa é dedicado aos músicos estrangeiros que ao longo de suas carreiras foram tocados pela ginga brasileira. Algumas gravações aqui são históricas, como a do <strong>Paco de Lucía</strong> + <strong>Al Di Meola</strong> + <strong>McLaughlin</strong>. Ou <a href="[sc name=&quot;site_base_url&quot;]/artist/62fe877d-b7a5-43e8-952e-2610d7614bff"><strong>Yo-Yo Ma</strong></a> tocando <strong>Jacob do Bandolim</strong> tão docemente. Ou a honra de ter a incrível superbanda <a href="[sc name=&quot;site_base_url&quot;]/artist/fe85367e-4036-43c1-874b-b91af81cb4f3"><strong>Snarky Puppy</strong></a> mandando um baião supercompetente. Sem contar a delicadeza britânica do <a href="[sc name=&quot;site_base_url&quot;]/artist/c44b552f-fe8b-4def-a942-6ba6e89d791d"><strong>Eden-Stell Guitar Duo</strong></a> tocando nosso paulistaníssimo <strong>Bellinati</strong>, ou, direto das ruas de Barcelona, o <a href="[sc name=&quot;site_base_url&quot;]/artist/5dffe811-66b4-4d93-b81b-030bb1721d40"><strong>Trío Gótico</strong></a> interpretando <strong>Gismonti</strong>. Ou músicos como <a href="[sc name=&quot;site_base_url&quot;]/artist/5e7511aa-5856-4085-8103-7c407871c829"><strong>Michi Ruzitschka</strong></a>, que se mudam para o Brasil perseguindo seu sonho de Música Brasileira. É interessante também sentir como os venezuelanos do <a href="[sc name=&quot;site_base_url&quot;]/artist/07165f31-9584-413a-b578-63706f794b41/"><strong>Gurrufío</strong></a> misturam suas raizes musicais originais com a ginga brasileira. Enfim, a música do mundo todo!</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 This episode is dedicated to the non-Brazilian artists that got influenced by Brazilian Music during their careers. We bring historical recordings by <strong>Paco de Lucía</strong> + <strong>Al Di Meola</strong> + <strong>McLaughlin</strong>. Or <a href="[sc name=&quot;site_base_url&quot;]/artist/62fe877d-b7a5-43e8-952e-2610d7614bff"><strong>Yo-Yo Ma</strong></a> playing <strong>Jacob do Bandolim</strong> in such a sweet way. Or being honored by the <a href="[sc name=&quot;site_base_url&quot;]/artist/fe85367e-4036-43c1-874b-b91af81cb4f3"><strong>Snarky Puppy</strong></a> superband playing a <em>baião</em> in their supergroovy style. Not to mention the delicate interpretation of <a href="[sc name=&quot;site_base_url&quot;]/artist/c44b552f-fe8b-4def-a942-6ba6e89d791d"><strong>Eden-Stell Guitar Duo</strong></a> for a <a href="[sc name=&quot;site_base_url&quot;]/artist/106cdcd2-7be3-4cf5-93f0-ca7b2b7562e5"><strong>Bellinati</strong></a> standard, or, directly from the streets of Barcelona, <a href="[sc name=&quot;site_base_url&quot;]/artist/5dffe811-66b4-4d93-b81b-030bb1721d40"><strong>Trío Gótico</strong></a> with their own <strong>Gismonti</strong>. Or artists as <a href="[sc name=&quot;site_base_url&quot;]/artist/5e7511aa-5856-4085-8103-7c407871c829"><strong>Michi Ruzitschka</strong></a> that move their life to Brazil just to seek their Brazilian Music dream. It is also interesting to feel how Venezuelan group<a href="[sc name=&quot;site_base_url&quot;]/artist/07165f31-9584-413a-b578-63706f794b41/"><strong> Gurrufío</strong></a> mix their native musical influences with the Brazilian swing. Music from all over the world!</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

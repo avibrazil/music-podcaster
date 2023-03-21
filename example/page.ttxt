@@ -1,0 +1,7 @@
+{% import "description.thtml" as description %}
+
+{% extends "base-page.ttxt" %}
+
+{%- block description -%}
+{{ description.description()|striptags }}
+{%- endblock -%}

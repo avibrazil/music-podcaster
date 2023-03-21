@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 An episode with mixed things, just an excuse to fly across the whole country. Enjoy modern and traditional artists and their compositions. Most traditional here are pianist <a href="[sc name=&quot;site_base_url&quot;]/artist/7528cec5-b55a-48d9-a953-6c920d91a653/"><strong>Waldir Calmon</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/130ba5d4-4d6f-4224-86bc-0f4a0cfb6b22/"><strong>Sivuca</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/f5f168e5-f1f2-4c63-9be5-236dd34e0661/"><strong>Paulinho Nogueira</strong></a>. Most moderns sounds are provided by <a href="[sc name=&quot;site_base_url&quot;]/artist/21b5fb7f-c820-4c82-b4d8-ceddeeb4f0c1/"><strong>Torcuato Mariano</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/609250c3-e447-4ebd-a7c3-8f94ee605090/"><strong>Gabriel Levy</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/acdff15d-5b7a-45a2-90b7-20b6693bec71/"><strong>Fabio Torres</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/a9909dc7-8e9b-43a2-b14e-6ed6ed139bbe/"><strong>Gabriel Improta</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/f5042740-3a77-49d0-a08a-bbe0ce0a0ffe/"><strong>OBMJ</strong></a>. There are also the ones that stay in the middle, mixing old style with refreshed interpretations: <a href="[sc name=&quot;site_base_url&quot;]/artist/2b9814d9-ba52-458f-9aed-52f5e4e00f56/"><strong>Francisco Mario</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/34308535-ee30-426d-9926-35892356d5cd/"><strong>Toninho Ferragutti</strong></a> and <a href="[sc name=&quot;site_base_url&quot;]/artist/2a9d9f53-5f92-4b66-9ecc-f9445917176b/"><strong>Neymar Dias</strong></a>.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Um programa com sons variados, só uma desculpa para voar por todo Brasil. Curta artistas modernos e tradicionais, suas composições e interpretações. Os mais tradicionais aqui são o pianista <a href="[sc name=&quot;site_base_url&quot;]/artist/7528cec5-b55a-48d9-a953-6c920d91a653/"><strong>Waldir Calmon</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/130ba5d4-4d6f-4224-86bc-0f4a0cfb6b22/"><strong>Sivuca</strong></a> e <a href="[sc name=&quot;site_base_url&quot;]/artist/f5f168e5-f1f2-4c63-9be5-236dd34e0661/"><strong>Paulinho Nogueira</strong></a>. Sons mais modernos são tocados por <a href="[sc name=&quot;site_base_url&quot;]/artist/21b5fb7f-c820-4c82-b4d8-ceddeeb4f0c1/"><strong>Torcuato Mariano</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/609250c3-e447-4ebd-a7c3-8f94ee605090/"><strong>Gabriel Levy</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/acdff15d-5b7a-45a2-90b7-20b6693bec71/"><strong>Fabio Torres</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/a9909dc7-8e9b-43a2-b14e-6ed6ed139bbe/"><strong>Gabriel Improta</strong></a> e <a href="[sc name=&quot;site_base_url&quot;]/artist/f5042740-3a77-49d0-a08a-bbe0ce0a0ffe/"><strong>OBMJ</strong></a>. Tem também os que ficam no meio do caminho, misturando estilos clássicos com uma interpretação renovada: <a href="[sc name=&quot;site_base_url&quot;]/artist/2b9814d9-ba52-458f-9aed-52f5e4e00f56/"><strong>Francisco Mario</strong></a>, <a href="[sc name=&quot;site_base_url&quot;]/artist/34308535-ee30-426d-9926-35892356d5cd/"><strong>Toninho Ferragutti</strong></a> e <a href="[sc name=&quot;site_base_url&quot;]/artist/2a9d9f53-5f92-4b66-9ecc-f9445917176b/"><strong>Neymar Dias</strong></a>.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

@@ -1,0 +1,7 @@
+{% import "description.thtml" as description %}
+
+{% extends "base-page.thtml" %}
+
+{%- block description -%}
+{{ description.description() }}
+{%- endblock -%}

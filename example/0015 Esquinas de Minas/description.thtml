@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Programa homenageia artistas mineiros e sua música. O ponto de partida é obviamente o seminal álbum <a href="https://pt.wikipedia.org/wiki/Clube_da_Esquina_(álbum)" target="_new">Clube da Esquina</a> de 1972, mas expande para outros estilos e artistas conectados ao estado de Minas Gerais.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 Episode is a tribute to artists from the state of Minas Gerais. Starting point is obviously the seminal album <a href="https://en.wikipedia.org/wiki/Clube_da_Esquina_(album)" target="_new">Clube da Esquina</a> of 1972, but expands to other styles and artists connected to that state.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 Este programa inclui dois lindos temas de <a href="[sc name=&quot;site_base_url&quot;]/artist/23881bc5-1e0c-49f8-b23f-de5261b84efa"><strong>Ernesto Nazareth</strong></a> tocados de formas completamente diferentes. E algumas homenagens que nós e os músicos queremos fazer. Uma para <a href="[sc name=&quot;site_base_url&quot;]/artist/9ded1781-b1e1-4204-aca0-dc1db00febe4"><strong>Raphael Rabello</strong></a>, esse que foi um dos maiores violonistas do Brasil. E para <strong>Jacob do Bandolim</strong>, encarnado em seu <a href="[sc name=&quot;site_base_url&quot;]/artist/fc6b4524-d1f1-429b-ac0a-d6f5b3d125c9"><strong>Conjunto Época de Ouro</strong></a>, que continua nos delirando com beldades do choro tradicional mesmo depois da partida de seu fundador. O <strong>Época de Ouro</strong> está aqui muito bem acompanhado pelo pianista <a href="[sc name=&quot;site_base_url&quot;]/artist/dbbf5f0e-4861-488d-8627-f8a4d5fb3ea7"><strong>Cristóvão Bastos</strong></a>. E <a href="[sc name=&quot;site_base_url&quot;]/artist/b8ddde4f-177d-4b25-90c4-5a022dba1608"><strong>Alessandro Penezzi</strong></a> e seu violão 7 cordas vêm homenagear todos os choristas paulistas com um belíssimo tema em ritmo de choro.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 This episode includes two gorgeous songs by master <a href="[sc name=&quot;site_base_url&quot;]/artist/23881bc5-1e0c-49f8-b23f-de5261b84efa"><strong>Ernesto Nazareth</strong></a> played in completely different styles. And some homages that we and the artists want to do. One for <a href="[sc name=&quot;site_base_url&quot;]/artist/9ded1781-b1e1-4204-aca0-dc1db00febe4"><strong>Raphael Rabello</strong></a>, which was one of our best acoustic guitar players. And for <strong>Jacob do Bandolim</strong>, represented here by his <a href="[sc name=&quot;site_base_url&quot;]/artist/fc6b4524-d1f1-429b-ac0a-d6f5b3d125c9"><strong>Conjunto Época de Ouro</strong></a>, which still impresses us with traditional Choro even after Jacob dead. <strong>Época de Ouro</strong> is well accompanied by the pianist <a href="[sc name=&quot;site_base_url&quot;]/artist/dbbf5f0e-4861-488d-8627-f8a4d5fb3ea7"><strong>Cristóvão Bastos</strong></a>. And <a href="[sc name=&quot;site_base_url&quot;]/artist/b8ddde4f-177d-4b25-90c4-5a022dba1608"><strong>Alessandro Penezzi</strong></a> with his 7 string acoustic guitar, conveying homage to all Choro artists from São Paulo state with an amazing theme.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

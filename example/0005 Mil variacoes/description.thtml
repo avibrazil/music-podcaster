@@ -1,0 +1,22 @@
+{%- macro description(dataset="") -%}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇬🇧 <strong>Joyce Moreno</strong>, or just <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a>, globally recognized for her Bossa Nova tunes, writes, plays and sings music non stop since the 60s. Her <a href="https://en.wikipedia.org/wiki/Scat_singing">scat</a> works (singing without lyrics) is huge and original. One of my preferred compositions is <em>Feijão com Arroz</em>, from one of the albums she released with her husband, the drummer <a href="[sc name=&quot;site_base_url&quot;]/artist/1e21b51f-c4ae-4e03-846a-ebcbcab3a50f/"><strong>Tutty Moreno</strong></a>. There is also <a href="[sc name=&quot;site_base_url&quot;]/artist/5746b4dd-b817-42b6-a5fb-540313ae80fc/"><strong>Ulisses Rocha</strong></a>, one of our acoustic guitar colossus, playing one of his most complex compositions. His perfectionism is absolutely impressive. Then we visit the extraordinary <a href="[sc name=&quot;site_base_url&quot;]/artist/9c54b898-283d-4963-9590-c90d016e446c/"><strong>Quinteto Armorial</strong></a> in the 70s for a taste of how they left their mark forever in the Northeast music. Heading South, we stop in Rio for a nostalgic composition of <strong>K-Ximbinho</strong> by <a href="[sc name=&quot;site_base_url&quot;]/artist/0169cc94-a16c-457d-8cdd-0dd0d1c13d3a/"><strong>Zé da Velha e Silvério Pontes</strong></a>. We also visit <a href="[sc name=&quot;site_base_url&quot;]/artist/2a9d9f53-5f92-4b66-9ecc-f9445917176b"><strong>Neymar Dias</strong></a>, versatile multi-instrumentist from São Paulo's music scene that explores new possibilities for the Brazilian viola. And then we arrive in Rio Grande do Sul for a modern execution of an <strong>Hermeto Pascoal</strong> theme written for and played by <a href="[sc name=&quot;site_base_url&quot;]/artist/b813183b-6372-41d1-bba3-23235a89a975/"><strong>Renato Borghetti</strong></a>. This episode is amazing, enjoy!</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:paragraph -->
+			<p>🇧🇷 <strong>Joyce Moreno</strong>, ou só <a href="[sc name=&quot;site_base_url&quot;]/artist/f47a0968-f2c1-4ec5-b0e3-0a15ae73b88d/"><strong>Joyce</strong></a>, conhecidíssima representante global da Bossa e MPB, compõe, arranja e canta sem parar desde a década de 60. Seu trabalho com <a href="https://pt.wikipedia.org/wiki/Scat">scats</a> (canto sem letra) é imenso e muito original. Uma das minha preferidas é a <em>Feijão com Arroz</em> de um dos álbum que lançou com seu marido, o baterista <a href="[sc name=&quot;site_base_url&quot;]/artist/1e21b51f-c4ae-4e03-846a-ebcbcab3a50f/"><strong>Tutty Moreno</strong></a>. Tem também o <a href="[sc name=&quot;site_base_url&quot;]/artist/5746b4dd-b817-42b6-a5fb-540313ae80fc/"><strong>Ulisses Rocha</strong></a>, colosso do violão, tocando uma de suas composições mais complexas e lindas. Seu perfeccionismo é impressionante. Damos um pulo aos anos 70 para visitar o <a href="[sc name=&quot;site_base_url&quot;]/artist/9c54b898-283d-4963-9590-c90d016e446c/"><strong>Quinteto Armorial</strong></a>, extraordinários que são, deixaram sua marca para sempre na música nordestina. Rumo ao sul, paramos no Rio para uma nostálgica composição de <strong>K-Ximbinho</strong> ao som dos sopros debochados de <a href="[sc name=&quot;site_base_url&quot;]/artist/0169cc94-a16c-457d-8cdd-0dd0d1c13d3a/"><strong>Zé da Velha e Silvério Pontes</strong></a>. Visitamos também <a href="[sc name=&quot;site_base_url&quot;]/artist/2a9d9f53-5f92-4b66-9ecc-f9445917176b"><strong>Neymar Dias</strong></a>, versátil multi-instrumentista da cena paulistana que vive explorando novas possibilidades na viola. E chegamos no Rio Grande do Sul para um modernoso tema de <strong>Hermeto Pascoal</strong> escrito para e tocado por <a href="[sc name=&quot;site_base_url&quot;]/artist/b813183b-6372-41d1-bba3-23235a89a975/"><strong>Renato Borghetti</strong></a>. Este programa está lindo, aproveite!</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{%- endmacro -%}

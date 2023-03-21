@@ -1,7 +1,0 @@
-${artists}
-
-
-🇬🇧 Full text about this episode at:
-🇧🇷 Texto sobre este programa em:
-
-${episodeurl}

@@ -1,0 +1,152 @@
+{##
+## Jinja template for a podcast episode page to be published on WordPress, in HTML
+##
+## Parts defined as blocks (that can be rewritten in a modular way with Jinja inheritance):
+## 1. Header -- usually where the media player goes in the page
+## 2. Description -- text for podcast episode page
+## 3. Track list -- Since this is a music playlist, here goes the list of songs
+## 4. Suffix -- Epilogue comments
+##
+##
+## Part of Brasil Abstrato podcast
+## Avi Alkalay <avi at unix dot sh>
+## 2023-03-11
+##
+##}
+
+{%- block header -%}
+	<!-- wp:video {"className":"podcast-as-video"}  -->
+	<figure class="wp-block-video podcast-as-video">
+	<video controls src="{{dataset.metamedia.url}}"></video>
+	</figure>
+	<!-- /wp:video -->
+{%- endblock -%}
+
+
+
+{% block description %}
+	<!-- wp:columns {"className":"colunar-descriptions"} -->
+	<div class="wp-block-columns colunar-descriptions">
+
+	<!-- wp:column -->
+	<div class="wp-block-column">
+
+		<!-- wp:paragraph -->
+		<p>🇬🇧 Column for english description.</p>
+		<!-- /wp:paragraph -->
+
+	</div>
+	<!-- /wp:column -->
+
+
+
+
+	<!-- wp:column -->
+	<div class="wp-block-column">
+
+		<!-- wp:paragraph -->
+		<p>🇧🇷 Coluna com descrição em portugues.</p>
+		<!-- /wp:paragraph -->
+
+	</div>
+	<!-- /wp:column -->
+
+	</div>
+	<!-- /wp:columns -->
+{% endblock %}
+
+<!-- wp:more -->
+<!--more-->
+<!-- /wp:more -->
+
+
+
+
+{% block tracklist %}
+
+	{% set context = namespace(artists="") %}
+	
+	{%- macro artists(song) -%}
+		{#-
+			Play with media file tags to build song name with links.
+			song.artist -- Contains a list with 1 element with all artists names
+				as a phrase, such as ['Orquestra filarmônica de Minas Gerais & Uakti'].
+			song.artists -- Only if multi-artist, contains a list with all artists,
+				such as ['Orquestra filarmônica de Minas Gerais', 'Uakti'].
+			song.musicbrainz_artistid -- Contains a list of artist MBIDs of whats in
+				artist or artists.
+		-#}
+		{%- if (song.artists|length)>0 -%}
+			{#- Multiple artists -#}
+			{%- for i in range(song.artists|length) -%}
+				{%- set ar -%}
+					<a href="{{dataset.getWordPressURL()}}artist/{{song.musicbrainz_artistid[i]}}">{{song.artists[i]}}</a>
+				{%- endset -%}
+				{%- set context.artists -%}
+					{{ context.artists|replace(song.artists[i],ar) }}
+				{%- endset -%}
+			{%- endfor -%}
+		{%- else -%}
+			{#- Single artist -#}
+			{%- set context.artists -%}
+				<a href="{{dataset.getWordPressURL()}}artist/{{song.musicbrainz_artistid[0]}}">{{song.artist[0]}}</a>
+			{%- endset -%}
+		{%- endif -%}
+		{{ context.artists }}
+	{%- endmacro -%}
+
+
+	<!-- wp:list {"ordered":true,"className":"podcast-parts"} -->
+	<ol class="podcast-parts">
+
+	{% for song in dataset.files -%}
+		{% set context.artists=song.artist[0] %}
+
+		<!-- wp:list-item {"className":"track"} -->
+		<li class="track">
+			<span class="song">
+				<span class="artists">{{ artists(song) }}</span>
+				<span class="separator"> ♬ </span>
+				<span class="title"><a href="https://musicbrainz.org/recording/{{song.musicbrainz_trackid[0]}}">{{song.title[0]}}</a></span> <span class="duration">[{{ dataset.prettySongLength(song.theLength) }}]</span>
+
+				{%- if song.composer and (song.composer|length)>0 and (song.composer[0]|length)>0 -%}
+					<br/><span class="composer">✍🏼 {{song.composer|join(', ')}}</span>
+				{%- endif -%}
+	
+				{%- if song.album -%}
+					<br/><span class="album">💿
+					{% if song.musicbrainz_albumid -%}
+						<a target="_blank" href="https://musicbrainz.org/release/{{song.musicbrainz_albumid[0]}}/#{{song.musicbrainz_releasetrackid[0]}}">{{song.album[0]}}</a>
+					{%- else -%}
+						{{song['album'][0]}}
+					{%- endif -%}
+		
+					{%- if song.date %}
+					<span class="yearwrap">(<span class="year">{{song.date[0][:4]}}</span>)</span>
+					{%- endif -%}
+		
+					</span>
+				{%- endif -%}                
+			</span>
+		</li>
+		<!-- /wp:list-item -->
+
+	{% endfor -%}
+
+	</ol>
+	<!-- /wp:list -->
+{% endblock %}
+
+
+
+
+{% block suffix %}
+	<!-- wp:group {"className":"post-epilogue","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group post-epilogue">
+		<!-- wp:paragraph -->
+		<p>Originally posted on <strong>Brasil Abstrato</strong> radio and podcast: <a href="{{dataset.getWordPressURL()}}{{dataset.getSlug()}}">{{dataset.getWordPressURL()}}{{dataset.getSlug()}}</a><br/>
+		Here is the <a href="{{dataset.metamedia.url}}">episode’s hi-fi media</a> only.</p>
+		<!-- /wp:paragraph -->
+	</div>
+	<!-- /wp:group -->
+{% endblock %}
